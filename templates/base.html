@@ -1,0 +1,161 @@
+<!-- templates/base.html -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ADI Package Manager</title>
+    <link rel="stylesheet" type=text/css href="stylesheet.css">
+</head>
+
+<style>
+  body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color:lightGray;
+}
+
+.navbar {
+  overflow: hidden;
+  background-color: #30CB58;
+}
+
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+.dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn {
+  background-color: red;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.center {
+  padding: 200px 0;
+  border: 3px solid green;
+  text-align: center;
+}
+
+.input, .textarea, .select select {
+  background-color: white;
+  border-color: #dbdbdb;
+  border-radius: 8px;
+  color: #363636;
+}
+
+.is-large.input, .is-large.textarea {
+  font-size: 1.5rem;
+}
+
+.button {
+  background-color: white;
+  border-color: #dbdbdb;
+  border-width: 1px;
+  color: #363636;
+  cursor: pointer;
+  justify-content: center;
+  padding-bottom: calc(0.5em - 1px);
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: calc(0.5em - 1px);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.is-block {
+  display: block !important;
+}
+
+.button.is-info {
+  background-color: #30CB58;
+  border-color: transparent;
+  color: #fff;
+}
+
+.button.is-medium {
+  font-size: 1.25rem;
+}
+
+.button.is-fullwidth {
+  display: flex;
+  width: 20%;
+}
+</style>
+<body>
+
+<div class="navbar">
+  <a href="{{ url_for('main.index') }}">Home</a>
+    <div class="dropdown">
+    <button class="dropbtn">View
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <a href="{{ url_for('main.search_adi_all') }}">View List of Packages</a>
+      <a href="{{ url_for('main.search_adi') }}">Filter by Asset Title</a>
+      <a href="{{ url_for('main.get_asset_metadata') }}">View Asset Metadata</a>
+      <a href="{{ url_for('main.get_asset_video') }}">View Asset Video</a>
+    </div>
+    </div>
+  <a href="{{ url_for('main.create_package') }}">Create New Package</a>
+  <div class="dropdown">
+    <button class="dropbtn">Update Existing Package
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+       <a href="{{ url_for('main.update_package') }}">Update Package Metadata</a>
+       <a href="{{ url_for('main.update_video') }}">Update Package Video</a>
+    </div>
+  </div>
+  <a href="{{ url_for('main.get_adi') }}">Download ADI</a>
+</div>
+
+{% block content %}
+{% endblock %}
+</body>
+
+</html>

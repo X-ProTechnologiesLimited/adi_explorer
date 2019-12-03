@@ -1,0 +1,124 @@
+<!-- templates/create_package.html -->
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="column is-4 is-offset-4">
+    <h2 class="title">Create ADI</h2>
+    <div class="box">
+        <form method="POST" action="/create_package">
+            <h4>Licensing Section</h4>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="asset_type" name="asset_type" placeholder="Type of Asset" autofocus="" required>
+                    <datalist id="asset_type">
+                      <option value="EST">
+                      <option value="SUBSCRIPTION VOD">
+                      <option value="PREMIUM VOD">
+                      <option value="CATCHUP">
+                      <option value="DPL">
+                    </option>
+                    </datalist>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="LicenseWindow" placeholder="LicenseWindow(days)" autofocus="" required>
+                </div>
+            </div>
+            <h4>Metadata Section</h4>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="title" placeholder="Asset Title" autofocus="" required>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="provider_id" placeholder="Provider" autofocus="" required>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="provider_version" placeholder="Provider Version" autofocus="" required>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="multiformat_id" placeholder="Multiformat ID" autofocus="">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="subtitle_flag" name="subtitle_flag" placeholder="Subtitled" autofocus="" required>
+                    <datalist id="subtitle_flag">
+                      <option value="true">
+                      <option value="false">
+                    </option>
+                    </datalist>
+                </div>
+            </div>
+                <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="subtitle_lang" placeholder="Subtitle Language" autofocus="">
+                </div>
+            </div>
+             <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="btc_rating" name="ca_btc" placeholder="CA/BTC Rating" autofocus="" required>
+                    <datalist id="btc_rating">
+                      <option value="U">
+                      <option value="PG">
+                      <option value="SU">
+                      <option value="G">
+                    </option>
+                    </datalist>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="par_rating" name="par_rating" placeholder="Parental Rating" autofocus="" required>
+                    <datalist id="par_rating">
+                      <option value="1">
+                      <option value="2">
+                      <option value="4">
+                      <option value="5">
+                    </option>
+                    </datalist>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="audio_type" name="audio_type" placeholder="Audio Type" autofocus="" required>
+                    <datalist id="audio_type">
+                      <option value="Dolby 5.1">
+                      <option value="Dolby Digital">
+                      <option value="Dolby Atmos">
+                    </option>
+                    </datalist>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="frame_rate" name="frame_rate" placeholder="Video Frame Rate" autofocus="" required>
+                    <datalist id="frame_rate">
+                      <option value="25">
+                      <option value="50">
+                    </option>
+                    </datalist>
+                </div>
+            </div>
+            <h4>Offer Section</h4>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="offer_window" placeholder="Offer Window" autofocus="" required>
+                    <d>**</d>
+                </div>
+            </div>
+
+            <p>** Enter the Availability of offers in days.**</p>
+
+            <button class="button is-block is-info is-medium is-fullwidth">Generate ADI XML</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
