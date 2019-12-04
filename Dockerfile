@@ -1,11 +1,11 @@
 FROM python:3.7-alpine
 WORKDIR /app
-COPY lib/ /app/lib
+
 COPY requirements.txt /app/
 COPY utils /app/utils/
 COPY initialise_db.py /app/
 COPY templates/ /app/templates/
-COPY ADI_Template /app/ADI_Template/
+COPY lib /app/lib
 
 ENV CONTAINERISED true
 
