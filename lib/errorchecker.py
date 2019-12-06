@@ -41,6 +41,23 @@ def not_supported_asset_type(asset_type):
 
 
 @errorchecker.errorhandler(502)
+def not_implemented_yet():
+    message = {
+            'status': 502,
+            'message': 'This requirement is not yet implemented'
+        }
+    output = json2html.convert(json=message,
+                               table_attributes="id=\"Error\" class=\"table table-striped\"" "border=2")
+    with open(html_outfile, 'w') as outf:
+        outf.write('{% extends "base.html" %}')
+        outf.write('{% block content %}')
+        outf.write(output)
+        outf.write('{% endblock %}')
+
+    return render_template('search_response.html')
+
+
+@errorchecker.errorhandler(502)
 def not_supported_offer_count(offer_count):
     message = {
             'status': 502,

@@ -141,8 +141,17 @@
       <a href="{{ url_for('main.get_asset_video') }}">View Asset Video</a>
     </div>
     </div>
-  <a href="{{ url_for('main.create_package') }}">Create New Package</a>
-  <div class="dropdown">
+    <div class="dropdown">
+    <button class="dropbtn">Create Package
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <a href="{{ url_for('main.create_single_title') }}">Single Title</a>
+      <a href="{{ url_for('main.create_series_episode') }}">Series Episode</a>
+      <a href="{{ url_for('main.create_est_box_set') }}">EST Box-Set</a>
+    </div>
+    </div>
+    <div class="dropdown">
     <button class="dropbtn">Update Existing Package
       <i class="fa fa-caret-down"></i>
     </button>

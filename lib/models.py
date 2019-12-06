@@ -14,7 +14,6 @@ class ADI_META(db.Model):
     offerStartTime = db.Column(db.String(100))
     offerEndTime = db.Column(db.String(100))
     multiformat_id = db.Column(db.String(100))
-    uhd_flag = db.Column(db.String(100))
     movie_url = db.Column(db.String(500))
     movie_checksum = db.Column(db.String(500))
     par_rating = db.Column(db.String(10))
@@ -22,5 +21,4 @@ class ADI_META(db.Model):
     audio_type = db.Column(db.String(100))
     frame_rate = db.Column(db.String(100))
     subtitle_flag = db.Column(db.String(10))
-    subtitle_lang = db.Column(db.String(10))
 

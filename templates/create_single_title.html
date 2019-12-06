@@ -6,13 +6,13 @@
 <div class="column is-4 is-offset-4">
     <h2 class="title">Create ADI</h2>
     <div class="box">
-        <form method="POST" action="/create_package">
+        <form method="POST" action="/create_single_title">
             <h4>Licensing Section</h4>
             <div class="field">
                 <div class="control">
                     <input class="input is-large" list="asset_type" name="asset_type" placeholder="Type of Asset" autofocus="" required>
                     <datalist id="asset_type">
-                      <option value="EST">
+                      <option value="EST SINGLE TITLE">
                       <option value="SUBSCRIPTION VOD">
                       <option value="PREMIUM VOD">
                       <option value="CATCHUP">
@@ -56,12 +56,6 @@
                     </option>
                     </datalist>
                 </div>
-            </div>
-                <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="text" name="subtitle_lang" placeholder="Subtitle Language" autofocus="">
-                </div>
-            </div>
              <div class="field">
                 <div class="control">
                     <input class="input is-large" list="btc_rating" name="ca_btc" placeholder="CA/BTC Rating" autofocus="" required>

@@ -11,7 +11,7 @@ import urllib.parse
 from .nocache import nocache
 from bson.json_util import dumps
 from . import response
-from . import movie_config
+from . import package_logic
 
 main = Blueprint('main', __name__, static_url_path='', static_folder='../created_adi/', template_folder='../templates')
 
@@ -20,109 +20,61 @@ main = Blueprint('main', __name__, static_url_path='', static_folder='../created
 def index():
     return render_template('index.html')
 
-@main.route('/create_package')
-def create_package():
-    return render_template('create_package.html')
+@main.route('/create_single_title')
+def create_single_title():
+    return render_template('create_single_title.html')
 
-
-
-@main.route('/create_package', methods=['POST'])
-def create_adi():
+@main.route('/create_single_title', methods=['POST'])
+def create_single_title_post():
     ts = time.time()
     asset_timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d%H%M%S')
-    asset_type = request.form.get('asset_type')
     LicenseWindow = int(request.form.get('LicenseWindow'))
     licenseEndTime = offerdate.offer_date(LicenseWindow,0)
     offer_window = int(request.form.get('offer_window'))
+    offerStartTime = offerdate.offer_date(0, 0)
+    offerEndTime = offerdate.offer_date(offer_window, 0)
+    asset_type = request.form.get('asset_type')
+    multiformat_id = request.form.get('multiformat_id')
+    subtitle_flag = request.form.get('subtitle_flag')
+    provider_id = request.form.get('provider_id')
+    title = request.form.get('title')
+    provider_version = request.form.get('provider_version')
+    par_rating = request.form.get('par_rating')
+    audio_type = request.form.get('audio_type')
+    frame_rate = request.form.get('frame_rate')
+    btc_rating = request.form.get('ca_btc')
+    asset_mf_id = package_logic.multiformat_entry(multiformat_id, asset_timestamp)
+    movie_url = package_logic.movie_file_entry(provider_id)
+    movie_checksum = package_logic.movie_checksum_entry(provider_id)
 
-    if asset_type == 'EST':
-        sitemap = 'EST_Sample.xml'
-    elif asset_type == 'PREMIUM VOD':
-        sitemap = 'PREMVOD_Sample.xml'
-    else:
+    sitemap = package_logic.sitemap_entry(asset_type, subtitle_flag)
+    if sitemap == False:
         return errorchecker.not_supported_asset_type(asset_type)
 
-    values = []
-    multiformat_id = request.form.get('multiformat_id')
-    subtitle_lang = request.form.get('subtitle_lang')
-
     try:
-        new_package = ADI_META(assetId=asset_timestamp + '01', original_timestamp=asset_timestamp, adi_type=asset_type, title=request.form.get('title'), provider_version=request.form.get('provider_version'),
-                                    provider_id=request.form.get('provider_id'), offerStartTime=offerdate.offer_date(0,0), offerEndTime=offerdate.offer_date(offer_window,0),
-                                    licenseEndTime=licenseEndTime, par_rating=request.form.get('par_rating'), subtitle_flag=request.form.get('subtitle_flag'),
-                                    audio_type=request.form.get('audio_type'), frame_rate=request.form.get('frame_rate'), btc_rating=request.form.get('ca_btc'))
+        new_package = ADI_META(assetId=asset_timestamp + '01', original_timestamp=asset_timestamp,
+                               adi_type=asset_type, title=title, provider_version=provider_version,
+                               provider_id=provider_id, offerStartTime=offerStartTime,
+                               offerEndTime=offerEndTime,licenseEndTime=licenseEndTime,
+                               par_rating=par_rating, subtitle_flag=subtitle_flag, audio_type=audio_type,
+                               frame_rate=frame_rate, btc_rating=btc_rating, multiformat_id=asset_mf_id,
+                               movie_url=movie_url, movie_checksum=movie_checksum)
 
         db.session.add(new_package)
         db.session.commit()
     except:
         return errorchecker.internal_server_error()
 
-    if multiformat_id != "":
-        asset_mf_id = multiformat_id
-        package = ADI_META.query.filter_by(assetId=asset_timestamp + '01').update(dict(multiformat_id=multiformat_id))
-    else:
-        asset_mf_id = 'BSKYPR' + asset_timestamp
-        package = ADI_META.query.filter_by(assetId=asset_timestamp + '01').update(dict(multiformat_id='BSKYPR' + asset_timestamp))
-
-    if subtitle_lang != "":
-        subtitle_lang = subtitle_lang
-        package = ADI_META.query.filter_by(assetId=asset_timestamp + '01').update(dict(subtitle_lang=subtitle_lang))
-    else:
-        subtitle_lang = ""
+    return package_logic.download_adi_package(asset_timestamp + '01')
 
 
-    if 'hdr' in request.form.get('provider_id'):
-        asset_uhd_flag = 'HDR-HLG10'
-        movie_url = movie_config.hdr_movie_file
-        movie_checksum = movie_config.hdr_movie_checksum
-        package = ADI_META.query.filter_by(assetId=asset_timestamp + '01').update(dict(uhd_flag=asset_uhd_flag))
+@main.route('/create_series_episode')
+def create_series_episode():
+    return errorchecker.not_implemented_yet()
 
-    elif '4k' in request.form.get('provider_id'):
-        asset_uhd_flag = 'SDR'
-        movie_url = movie_config.sdr_movie_file
-        movie_checksum = movie_config.sdr_movie_checksum
-        package = ADI_META.query.filter_by(assetId=asset_timestamp + '01').update(dict(uhd_flag=asset_uhd_flag))
-    elif 'est' in request.form.get('provider_id'):
-        asset_uhd_flag = 'false'
-        movie_url = movie_config.est_movie_file
-        movie_checksum = movie_config.est_movie_checksum
-    else:
-        asset_uhd_flag = 'false'
-        movie_url = movie_config.hd_movie_file
-        movie_checksum = movie_config.hd_movie_checksum
-
-    package = ADI_META.query.filter_by(assetId=asset_timestamp + '01').update(dict(movie_url=movie_url))
-    package = ADI_META.query.filter_by(assetId=asset_timestamp + '01').update(dict(movie_checksum=movie_checksum))
-
-    db.session.commit()
-
-    values.append({
-        'title': request.form.get('title'),
-        'providerid': request.form.get('provider_id'),
-        'assetid': asset_timestamp,
-        'provider_version': request.form.get('provider_version'),
-        'licensetime': licenseEndTime,
-        'offerStartDateTime': offerdate.offer_date(0,0),
-        'offerEndDateTime': offerdate.offer_date(offer_window,0),
-        'multiformatid': asset_mf_id,
-        'uhd_flag': asset_uhd_flag,
-        'subtitle_flag': request.form.get('subtitle_flag'),
-        'par_rating': request.form.get('par_rating'),
-        'audio_type': request.form.get('audio_type'),
-        'frame_rate': request.form.get('frame_rate'),
-        'btc_rating': request.form.get('ca_btc'),
-        'movie_url': movie_url,
-        'movie_checksum': movie_checksum,
-        'subtitle_lang': subtitle_lang
-    })
-
-    template = render_template(sitemap, values=values)
-    response = make_response(template)
-    response.headers['Content-Type'] = 'application/xml; charset=utf-8'
-    return response
-
-
-
+@main.route('/create_est_box_set')
+def create_est_box_set():
+    return errorchecker.not_implemented_yet()
 
 
 @main.route('/search')
@@ -145,8 +97,7 @@ def search_adi_post():
             'providerVersionNum': package.provider_version,
             'providerId': package.provider_id,
             'offerEndDateTime': package.offerEndTime,
-            'multiformat_id': package.multiformat_id,
-            'uhd_flag': package.uhd_flag
+            'multiformat_id': package.multiformat_id
         })
 
     adi_data['total'] = ADI_META.query.filter(ADI_META.title.like(search)).count()
@@ -174,8 +125,7 @@ def search_adi_all():
             'providerVersionNum': package.provider_version,
             'providerId': package.provider_id,
             'offerEndDateTime': package.offerEndTime,
-            'multiformat_id': package.multiformat_id,
-            'uhd_flag': package.uhd_flag
+            'multiformat_id': package.multiformat_id
         })
 
     adi_data['total'] = ADI_META.query.count()
@@ -195,54 +145,7 @@ def get_adi():
 @main.route('/get_adi', methods=['POST'])
 def get_adi_post():
     assetId = request.form.get('AssetId')
-    try:
-        package = ADI_META.query.filter_by(assetId=assetId).first()
-        if package.adi_type == 'EST':
-            sitemap = 'EST_Sample.xml'
-        elif package.adi_type == 'PREMIUM VOD':
-            sitemap = 'PREMVOD_Sample.xml'
-        else:
-            return errorchecker.not_supported_asset_type(package.adi_type)
-
-        values = []
-        if package.uhd_flag == None:
-            uhd_flag = 'false'
-        else:
-            uhd_flag = package.uhd_flag
-
-        if package.subtitle_lang == None:
-            subtitle_lang = ""
-        else:
-            subtitle_lang = package.subtitle_lang
-        values.append({
-            'title': package.title,
-            'providerid': package.provider_id,
-            'assetid': package.original_timestamp,
-            'provider_version': package.provider_version,
-            'licensetime': package.licenseEndTime,
-            'offerStartDateTime': package.offerStartTime,
-            'offerEndDateTime': package.offerEndTime,
-            'multiformatid': package.multiformat_id,
-            'uhd_flag': uhd_flag,
-            'subtitle_flag': package.subtitle_flag,
-            'par_rating': package.par_rating,
-            'audio_type': package.audio_type,
-            'frame_rate': package.frame_rate,
-            'btc_rating': package.btc_rating,
-            'movie_url': package.movie_url,
-            'movie_checksum': package.movie_checksum,
-            'subtitle_lang': subtitle_lang
-        })
-
-        template = render_template(sitemap, values=values)
-        response = make_response(template)
-        response.headers['Content-Type'] = 'application/xml'
-
-        return response
-
-    except:
-        return errorchecker.asset_not_found_id(assetId)
-
+    return package_logic.download_adi_package(assetId)
 
 
 
@@ -266,7 +169,6 @@ def get_asset_metadata_post():
     adi_metadata['packages']['Parental Rating'] = package.par_rating
     adi_metadata['packages']['CA/BTC Rating'] = package.btc_rating
     adi_metadata['packages']['Subtitle'] = package.subtitle_flag
-    adi_metadata['packages']['Subtitle_Language'] = package.subtitle_lang
 
     json_data = dumps(adi_metadata)
     return response.asset_retrieve(json_data)
@@ -362,13 +264,10 @@ def update_video_post():
     movie_checksum = request.form.get('movie_checksum')
     try:
         package = ADI_META.query.filter_by(assetId=assetId).first()
-        package = ADI_META.query.filter_by(assetId=assetId).update(dict(movie_url=movie_url))
-        package = ADI_META.query.filter_by(assetId=assetId).update(dict(movie_checksum=movie_checksum))
-        db.session.commit()
-        package_updated = ADI_META.query.filter_by(assetId=assetId).first()
-        provider_version = int(package_updated.provider_version)
+        provider_version = int(package.provider_version)
         updated_provider_version = (provider_version + 1)
-        package = ADI_META.query.filter_by(assetId=assetId).update(dict(provider_version=str(updated_provider_version)))
+        package = ADI_META.query.filter_by(assetId=assetId).update(dict(movie_url=movie_url, movie_checksum=movie_checksum,
+                                                                        provider_version=str(updated_provider_version)))
         db.session.commit()
         return response.asset_update_success(assetId, 'movie')
     except:

@@ -11,7 +11,6 @@
       <ext:IsAudioDescribed>true</ext:IsAudioDescribed>
       <ext:Soundmouse>566444</ext:Soundmouse>
       <ext:StudioCode>66</ext:StudioCode>
-      <ext:IsUHDContent>{{val.uhd_flag}}</ext:IsUHDContent>
       <ext:LinkedObject object="PRCT{{val.assetid}}01" type="parentContent"/>
       <ext:LinkedObject object="{{val.multiformatid}}" type="MultiFormat"/>
       <ext:TitleExtensions Language="eng">
@@ -60,7 +59,7 @@
     <content:Duration>PT1H20M56S</content:Duration>
     <content:IsHDContent>true</content:IsHDContent>
     <content:Language>eng</content:Language>
-    <content:SubtitleLanguage>{{val.subtitle_lang}}</content:SubtitleLanguage>
+    <content:SubtitleLanguage>eng</content:SubtitleLanguage>
     <content:CopyControlInfo>
       <content:IsCopyProtectionVerbose>true</content:IsCopyProtectionVerbose>
       <content:AnalogProtectionSystem>0</content:AnalogProtectionSystem>
