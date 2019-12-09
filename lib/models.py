@@ -21,4 +21,5 @@ class ADI_META(db.Model):
     audio_type = db.Column(db.String(100))
     frame_rate = db.Column(db.String(100))
     subtitle_flag = db.Column(db.String(10))
+    video_type = db.Column(db.String(10))
 

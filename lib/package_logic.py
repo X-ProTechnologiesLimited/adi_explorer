@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, make_response
+from flask import Blueprint, render_template, make_response, send_file
 from .models import ADI_META
 from . import errorchecker
 from . import movie_config
@@ -6,12 +6,20 @@ from . import movie_config
 main = Blueprint('main', __name__, static_url_path='', static_folder='../created_adi/', template_folder='../templates')
 
 def sitemap_entry(asset_type, subtitle_flag):
-    if asset_type == 'EST SINGLE TITLE':
-        return 'EST_SINGLE_TITLE.xml'
-    elif asset_type == 'PREMIUM VOD' and subtitle_flag == 'true':
-        return 'PREMVOD.xml'
-    elif asset_type == 'PREMIUM VOD' and subtitle_flag == 'false':
-        return 'PREMVOD_NOSUB.xml'
+    if subtitle_flag == 'true':
+        if (asset_type == 'PREMIUM VOD') or (asset_type == 'SUBSCRIPTION VOD') or (asset_type == 'RENTAL'):
+            return 'VOD_SINGLE_TITLE.xml'
+        elif (asset_type == 'EST_SINGLE_TITLE'):
+            return 'EST_SINGLE_TITLE'
+        else:
+            return False
+    elif subtitle_flag == 'false':
+        if (asset_type == 'PREMIUM VOD') or (asset_type == 'SUBSCRIPTION VOD') or (asset_type == 'RENTAL'):
+            return 'VOD_SINGLE_TITLE_NOSUB.xml'
+        elif (asset_type == 'EST_SINGLE_TITLE'):
+            return 'EST_SINGLE_TITLE'
+        else:
+            return False
     else:
         return False
 
@@ -30,7 +38,7 @@ def movie_file_entry(provider_id):
         return movie_config.sdr_movie_file
     elif 'est' in provider_id:
         return movie_config.est_movie_file
-    elif 'hd.' in  provider_id:
+    elif ('hd.' in provider_id) or ('_hd' in provider_id):
         return movie_config.hd_movie_file
     else:
         return movie_config.title_movie
@@ -43,11 +51,23 @@ def movie_checksum_entry(provider_id):
         return movie_config.sdr_movie_checksum
     elif 'est' in provider_id:
         return movie_config.est_movie_checksum
-    elif 'hd.' in  provider_id:
+    elif ('hd.' in provider_id) or ('_hd' in provider_id):
         return movie_config.hd_movie_checksum
     else:
         return movie_config.title_checksum
 
+
+def video_type_entry(provider_id):
+    if ('hdr' in provider_id) or ('4k' in provider_id) or ('hd.' in provider_id) or ('_hd' in provider_id):
+        return 'true'
+    else:
+        return 'false'
+
+def offer_type_entry(asset_type):
+    if asset_type == 'SUBSCRIPTION VOD':
+        return 'SVOD'
+    else:
+        return 'IPPR'
 
 def download_adi_package(assetId):
     try:
@@ -73,6 +93,8 @@ def download_adi_package(assetId):
             'btc_rating': package.btc_rating,
             'movie_url': package.movie_url,
             'movie_checksum': package.movie_checksum,
+            'video_type': package.video_type,
+            'offer_type': package.offer_type,
         })
 
         template = render_template(sitemap, values=values)

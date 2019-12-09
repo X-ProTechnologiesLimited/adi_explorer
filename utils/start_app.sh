@@ -20,17 +20,17 @@ if [ "$DATABASE_NEW" = 1 ]
 then
     source $PROJECT_DIR/utils/app_run.config && export $(cut -d= -f1 $PROJECT_DIR/utils/app_run.config)
     rm -rf $PROJECT_DIR/lib/db.sqlite
-    python3 $PROJECT_DIR/initialise_db.py
+    python $PROJECT_DIR/initialise_db.py
     echo "Created new database for application..."
     echo "Created new database for application..." >> $PROJECT_DIR/logs/$filename
-    python3 -m flask run --host=0.0.0.0 >> $PROJECT_DIR/logs/$filename 2>&1 &
+    python -m flask run --host=0.0.0.0 >> $PROJECT_DIR/logs/$filename 2>&1 &
      
 elif [ "$DATABASE_NEW" = 0 ]
 then
     source $PROJECT_DIR/utils/app_run.config && export $(cut -d= -f1 $PROJECT_DIR/utils/app_run.config)
     echo "Using the existing database..."
     echo "Using the existing database..." >> $PROJECT_DIR/logs/$filename
-    python3 -m flask run --host=0.0.0.0>> $PROJECT_DIR/logs/$filename 2>&1 &
+    python -m flask run --host=0.0.0.0>> $PROJECT_DIR/logs/$filename 2>&1 &
 
 else
     echo "Error: No Database Creation option specified.."

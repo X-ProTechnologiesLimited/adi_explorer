@@ -52,14 +52,13 @@
         <content:SourceUrl>{{val.movie_url}}</content:SourceUrl>
         <content:ContentFileSize>100</content:ContentFileSize>
         <content:ContentCheckSum>{{val.movie_checksum}}</content:ContentCheckSum>
-    <content:AudioType>{{val.audio_type}}</content:AudioType>
+    <content:AudioType>{{val.audio_type}}</content:AudioType>s
     <content:ScreenFormat>Widescreen</content:ScreenFormat>
     <content:Resolution>1080i</content:Resolution>
     <content:FrameRate>{{val.frame_rate}}</content:FrameRate>
     <content:Duration>PT1H20M56S</content:Duration>
-    <content:IsHDContent>true</content:IsHDContent>
+    <content:IsHDContent>{{val.video_type}}</content:IsHDContent>
     <content:Language>eng</content:Language>
-    <content:SubtitleLanguage>eng</content:SubtitleLanguage>
     <content:CopyControlInfo>
       <content:IsCopyProtectionVerbose>true</content:IsCopyProtectionVerbose>
       <content:AnalogProtectionSystem>0</content:AnalogProtectionSystem>
@@ -129,7 +128,7 @@
   </Ext>
   <Offer creationDateTime="2016-10-27T13:10:01Z" endDateTime="{{val.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="{{val.offerStartDateTime}}" uriId="{{val.providerid}}/OAVT{{val.assetid}}01">
     <core:Ext>
-      <ext:OfferAvailability endDateTime="{{val.offerEndDateTime}}" offerType="IPPR" startDateTime="{{val.offerStartDateTime}}"/>
+      <ext:OfferAvailability endDateTime="{{val.offerEndDateTime}}" offerType="{{val.offer_type}}" startDateTime="{{val.offerStartDateTime}}"/>
     </core:Ext>
     <offer:ProviderContentTier>{{val.providerid}}</offer:ProviderContentTier>
     <offer:BillingId>DUMMY</offer:BillingId>

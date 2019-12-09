@@ -46,6 +46,8 @@ def create_single_title_post():
     asset_mf_id = package_logic.multiformat_entry(multiformat_id, asset_timestamp)
     movie_url = package_logic.movie_file_entry(provider_id)
     movie_checksum = package_logic.movie_checksum_entry(provider_id)
+    video_type = package_logic.video_type_entry(provider_id)
+    offer_type = package_logic.offer_type_entry(asset_type)
 
     sitemap = package_logic.sitemap_entry(asset_type, subtitle_flag)
     if sitemap == False:
@@ -58,7 +60,8 @@ def create_single_title_post():
                                offerEndTime=offerEndTime,licenseEndTime=licenseEndTime,
                                par_rating=par_rating, subtitle_flag=subtitle_flag, audio_type=audio_type,
                                frame_rate=frame_rate, btc_rating=btc_rating, multiformat_id=asset_mf_id,
-                               movie_url=movie_url, movie_checksum=movie_checksum)
+                               movie_url=movie_url, movie_checksum=movie_checksum, offer_type=offer_type,
+                               video_type=video_type)
 
         db.session.add(new_package)
         db.session.commit()
