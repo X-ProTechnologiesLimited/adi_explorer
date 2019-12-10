@@ -49,10 +49,10 @@
     <core:Ext>
       <ext:MovieExtensions analogueOff="true" mediaId="M1035909" waterMarkingRequired="false"/>
     </core:Ext>
-        <content:SourceUrl>{{val.movie_url}}</content:SourceUrl>
+        <content:SourceUrl>{{val.movie_path}}{{val.movie_url}}</content:SourceUrl>
         <content:ContentFileSize>100</content:ContentFileSize>
         <content:ContentCheckSum>{{val.movie_checksum}}</content:ContentCheckSum>
-    <content:AudioType>{{val.audio_type}}</content:AudioType>s
+    <content:AudioType>{{val.audio_type}}</content:AudioType>
     <content:ScreenFormat>Widescreen</content:ScreenFormat>
     <content:Resolution>1080i</content:Resolution>
     <content:FrameRate>{{val.frame_rate}}</content:FrameRate>
@@ -74,7 +74,7 @@
                                 <ext:promoTitle>Trailer</ext:promoTitle>
                         </ext:PreviewExtensions>
                 </core:Ext>
-                <content:SourceUrl>FinestHours_Trailer.ts</content:SourceUrl>
+                <content:SourceUrl>{{val.movie_path}}FinestHours_Trailer.ts</content:SourceUrl>
                 <content:ContentFileSize>100</content:ContentFileSize>
                 <content:ContentCheckSum>f4ee486d734bb812498b31624354f248</content:ContentCheckSum>
                 <content:AudioType>Dolby 5.1</content:AudioType>
@@ -84,7 +84,7 @@
                 <content:Rating ratingSystem="BSkyBsi">0</content:Rating>
   </Preview>
   <Thumbnail creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/THEP{{val.assetid}}01">
-    <content:SourceUrl>FinestHours_182x98.jpg</content:SourceUrl>
+    <content:SourceUrl>{{val.image_path}}FinestHours_182x98.jpg</content:SourceUrl>
     <content:ContentFileSize>100</content:ContentFileSize>
     <content:ContentCheckSum>e9e23717c0b20f6af34ffbbf6b83add2</content:ContentCheckSum>
   </Thumbnail>
@@ -102,7 +102,7 @@
   </ContentGroup>
  <Ext>
     <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PPAT{{val.assetid}}01">
-      <content:SourceUrl>FinestHours_182x243.jpg</content:SourceUrl>
+      <content:SourceUrl>{{val.image_path}}FinestHours_182x243.jpg</content:SourceUrl>
       <content:ContentFileSize>100</content:ContentFileSize>
       <content:ContentCheckSum>43a1883f263a9bbae1b5944f24645430</content:ContentCheckSum>
       <content:X_Resolution>183</content:X_Resolution>
@@ -110,7 +110,7 @@
       <ext:Usage>urn:nnds:Metro:metadata:MediaTypeCS:2007:2.6</ext:Usage>
     </ext:PressPackImage>
     <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PRSW{{val.assetid}}01">
-      <content:SourceUrl>FinestHours_262x349.jpg</content:SourceUrl>
+      <content:SourceUrl>{{val.image_path}}FinestHours_262x349.jpg</content:SourceUrl>
       <content:ContentFileSize>100</content:ContentFileSize>
       <content:ContentCheckSum>300343d46b52bbe7b191d9055d12b364</content:ContentCheckSum>
       <content:X_Resolution>262</content:X_Resolution>
@@ -118,7 +118,7 @@
       <ext:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:stb:3-4</ext:Usage>
     </ext:PressPackImage>
     <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PRSB{{val.assetid}}01">
-      <content:SourceUrl>FinestHours_456x257.jpg</content:SourceUrl>
+      <content:SourceUrl>{{val.image_path}}FinestHours_456x257.jpg</content:SourceUrl>
       <content:ContentFileSize>100</content:ContentFileSize>
       <content:ContentCheckSum>3396a3ff9fc6e09ae94068011556d0e5</content:ContentCheckSum>
       <content:X_Resolution>456</content:X_Resolution>

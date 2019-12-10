@@ -114,6 +114,13 @@ def download_adi_package(assetId):
         if sitemap == False:
             return errorchecker.not_supported_asset_type(package.adi_type)
 
+        if package.adi_type == 'PREMIUM VOD':
+            movie_path = ""
+            image_path = ""
+        else:
+            movie_path = movie_config.video_path
+            image_path = movie_config.image_path
+
         values = []
         values.append({
             'title': package.title,
@@ -135,6 +142,8 @@ def download_adi_package(assetId):
             'offer_type': package.offer_type,
             'asset_syn': package.synopsis,
             'production_year': package.production_year,
+            'movie_path': movie_path,
+            'image_path': image_path,
         })
 
         template = render_template(sitemap, values=values)
