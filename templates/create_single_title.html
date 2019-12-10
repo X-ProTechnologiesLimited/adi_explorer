@@ -20,32 +20,50 @@
                       <option value="DPL">
                     </option>
                     </datalist>
+                    <d>**</d>
                 </div>
             </div>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="text" name="LicenseWindow" placeholder="LicenseWindow(days)" autofocus="" required>
+                    <input class="input is-large" type="text" name="LicenseWindow" placeholder="LicenseWindow" autofocus="" required>
+                    <d>** License Expiry in Days. Example: 365 for 1 year license / 30 for 1 month license</d>
                 </div>
             </div>
             <h4>Metadata Section</h4>
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="title" placeholder="Asset Title" autofocus="" required>
+                    <d>**</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="synopsis" placeholder="Asset Synopsis" autofocus="">
+                    <d>Default Value taken from Asset Title.</d>
                 </div>
             </div>
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="provider_id" placeholder="Provider" autofocus="" required>
+                    <d>**</d>
                 </div>
             </div>
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="provider_version" placeholder="Provider Version" autofocus="" required>
+                    <d>**</d>
                 </div>
             </div>
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="multiformat_id" placeholder="Multiformat ID" autofocus="">
+                    <d>Default Value taken from Asset ID.</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="production_year" placeholder="Production Year" autofocus="">
+                    <d>Default Value: 2000</d>
                 </div>
             </div>
             <div class="field">
@@ -56,10 +74,11 @@
                       <option value="false">
                     </option>
                     </datalist>
+                    <d>**</d>
                 </div>
              <div class="field">
                 <div class="control">
-                    <input class="input is-large" list="btc_rating" name="ca_btc" placeholder="CA/BTC Rating" autofocus="" required>
+                    <input class="input is-large" list="btc_rating" name="ca_btc" placeholder="CA/BTC Rating" autofocus="">
                     <datalist id="btc_rating">
                       <option value="U">
                       <option value="PG">
@@ -67,11 +86,12 @@
                       <option value="G">
                     </option>
                     </datalist>
+                    <d>Default Value: U</d>
                 </div>
             </div>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" list="par_rating" name="par_rating" placeholder="Parental Rating" autofocus="" required>
+                    <input class="input is-large" list="par_rating" name="par_rating" placeholder="Parental Rating" autofocus="">
                     <datalist id="par_rating">
                       <option value="1">
                       <option value="2">
@@ -79,38 +99,42 @@
                       <option value="5">
                     </option>
                     </datalist>
+                    <d>Default Value: 1</d>
                 </div>
             </div>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" list="audio_type" name="audio_type" placeholder="Audio Type" autofocus="" required>
+                    <input class="input is-large" list="audio_type" name="audio_type" placeholder="Audio Type" autofocus="">
                     <datalist id="audio_type">
                       <option value="Dolby 5.1">
                       <option value="Dolby Digital">
                       <option value="Dolby Atmos">
                     </option>
                     </datalist>
+                    <d>Default Value: Dolby Digital</d>
                 </div>
             </div>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" list="frame_rate" name="frame_rate" placeholder="Video Frame Rate" autofocus="" required>
+                    <input class="input is-large" list="frame_rate" name="frame_rate" placeholder="Video Frame Rate" autofocus="">
                     <datalist id="frame_rate">
                       <option value="25">
                       <option value="50">
                     </option>
                     </datalist>
+                    <d>Default Value: 25</d>
                 </div>
             </div>
             <h4>Offer Section</h4>
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="offer_window" placeholder="Offer Window" autofocus="" required>
-                    <d>**</d>
+                    <d>** Availability in days</d>
                 </div>
             </div>
 
-            <p>** Enter the Availability of offers in days.**</p>
+            <p>** Mandatory Fields **</p>
+            <p>   Non Mandatory Fields can be left blank and will set default values</p>
 
             <button class="button is-block is-info is-medium is-fullwidth">Generate ADI XML</button>
         </form>

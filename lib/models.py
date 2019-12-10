@@ -22,4 +22,6 @@ class ADI_META(db.Model):
     frame_rate = db.Column(db.String(100))
     subtitle_flag = db.Column(db.String(10))
     video_type = db.Column(db.String(10))
+    synopsis = db.Column(db.String(500))
+    production_year = db.Column(db.String(500))
 

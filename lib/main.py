@@ -39,15 +39,23 @@ def create_single_title_post():
     provider_id = request.form.get('provider_id')
     title = request.form.get('title')
     provider_version = request.form.get('provider_version')
-    par_rating = request.form.get('par_rating')
-    audio_type = request.form.get('audio_type')
-    frame_rate = request.form.get('frame_rate')
-    btc_rating = request.form.get('ca_btc')
+    par_rating_form = request.form.get('par_rating')
+    audio_type_form = request.form.get('audio_type')
+    frame_rate_form = request.form.get('frame_rate')
+    btc_rating_form = request.form.get('ca_btc')
+    asset_synopsis = request.form.get('synopsis')
+    asset_production_year = request.form.get('production_year')
     asset_mf_id = package_logic.multiformat_entry(multiformat_id, asset_timestamp)
     movie_url = package_logic.movie_file_entry(provider_id)
     movie_checksum = package_logic.movie_checksum_entry(provider_id)
     video_type = package_logic.video_type_entry(provider_id)
     offer_type = package_logic.offer_type_entry(asset_type)
+    synopsis = package_logic.synopsis_entry(asset_synopsis, title)
+    production_year = package_logic.production_year_entry(asset_production_year)
+    par_rating = package_logic.par_rating_entry(par_rating_form)
+    audio_type = package_logic.audio_type_entry(audio_type_form)
+    frame_rate = package_logic.frame_rate_entry(frame_rate_form)
+    btc_rating = package_logic.btc_entry(btc_rating_form)
 
     sitemap = package_logic.sitemap_entry(asset_type, subtitle_flag)
     if sitemap == False:
@@ -61,7 +69,7 @@ def create_single_title_post():
                                par_rating=par_rating, subtitle_flag=subtitle_flag, audio_type=audio_type,
                                frame_rate=frame_rate, btc_rating=btc_rating, multiformat_id=asset_mf_id,
                                movie_url=movie_url, movie_checksum=movie_checksum, offer_type=offer_type,
-                               video_type=video_type)
+                               video_type=video_type, synopsis=synopsis, production_year=production_year)
 
         db.session.add(new_package)
         db.session.commit()

@@ -24,7 +24,7 @@
       <title:TitleBrief>DUMMY</title:TitleBrief>
       <title:TitleMedium>{{val.title}}</title:TitleMedium>
       <title:TitleLong>DUMMY</title:TitleLong>
-      <title:SummaryShort>{{val.title}} Summary</title:SummaryShort>
+      <title:SummaryShort>{{val.asset_syn}}</title:SummaryShort>
       <title:ActorDisplay>Rob Hughes, Raj Puri, Kumaran Devaneson, Nelash Chauhan, Terry Crews</title:ActorDisplay>
       <title:Actor firstName="Rob" fullName="Rob Hughes" lastName="Hughes" sortableName="*"/>
       <title:Actor firstName="Raj" fullName="Raj Puri" lastName="Puri" sortableName="*"/>
@@ -41,7 +41,7 @@
     <title:Advisory>private:LANG</title:Advisory>
     <title:Advisory>private:SEX</title:Advisory>
         <title:DisplayRunTime>1:23:00</title:DisplayRunTime>
-    <title:Year>1995</title:Year>
+    <title:Year>{{val.production_year}}</title:Year>
     <title:Genre>6:1</title:Genre>
     <title:ShowType>private:H</title:ShowType>
   </Title>

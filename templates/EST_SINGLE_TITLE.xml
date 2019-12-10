@@ -43,7 +43,7 @@
 <title:TitleBrief>PY278635198</title:TitleBrief>
 <title:TitleMedium>{{val.title}}</title:TitleMedium>
 <title:TitleLong>PY278635198</title:TitleLong>
-<title:SummaryShort>{{val.title}} Summary Display</title:SummaryShort>
+<title:SummaryShort>{{val.asset_syn}}</title:SummaryShort>
 <title:ActorDisplay> "Luke Wilson, Maya Rudolph, Dax Shepard, Justin Long, Terry Crews" </title:ActorDisplay>
 <title:Actor firstName="Luke" fullName="Luke Wilson" lastName="Wilson"/>
 <title:Actor firstName="Maya" fullName="Maya Rudolph" lastName="Rudolph"/>
@@ -60,7 +60,7 @@
 <title:Advisory>private:LANG</title:Advisory>
 <title:Advisory>private:SEX</title:Advisory>
 <title:DisplayRunTime>1:24:00</title:DisplayRunTime>
-<title:Year>1995</title:Year>
+<title:Year>{{val.production_year}}</title:Year>
 <title:Genre>6:1</title:Genre>
 <title:ShowType>private:H</title:ShowType>
 </Title>

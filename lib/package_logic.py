@@ -9,15 +9,15 @@ def sitemap_entry(asset_type, subtitle_flag):
     if subtitle_flag == 'true':
         if (asset_type == 'PREMIUM VOD') or (asset_type == 'SUBSCRIPTION VOD') or (asset_type == 'RENTAL'):
             return 'VOD_SINGLE_TITLE.xml'
-        elif (asset_type == 'EST_SINGLE_TITLE'):
-            return 'EST_SINGLE_TITLE'
+        elif (asset_type == 'EST SINGLE TITLE'):
+            return 'EST_SINGLE_TITLE.xml'
         else:
             return False
     elif subtitle_flag == 'false':
         if (asset_type == 'PREMIUM VOD') or (asset_type == 'SUBSCRIPTION VOD') or (asset_type == 'RENTAL'):
             return 'VOD_SINGLE_TITLE_NOSUB.xml'
-        elif (asset_type == 'EST_SINGLE_TITLE'):
-            return 'EST_SINGLE_TITLE'
+        elif (asset_type == 'EST SINGLE TITLE'):
+            return 'EST_SINGLE_TITLE.xml'
         else:
             return False
     else:
@@ -69,6 +69,44 @@ def offer_type_entry(asset_type):
     else:
         return 'IPPR'
 
+def synopsis_entry(synopsis, title):
+    if synopsis != "":
+        return synopsis
+    else:
+        return 'This is the synopsis of asset named: ' + title
+
+
+def production_year_entry(production_year):
+    if production_year != "":
+        return production_year
+    else:
+        return '2000'
+
+def btc_entry(ca_btc):
+    if ca_btc != "":
+        return ca_btc
+    else:
+        return 'U'
+
+def par_rating_entry(par_rating):
+    if par_rating != "":
+        return par_rating
+    else:
+        return '1'
+
+def audio_type_entry(audio_type):
+    if audio_type != "":
+        return audio_type
+    else:
+        return 'Dolby Digital'
+
+def frame_rate_entry(frame_rate):
+    if frame_rate != "":
+        return frame_rate
+    else:
+        return '25'
+
+
 def download_adi_package(assetId):
     try:
         package = ADI_META.query.filter_by(assetId=assetId).first()
@@ -95,6 +133,8 @@ def download_adi_package(assetId):
             'movie_checksum': package.movie_checksum,
             'video_type': package.video_type,
             'offer_type': package.offer_type,
+            'asset_syn': package.synopsis,
+            'production_year': package.production_year,
         })
 
         template = render_template(sitemap, values=values)
