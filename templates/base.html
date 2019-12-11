@@ -156,8 +156,9 @@
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">
-       <a href="{{ url_for('main.update_package') }}">Update Package Metadata</a>
+       <a href="{{ url_for('main.update_single_title') }}">Update Single Title Metadata</a>
        <a href="{{ url_for('main.update_video') }}">Update Package Video</a>
+       <a href="{{ url_for('main.update_show_season') }}">Update Group</a>
     </div>
   </div>
   <a href="{{ url_for('main.get_adi') }}">Download ADI</a>
