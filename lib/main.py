@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, request, jsonify, make_response
 import datetime
 import time
 from . import db
-from .models import ADI_META
+from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media
 from . import errorchecker
 from . import offerdate
 import urllib.parse
@@ -62,17 +62,28 @@ def create_single_title_post():
         return errorchecker.not_supported_asset_type(asset_type)
 
     try:
-        new_package = ADI_META(assetId=asset_timestamp + '01', original_timestamp=asset_timestamp,
-                               adi_type=asset_type, title=title, provider_version=provider_version,
-                               provider_id=provider_id, offerStartTime=offerStartTime,
-                               offerEndTime=offerEndTime,licenseEndTime=licenseEndTime,
-                               par_rating=par_rating, subtitle_flag=subtitle_flag, audio_type=audio_type,
-                               frame_rate=frame_rate, btc_rating=btc_rating, multiformat_id=asset_mf_id,
-                               movie_url=movie_url, movie_checksum=movie_checksum, offer_type=offer_type,
-                               video_type=video_type, synopsis=synopsis, production_year=production_year)
+        new_package_main = ADI_main(assetId=asset_timestamp+'01', original_timestamp=asset_timestamp,
+                                    adi_type=asset_type, provider_version=provider_version,
+                                    provider_id=provider_id, multiformat_id=asset_mf_id)
 
-        db.session.add(new_package)
+        new_package_meta = ADI_metadata(assetId=asset_timestamp+'01', title=title, par_rating=par_rating,
+                                        subtitle_flag=subtitle_flag, audio_type=audio_type,
+                                        frame_rate=frame_rate, btc_rating=btc_rating, video_type=video_type,
+                                        synopsis=synopsis, production_year=production_year)
+
+        new_package_offer = ADI_offer(assetId=asset_timestamp+'01', offer_type=offer_type,
+                                      offerStartTime=offerStartTime, offerEndTime=offerEndTime,
+                                      licenseEndTime=licenseEndTime)
+
+        new_package_media = ADI_media(assetId=asset_timestamp+'01', movie_url=movie_url, movie_checksum=movie_checksum)
+
+
+        db.session.add(new_package_main)
+        db.session.add(new_package_meta)
+        db.session.add(new_package_offer)
+        db.session.add(new_package_media)
         db.session.commit()
+
     except:
         return errorchecker.internal_server_error()
 
@@ -100,18 +111,20 @@ def search_adi_post():
     adi_data = {}
     adi_data['packages'] = []
     search = "{}%".format(title_uncoded)
-    for package in ADI_META.query.filter(ADI_META.title.like(search)).all():
+    for package in ADI_metadata.query.filter(ADI_metadata.title.like(search)).all():
+        package_main = ADI_main.query.filter_by(assetId=package.assetId).first()
+        package_offer = ADI_offer.query.filter_by(assetId=package.assetId).first()
         adi_data['packages'].append({
             'title': package.title,
             'assetId': package.assetId,
-            'package_type': package.adi_type,
-            'providerVersionNum': package.provider_version,
-            'providerId': package.provider_id,
-            'offerEndDateTime': package.offerEndTime,
-            'multiformat_id': package.multiformat_id
+            'package_type': package_main.adi_type,
+            'providerVersionNum': package_main.provider_version,
+            'providerId': package_main.provider_id,
+            'offerEndDateTime': package_offer.offerEndTime,
+            'multiformat_id': package_main.multiformat_id
         })
 
-    adi_data['total'] = ADI_META.query.filter(ADI_META.title.like(search)).count()
+    adi_data['total'] = ADI_metadata.query.filter(ADI_metadata.title.like(search)).count()
 
     if adi_data['total'] == 0:  # If no ADI found
         return errorchecker.not_matched_criteria()
@@ -128,18 +141,20 @@ def search_adi_post():
 def search_adi_all():
     adi_data = {}
     adi_data['packages'] = []
-    for package in ADI_META.query.all():
+    for package in ADI_main.query.all():
+        package_offer = ADI_offer.query.filter_by(assetId=package.assetId).first()
+        package_meta = ADI_metadata.query.filter_by(assetId=package.assetId).first()
         adi_data['packages'].append({
-            'title': package.title,
+            'title': package_meta.title,
             'assetId': package.assetId,
             'package_type': package.adi_type,
             'providerVersionNum': package.provider_version,
             'providerId': package.provider_id,
-            'offerEndDateTime': package.offerEndTime,
+            'offerEndDateTime': package_offer.offerEndTime,
             'multiformat_id': package.multiformat_id
         })
 
-    adi_data['total'] = ADI_META.query.count()
+    adi_data['total'] = ADI_main.query.count()
 
     if adi_data['total'] == 0:  # If no countries found in the continent
         return errorchecker.no_assets_in_db()
@@ -170,9 +185,9 @@ def get_asset_metadata_post():
     assetId = request.form.get('AssetId')
     adi_metadata = {}
     adi_metadata['packages'] = {}
-    package = ADI_META.query.filter_by(assetId=assetId).first()
+    package = ADI_metadata.query.filter_by(assetId=assetId).first()
     if not package:
-        return errorchecker.asset_not_found_id(AssetId)
+        return errorchecker.asset_not_found_id(assetId)
 
     adi_metadata['packages']['assetId'] = package.assetId
     adi_metadata['packages']['title'] = package.title
@@ -197,14 +212,15 @@ def get_asset_video_post():
     assetId = request.form.get('AssetId')
     adi_metadata = {}
     adi_metadata['packages'] = {}
-    package = ADI_META.query.filter_by(assetId=assetId).first()
+    package = ADI_metadata.query.filter_by(assetId=assetId).first()
+    package_media = ADI_media.query.filter_by(assetId=assetId).first()
     if not package:
-        return errorchecker.asset_not_found_id(AssetId)
+        return errorchecker.asset_not_found_id(assetId)
 
     adi_metadata['packages']['assetId'] = package.assetId
     adi_metadata['packages']['title'] = package.title
-    adi_metadata['packages']['Movie File'] = package.movie_url
-    adi_metadata['packages']['Movie Checksum'] = package.movie_checksum
+    adi_metadata['packages']['Movie File'] = package_media.movie_url
+    adi_metadata['packages']['Movie Checksum'] = package_media.movie_checksum
 
     json_data = dumps(adi_metadata)
     return response.asset_retrieve(json_data)
@@ -223,37 +239,37 @@ def update_package_post():
     update_field = request.form.get('asset_field')
     field_value = request.form.get('value')
     try:
-        package = ADI_META.query.filter_by(assetId=assetId).first()
+        package = ADI_main.query.filter_by(assetId=assetId).first()
         if update_field == 'title':
-            package = ADI_META.query.filter_by(assetId=assetId).update(dict(title=field_value))
+            package = ADI_metadata.query.filter_by(assetId=assetId).update(dict(title=field_value))
         elif update_field == 'offerStartTime':
-            package = ADI_META.query.filter_by(assetId=assetId).update(dict(offerStartTime=field_value))
+            package = ADI_offer.query.filter_by(assetId=assetId).update(dict(offerStartTime=field_value))
         elif update_field == 'offerEndTime':
-            package = ADI_META.query.filter_by(assetId=assetId).update(dict(offerEndTime=field_value))
+            package = ADI_offer.query.filter_by(assetId=assetId).update(dict(offerEndTime=field_value))
         elif update_field == 'licenseEndTime':
-            package = ADI_META.query.filter_by(assetId=assetId).update(dict(licenseEndTime=field_value))
+            package = ADI_offer.query.filter_by(assetId=assetId).update(dict(licenseEndTime=field_value))
         elif update_field == 'audio_type':
-            package = ADI_META.query.filter_by(assetId=assetId).update(dict(audio_type=field_value))
+            package = ADI_metadata.query.filter_by(assetId=assetId).update(dict(audio_type=field_value))
         elif update_field == 'frame_rate':
-            package = ADI_META.query.filter_by(assetId=assetId).update(dict(frame_rate=field_value))
+            package = ADI_metadata.query.filter_by(assetId=assetId).update(dict(frame_rate=field_value))
         elif update_field == 'par_rating':
-            package = ADI_META.query.filter_by(assetId=assetId).update(dict(par_rating=field_value))
+            package = ADI_metadata.query.filter_by(assetId=assetId).update(dict(par_rating=field_value))
         elif update_field == 'btc_rating':
-            package = ADI_META.query.filter_by(assetId=assetId).update(dict(btc_rating=field_value))
+            package = ADI_metadata.query.filter_by(assetId=assetId).update(dict(btc_rating=field_value))
         elif update_field == 'subtitle_flag':
-            package = ADI_META.query.filter_by(assetId=assetId).update(dict(subtitle_flag=field_value))
+            package = ADI_metadata.query.filter_by(assetId=assetId).update(dict(subtitle_flag=field_value))
         elif update_field == 'multiformat_id':
-            package = ADI_META.query.filter_by(assetId=assetId).update(dict(multiformat_id=field_value))
+            package = ADI_main.query.filter_by(assetId=assetId).update(dict(multiformat_id=field_value))
         elif update_field == 'subtitle_lang':
-            package = ADI_META.query.filter_by(assetId=assetId).update(dict(subtitle_lang=field_value))
+            package = ADI_metadata.query.filter_by(assetId=assetId).update(dict(subtitle_lang=field_value))
         else:
             return errorchecker.undefined_update_field(update_field)
 
         db.session.commit()
-        package_updated = ADI_META.query.filter_by(assetId=assetId).first()
+        package_updated = ADI_main.query.filter_by(assetId=assetId).first()
         provider_version = int(package_updated.provider_version)
         updated_provider_version = (provider_version + 1)
-        package = ADI_META.query.filter_by(assetId=assetId).update(dict(provider_version=str(updated_provider_version)))
+        package = ADI_main.query.filter_by(assetId=assetId).update(dict(provider_version=str(updated_provider_version)))
         db.session.commit()
         return response.asset_update_success(assetId, update_field)
     except:
@@ -274,11 +290,11 @@ def update_video_post():
     movie_url = request.form.get('movie_url')
     movie_checksum = request.form.get('movie_checksum')
     try:
-        package = ADI_META.query.filter_by(assetId=assetId).first()
+        package = ADI_main.query.filter_by(assetId=assetId).first()
         provider_version = int(package.provider_version)
         updated_provider_version = (provider_version + 1)
-        package = ADI_META.query.filter_by(assetId=assetId).update(dict(movie_url=movie_url, movie_checksum=movie_checksum,
-                                                                        provider_version=str(updated_provider_version)))
+        package = ADI_media.query.filter_by(assetId=assetId).update(dict(movie_url=movie_url, movie_checksum=movie_checksum))
+        package = ADI_main.query.filter_by(assetId=assetId).update(dict(provider_version=str(updated_provider_version)))
         db.session.commit()
         return response.asset_update_success(assetId, 'movie')
     except:

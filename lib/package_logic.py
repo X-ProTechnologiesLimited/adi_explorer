@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, make_response, send_file
-from .models import ADI_META
+from .models import ADI_main, ADI_media, ADI_metadata, ADI_offer
 from . import errorchecker
 from . import movie_config
 
@@ -109,12 +109,15 @@ def frame_rate_entry(frame_rate):
 
 def download_adi_package(assetId):
     try:
-        package = ADI_META.query.filter_by(assetId=assetId).first()
-        sitemap = sitemap_entry(package.adi_type, package.subtitle_flag)
+        package_main = ADI_main.query.filter_by(assetId=assetId).first()
+        package_meta = ADI_metadata.query.filter_by(assetId=assetId).first()
+        package_offer = ADI_offer.query.filter_by(assetId=assetId).first()
+        package_media = ADI_media.query.filter_by(assetId=assetId).first()
+        sitemap = sitemap_entry(package_main.adi_type, package_meta.subtitle_flag)
         if sitemap == False:
-            return errorchecker.not_supported_asset_type(package.adi_type)
+            return errorchecker.not_supported_asset_type(package_main.adi_type)
 
-        if package.adi_type == 'PREMIUM VOD':
+        if package_main.adi_type == 'PREMIUM VOD':
             movie_path = ""
             image_path = ""
         else:
@@ -123,25 +126,25 @@ def download_adi_package(assetId):
 
         values = []
         values.append({
-            'title': package.title,
-            'providerid': package.provider_id,
-            'assetid': package.original_timestamp,
-            'provider_version': package.provider_version,
-            'licensetime': package.licenseEndTime,
-            'offerStartDateTime': package.offerStartTime,
-            'offerEndDateTime': package.offerEndTime,
-            'multiformatid': package.multiformat_id,
-            'subtitle_flag': package.subtitle_flag,
-            'par_rating': package.par_rating,
-            'audio_type': package.audio_type,
-            'frame_rate': package.frame_rate,
-            'btc_rating': package.btc_rating,
-            'movie_url': package.movie_url,
-            'movie_checksum': package.movie_checksum,
-            'video_type': package.video_type,
-            'offer_type': package.offer_type,
-            'asset_syn': package.synopsis,
-            'production_year': package.production_year,
+            'title': package_meta.title,
+            'providerid': package_main.provider_id,
+            'assetid': package_main.original_timestamp,
+            'provider_version': package_main.provider_version,
+            'licensetime': package_offer.licenseEndTime,
+            'offerStartDateTime': package_offer.offerStartTime,
+            'offerEndDateTime': package_offer.offerEndTime,
+            'multiformatid': package_main.multiformat_id,
+            'subtitle_flag': package_meta.subtitle_flag,
+            'par_rating': package_meta.par_rating,
+            'audio_type': package_meta.audio_type,
+            'frame_rate': package_meta.frame_rate,
+            'btc_rating': package_meta.btc_rating,
+            'movie_url': package_media.movie_url,
+            'movie_checksum': package_media.movie_checksum,
+            'video_type': package_meta.video_type,
+            'offer_type': package_offer.offer_type,
+            'asset_syn': package_meta.synopsis,
+            'production_year': package_meta.production_year,
             'movie_path': movie_path,
             'image_path': image_path,
         })
