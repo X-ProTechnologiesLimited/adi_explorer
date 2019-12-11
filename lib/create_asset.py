@@ -6,6 +6,7 @@ from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media
 from . import errorchecker
 from . import offerdate
 from . import package_logic
+from . import get_asset_details
 
 def create_single_title():
     ts = time.time()
@@ -69,4 +70,4 @@ def create_single_title():
     except:
         return errorchecker.internal_server_error()
 
-    return package_logic.download_adi_package(asset_timestamp + '01')
+    return get_asset_details.download_adi_package(asset_timestamp + '01')
