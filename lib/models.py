@@ -31,6 +31,8 @@ class ADI_offer(db.Model):
     offer_type = db.Column(db.String(100))
     offerStartTime = db.Column(db.String(100))
     offerEndTime = db.Column(db.String(100))
+    epgTime = db.Column(db.String(100))
+    service_key = db.Column(db.String(10))
 
 class ADI_media(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy

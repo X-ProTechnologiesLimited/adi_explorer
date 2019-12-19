@@ -68,13 +68,13 @@
             </div>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" list="subtitle_flag" name="subtitle_flag" placeholder="Subtitled" autofocus="" required>
+                    <input class="input is-large" list="subtitle_flag" name="subtitle_flag" placeholder="Subtitled" autofocus="">
                     <datalist id="subtitle_flag">
                       <option value="true">
                       <option value="false">
                     </option>
                     </datalist>
-                    <d>**</d>
+                    <d>Default Value: False</d>
                 </div>
              <div class="field">
                 <div class="control">
@@ -130,6 +130,12 @@
                 <div class="control">
                     <input class="input is-large" type="text" name="offer_window" placeholder="Offer Window" autofocus="" required>
                     <d>** Availability in days</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="service_key" placeholder="CUTV Service Key" autofocus="">
+                    <d>** Only required if Asset Type is Catchup</d>
                 </div>
             </div>
 

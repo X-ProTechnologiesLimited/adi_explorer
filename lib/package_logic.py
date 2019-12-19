@@ -1,5 +1,6 @@
 from flask import Blueprint
 from . import movie_config
+from . import errorchecker
 
 main = Blueprint('main', __name__, static_url_path='', static_folder='../created_adi/', template_folder='../templates')
 
@@ -9,6 +10,8 @@ def sitemap_entry(asset_type, subtitle_flag):
             return 'VOD_SINGLE_TITLE.xml'
         elif (asset_type == 'EST SINGLE TITLE'):
             return 'EST_SINGLE_TITLE.xml'
+        elif (asset_type == 'CATCHUP'):
+            return 'CUTV.xml'
         else:
             return False
     elif subtitle_flag == 'false':
@@ -16,6 +19,8 @@ def sitemap_entry(asset_type, subtitle_flag):
             return 'VOD_SINGLE_TITLE_NOSUB.xml'
         elif (asset_type == 'EST SINGLE TITLE'):
             return 'EST_SINGLE_TITLE.xml'
+        elif (asset_type == 'CATCHUP'):
+            return 'CUTV.xml'
         else:
             return False
     else:
@@ -105,53 +110,8 @@ def frame_rate_entry(frame_rate):
         return '25'
 
 
-# def download_adi_package(assetId):
-#     try:
-#         package_main = ADI_main.query.filter_by(assetId=assetId).first()
-#         package_meta = ADI_metadata.query.filter_by(assetId=assetId).first()
-#         package_offer = ADI_offer.query.filter_by(assetId=assetId).first()
-#         package_media = ADI_media.query.filter_by(assetId=assetId).first()
-#         sitemap = sitemap_entry(package_main.adi_type, package_meta.subtitle_flag)
-#         if sitemap == False:
-#             return errorchecker.not_supported_asset_type(package_main.adi_type)
-#
-#         if package_main.adi_type == 'PREMIUM VOD':
-#             movie_path = ""
-#             image_path = ""
-#         else:
-#             movie_path = movie_config.video_path
-#             image_path = movie_config.image_path
-#
-#         values = []
-#         values.append({
-#             'title': package_meta.title,
-#             'providerid': package_main.provider_id,
-#             'assetid': package_main.original_timestamp,
-#             'provider_version': package_main.provider_version,
-#             'licensetime': package_offer.licenseEndTime,
-#             'offerStartDateTime': package_offer.offerStartTime,
-#             'offerEndDateTime': package_offer.offerEndTime,
-#             'multiformatid': package_main.multiformat_id,
-#             'subtitle_flag': package_meta.subtitle_flag,
-#             'par_rating': package_meta.par_rating,
-#             'audio_type': package_meta.audio_type,
-#             'frame_rate': package_meta.frame_rate,
-#             'btc_rating': package_meta.btc_rating,
-#             'movie_url': package_media.movie_url,
-#             'movie_checksum': package_media.movie_checksum,
-#             'video_type': package_meta.video_type,
-#             'offer_type': package_offer.offer_type,
-#             'asset_syn': package_meta.synopsis,
-#             'production_year': package_meta.production_year,
-#             'movie_path': movie_path,
-#             'image_path': image_path,
-#         })
-#
-#         template = render_template(sitemap, values=values)
-#         response = make_response(template)
-#         response.headers['Content-Type'] = 'application/xml'
-#
-#         return response
-#
-#     except:
-#         return errorchecker.asset_not_found_id(assetId)
+def subtitle_entry(subtitle_flag):
+    if subtitle_flag != "":
+        return subtitle_flag
+    else:
+        return 'false'

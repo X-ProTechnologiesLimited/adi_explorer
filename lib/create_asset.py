@@ -18,7 +18,7 @@ def create_single_title():
     offerEndTime = offerdate.offer_date(offer_window, 0)
     asset_type = request.form.get('asset_type')
     multiformat_id = request.form.get('multiformat_id')
-    subtitle_flag = request.form.get('subtitle_flag')
+    sub_flag = request.form.get('subtitle_flag')
     provider_id = request.form.get('provider_id')
     title = request.form.get('title')
     provider_version = request.form.get('provider_version')
@@ -28,6 +28,7 @@ def create_single_title():
     btc_rating_form = request.form.get('ca_btc')
     asset_synopsis = request.form.get('synopsis')
     asset_production_year = request.form.get('production_year')
+    service_key = request.form.get('service_key')
     asset_mf_id = package_logic.multiformat_entry(multiformat_id, asset_timestamp)
     movie_url = package_logic.movie_file_entry(provider_id)
     movie_checksum = package_logic.movie_checksum_entry(provider_id)
@@ -39,10 +40,14 @@ def create_single_title():
     audio_type = package_logic.audio_type_entry(audio_type_form)
     frame_rate = package_logic.frame_rate_entry(frame_rate_form)
     btc_rating = package_logic.btc_entry(btc_rating_form)
+    subtitle_flag = package_logic.subtitle_entry(sub_flag)
 
     sitemap = package_logic.sitemap_entry(asset_type, subtitle_flag)
     if sitemap == False:
         return errorchecker.not_supported_asset_type(asset_type)
+
+    if (service_key == "") and (asset_type == 'CATCHUP'):
+        return errorchecker.input_missing('service_key')
 
     try:
         new_package_main = ADI_main(assetId=asset_timestamp + '01', original_timestamp=asset_timestamp,
@@ -56,7 +61,7 @@ def create_single_title():
 
         new_package_offer = ADI_offer(assetId=asset_timestamp + '01', offer_type=offer_type,
                                       offerStartTime=offerStartTime, offerEndTime=offerEndTime,
-                                      licenseEndTime=licenseEndTime)
+                                      licenseEndTime=licenseEndTime, service_key=service_key, epgTime=offerStartTime)
 
         new_package_media = ADI_media(assetId=asset_timestamp + '01', movie_url=movie_url,
                                       movie_checksum=movie_checksum)

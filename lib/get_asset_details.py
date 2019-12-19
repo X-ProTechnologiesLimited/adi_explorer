@@ -46,6 +46,8 @@ def download_adi_package(assetId):
             'movie_checksum': package_media.movie_checksum,
             'video_type': package_meta.video_type,
             'offer_type': package_offer.offer_type,
+            'service_key': package_offer.service_key,
+            'epgTime': package_offer.epgTime,
             'asset_syn': package_meta.synopsis,
             'production_year': package_meta.production_year,
             'movie_path': movie_path,
@@ -72,6 +74,7 @@ def get_asset_data(assetId):
 
     adi_metadata['packages']['assetId'] = package.assetId
     adi_metadata['packages']['title'] = package.title
+    adi_metadata['packages']['synopsis'] = package.synopsis
     adi_metadata['packages']['audio_type'] = package.audio_type
     adi_metadata['packages']['Parental Rating'] = package.par_rating
     adi_metadata['packages']['CA/BTC Rating'] = package.btc_rating
