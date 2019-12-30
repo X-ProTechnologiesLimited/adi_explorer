@@ -1,0 +1,99 @@
+<!-- templates/create_package.html -->
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="column is-4 is-offset-4">
+    <h2 class="title">Create EST Show</h2>
+    <div class="box">
+        <form method="POST" action="/create_est_show">
+            <h4>Licensing Section</h4>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="show_type" name="est_show_type" placeholder="Type(Movie/Show)" autofocus="" required>
+                    <datalist id="show_type">
+                      <option value="Movie BS">
+                      <option value="TV BS">
+                    </option>
+                    </datalist>
+                    <d>**</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="LicenseWindow" placeholder="LicenseWindow" autofocus="" required>
+                    <d>** License Expiry in Days. Example: 365 for 1 year license / 30 for 1 month license</d>
+                </div>
+            </div>
+            <h4>Metadata Section</h4>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="title" placeholder="Show Title" autofocus="" required>
+                    <d>**</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="synopsis" placeholder="Show Synopsis" autofocus="">
+                    <d>Default Value taken from Show Title.</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="provider_version" placeholder="Provider Version" autofocus="" required>
+                    <d>**</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="seasons" placeholder="Number of Seasons" autofocus="">
+                    <d>Default Value: 1</d>
+                </div>
+            </div>
+             <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="no_of_episodes" placeholder="Number of Episodes" autofocus="">
+                    <d>Default Value: 1</d>
+                </div>
+            </div>
+             <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="btc_rating" name="ca_btc" placeholder="CA/BTC Rating" autofocus="">
+                    <datalist id="btc_rating">
+                      <option value="U">
+                      <option value="PG">
+                      <option value="SU">
+                      <option value="G">
+                    </option>
+                    </datalist>
+                    <d>Default Value: U</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="par_rating" name="par_rating" placeholder="Parental Rating" autofocus="">
+                    <datalist id="par_rating">
+                      <option value="1">
+                      <option value="2">
+                      <option value="4">
+                      <option value="5">
+                    </option>
+                    </datalist>
+                    <d>Default Value: 1</d>
+                </div>
+            </div>
+            <h4>Offer Section</h4>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="offer_window" placeholder="Offer Window" autofocus="" required>
+                    <d>** Availability in days</d>
+                </div>
+            </div>
+            <p>** Mandatory Fields **</p>
+            <p>   Non Mandatory Fields can be left blank and will set default values</p>
+
+            <button class="button is-block is-info is-medium is-fullwidth">Generate Show Package</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

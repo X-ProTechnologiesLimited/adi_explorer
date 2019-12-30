@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request
 from . import db
 from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media
+from sqlalchemy.orm.attributes import flag_modified
 from . import errorchecker
 from . import response
 
@@ -12,6 +13,8 @@ def update_single_title():
         package = ADI_main.query.filter_by(assetId=assetId).first()
         if update_field == 'title':
             package = ADI_metadata.query.filter_by(assetId=assetId).update(dict(title=field_value))
+        elif update_field == 'synopsis':
+            package = ADI_metadata.query.filter_by(assetId=assetId).update(dict(synopsis=field_value))
         elif update_field == 'offerStartTime':
             package = ADI_offer.query.filter_by(assetId=assetId).update(dict(offerStartTime=field_value))
         elif update_field == 'offerEndTime':

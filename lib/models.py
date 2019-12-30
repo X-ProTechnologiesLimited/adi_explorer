@@ -49,3 +49,13 @@ class ADI_media(db.Model):
     image_checksum_3 = db.Column(db.String(100))
     image_url_4 = db.Column(db.String(100))
     image_checksum_4 = db.Column(db.String(100))
+
+class ADI_EST_Show(db.Model):
+    id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
+    assetId = db.Column(db.String(100), unique=True)
+    no_of_seasons = db.Column(db.String(10))
+    no_of_episodes = db.Column(db.String(10))
+    season_number = db.Column(db.String(10))
+    episode_number = db.Column(db.String(10))
+    parent_group_id = db.Column(db.String(100))
+    show_type = db.Column(db.String(10))

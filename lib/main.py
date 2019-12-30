@@ -27,10 +27,13 @@ def create_single_title_post():
 def create_series_episode():
     return errorchecker.not_implemented_yet()
 
-@main.route('/create_est_box_set')
-def create_est_box_set():
-    return errorchecker.not_implemented_yet()
+@main.route('/create_est_show')
+def create_est_show():
+    return render_template('create_box_set.html')
 
+@main.route('/create_est_show', methods=['POST'])
+def create_est_show_post():
+    return create_asset.create_est_show_adi()
 
 @main.route('/search')
 def search_adi():

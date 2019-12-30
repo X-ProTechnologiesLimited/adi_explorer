@@ -1,4 +1,4 @@
-video_path = 'Providers/BSS/Content/Distribution/TestFiles/'
+video_path = 'Providers/BSS/Content/Distribution/TestFiles/RTP/'
 image_path = 'tank/Images/ByPankaj/'
 hdr_movie_file = 'IdentExternalDDplus_MainWithExternalAtmos_IdentExternalDDplus-Ateme_out_API.ts'
 hdr_movie_checksum = 'cb6a578d7551d7908c7ee88c3bdf9deb'
