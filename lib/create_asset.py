@@ -86,10 +86,10 @@ def create_est_show_adi():
     offer_window = int(request.form.get('offer_window'))
     offerStartTime = offerdate.offer_date(0, 0)
     offerEndTime = offerdate.offer_date(offer_window, 0)
+    asset_type = 'est_show'
     show_type = request.form.get('est_show_type')
     no_of_episodes = int(request.form.get('no_of_episodes'))
     num_of_seasons = int(request.form.get('seasons'))
-    asset_type = 'est_show'
     show_provider_id = package_logic.est_show_provider(show_type)
     episode_provider_id = package_logic.est_episode_provider(show_type)
     season_provider_id = 'est__season_hd'

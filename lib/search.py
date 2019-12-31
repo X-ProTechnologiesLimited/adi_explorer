@@ -1,9 +1,10 @@
 from flask import request
-from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media
+from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, ADI_EST_Show
 from . import errorchecker
 import urllib.parse
 from bson.json_util import dumps
 from . import response
+from sqlalchemy import or_, and_
 
 def search_by_title():
     title = request.form.get('Title')
@@ -37,7 +38,7 @@ def search_by_title():
 def search_all_packages():
     adi_data = {}
     adi_data['packages'] = []
-    for package in ADI_main.query.all():
+    for package in ADI_main.query.filter(or_(ADI_main.adi_type != 'est_episode'), (ADI_main.adi_type != 'est_season')).all():
         package_offer = ADI_offer.query.filter_by(assetId=package.assetId).first()
         package_meta = ADI_metadata.query.filter_by(assetId=package.assetId).first()
         adi_data['packages'].append({
@@ -50,7 +51,89 @@ def search_all_packages():
             'multiformat_id': package.multiformat_id
         })
 
-    adi_data['total'] = ADI_main.query.count()
+    adi_data['total'] = ADI_main.query.filter(or_(ADI_main.adi_type != 'est_episode'), (ADI_main.adi_type != 'est_season')).count()
+
+    if adi_data['total'] == 0:  # If no countries found in the continent
+        return errorchecker.no_assets_in_db()
+    else:
+        json_data = dumps(adi_data, sort_keys=True)
+
+    return response.asset_retrieve(json_data)
+
+
+def search_est_episodes():
+    adi_data = {}
+    adi_data['packages'] = []
+    for package in ADI_main.query.filter(ADI_main.adi_type == 'est_episode').all():
+        package_offer = ADI_offer.query.filter_by(assetId=package.assetId).first()
+        package_meta = ADI_metadata.query.filter_by(assetId=package.assetId).first()
+        package_group = ADI_EST_Show.query.filter_by(assetId=package.assetId).first()
+        adi_data['packages'].append({
+            'title': package_meta.title,
+            'assetId': package.assetId,
+            'package_type': package.adi_type,
+            'providerVersionNum': package.provider_version,
+            'providerId': package.provider_id,
+            'offerEndDateTime': package_offer.offerEndTime,
+            'parent_group_id': package_group.parent_group_id,
+        })
+
+    adi_data['total'] = ADI_main.query.filter(ADI_main.adi_type == 'est_episode').count()
+
+    if adi_data['total'] == 0:  # If no countries found in the continent
+        return errorchecker.no_assets_in_db()
+    else:
+        json_data = dumps(adi_data, sort_keys=True)
+
+    return response.asset_retrieve(json_data)
+
+
+def search_est_shows():
+    adi_data = {}
+    adi_data['packages'] = []
+    for package in ADI_main.query.filter(ADI_main.adi_type == 'est_show').all():
+        package_offer = ADI_offer.query.filter_by(assetId=package.assetId).first()
+        package_meta = ADI_metadata.query.filter_by(assetId=package.assetId).first()
+        package_group = ADI_EST_Show.query.filter_by(assetId=package.assetId).first()
+        adi_data['packages'].append({
+            'title': package_meta.title,
+            'assetId': package.assetId,
+            'package_type': package.adi_type,
+            'providerVersionNum': package.provider_version,
+            'providerId': package.provider_id,
+            'offerEndDateTime': package_offer.offerEndTime,
+            'num_of_seasons': package_group.no_of_seasons,
+        })
+
+    adi_data['total'] = ADI_main.query.filter(ADI_main.adi_type == 'est_show').count()
+
+    if adi_data['total'] == 0:  # If no countries found in the continent
+        return errorchecker.no_assets_in_db()
+    else:
+        json_data = dumps(adi_data, sort_keys=True)
+
+    return response.asset_retrieve(json_data)
+
+
+def search_est_seasons():
+    adi_data = {}
+    adi_data['packages'] = []
+    for package in ADI_main.query.filter(ADI_main.adi_type == 'est_season').all():
+        package_offer = ADI_offer.query.filter_by(assetId=package.assetId).first()
+        package_meta = ADI_metadata.query.filter_by(assetId=package.assetId).first()
+        package_group = ADI_EST_Show.query.filter_by(assetId=package.assetId).first()
+        adi_data['packages'].append({
+            'title': package_meta.title,
+            'assetId': package.assetId,
+            'package_type': package.adi_type,
+            'providerVersionNum': package.provider_version,
+            'providerId': package.provider_id,
+            'offerEndDateTime': package_offer.offerEndTime,
+            'num_of_episodes': package_group.no_of_episodes,
+            'parent_group_id': package_group.parent_group_id,
+        })
+
+    adi_data['total'] = ADI_main.query.filter(ADI_main.adi_type == 'est_season').count()
 
     if adi_data['total'] == 0:  # If no countries found in the continent
         return errorchecker.no_assets_in_db()

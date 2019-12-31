@@ -49,6 +49,21 @@ def search_adi_post():
 def search_adi_all():
     return search.search_all_packages()
 
+@main.route('/search_est_episodes')
+@nocache
+def search_est_episodes():
+    return search.search_est_episodes()
+
+@main.route('/search_est_shows')
+@nocache
+def search_est_shows():
+    return search.search_est_shows()
+
+@main.route('/search_est_seasons')
+@nocache
+def search_est_seasons():
+    return search.search_est_seasons()
+
 @main.route('/get_adi')
 def get_adi():
     return render_template('retrieve_package.html')

@@ -135,7 +135,10 @@
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">
-      <a href="{{ url_for('main.search_adi_all') }}">View List of Packages</a>
+      <a href="{{ url_for('main.search_adi_all') }}">View All Titles</a>
+      <a href="{{ url_for('main.search_est_shows') }}">View EST Show Breakup</a>
+      <a href="{{ url_for('main.search_est_seasons') }}">View EST Season Breakup</a>
+      <a href="{{ url_for('main.search_est_episodes') }}">View EST Episodes</a>
       <a href="{{ url_for('main.search_adi') }}">Filter by Asset Title</a>
       <a href="{{ url_for('main.get_asset_metadata') }}">View Asset Metadata</a>
       <a href="{{ url_for('main.get_asset_video') }}">View Asset Video</a>
