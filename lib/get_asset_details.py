@@ -19,8 +19,6 @@ def download_title(assetId):
         sitemap = package_logic.sitemap_entry(package_main.adi_type, package_meta.subtitle_flag)
         if sitemap == False:
             return errorchecker.not_supported_asset_type(package_main.adi_type)
-        elif sitemap == True:
-            return errorchecker.use_different_method(package_main.adi_type)
 
         if package_main.adi_type == 'PREMIUM VOD':
             movie_path = ""
@@ -76,8 +74,6 @@ def download_est(assetId):
     package_group = ADI_EST_Show.query.filter_by(assetId=assetId).first()
     sitemap = package_logic.sitemap_entry_boxset(package_main.adi_type)
     values = []
-    if sitemap == False:
-        return errorchecker.use_different_method(package_main.adi_type)
 
     if package_main.adi_type == 'est_episode':
         show_group = ADI_EST_Show.query.filter_by(assetId=package_group.parent_group_id).first()
@@ -120,9 +116,6 @@ def download_est(assetId):
     response.headers['Content-Type'] = 'application/xml'
 
     return response
-
-    # except:
-    #     return errorchecker.asset_not_found_id(assetId)
 
 def get_asset_data(assetId):
     adi_metadata = {}

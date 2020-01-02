@@ -7,6 +7,7 @@ from . import create_asset
 from . import search
 from . import get_asset_details
 from . import update_package
+from .models import ADI_main
 
 main = Blueprint('main', __name__, static_url_path='', static_folder='../created_adi/', template_folder='../templates')
 
@@ -44,6 +45,15 @@ def search_adi():
 def search_adi_post():
     return search.search_by_title()
 
+@main.route('/search_est')
+def search_est():
+    return render_template('search_est.html')
+
+@main.route('/search_est', methods=['POST'])
+@nocache
+def search_est_post():
+    return search.search_est_episodes()
+
 @main.route('/search_all')
 @nocache
 def search_adi_all():
@@ -71,16 +81,11 @@ def get_adi():
 @main.route('/get_adi', methods=['POST'])
 def get_adi_post():
     assetId = request.form.get('AssetId')
-    return get_asset_details.download_title(assetId)
-
-@main.route('/get_est_asset')
-def get_est_asset():
-    return render_template('retrieve_est_package.html')
-
-@main.route('/get_est_asset', methods=['POST'])
-def get_est_asset_post():
-    assetId = request.form.get('AssetId')
-    return get_asset_details.download_est(assetId)
+    package = ADI_main.query.filter_by(assetId=assetId).first()
+    if (package.adi_type == 'est_show') or (package.adi_type == 'est_season') or (package.adi_type == 'est_episode'):
+        return get_asset_details.download_est(assetId)
+    else:
+        return get_asset_details.download_title(assetId)
 
 @main.route('/get_asset_metadata')
 def get_asset_metadata():

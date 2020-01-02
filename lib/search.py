@@ -62,8 +62,11 @@ def search_all_packages():
 
 
 def search_est_episodes():
+    title = request.form.get('Title')
+    title_uncoded = urllib.parse.unquote_plus(title)
     adi_data = {}
     adi_data['packages'] = []
+    search = "{}%".format(title_uncoded)
     for package in ADI_main.query.filter(ADI_main.adi_type == 'est_episode').all():
         package_offer = ADI_offer.query.filter_by(assetId=package.assetId).first()
         package_meta = ADI_metadata.query.filter_by(assetId=package.assetId).first()
@@ -80,7 +83,7 @@ def search_est_episodes():
             'episode_number': package_group.episode_number,
         })
 
-    adi_data['total'] = ADI_main.query.filter(ADI_main.adi_type == 'est_episode').count()
+    adi_data['total'] = ADI_main.query.filter(or_(ADI_main.adi_type == 'est_episode')).count()
 
     if adi_data['total'] == 0:  # If no countries found in the continent
         return errorchecker.no_assets_in_db()
@@ -91,9 +94,13 @@ def search_est_episodes():
 
 
 def search_est_shows():
+    title = request.form.get('Title')
+    title_uncoded = urllib.parse.unquote_plus(title)
     adi_data = {}
     adi_data['packages'] = []
-    for package in ADI_main.query.filter(ADI_main.adi_type == 'est_show').all():
+    search = "{}%".format(title_uncoded)
+    for package in ADI_main.query.filter(and_(ADI_main.adi_type == 'est_show'),
+                                         (ADI_metadata.title.like(search))).all():
         package_offer = ADI_offer.query.filter_by(assetId=package.assetId).first()
         package_meta = ADI_metadata.query.filter_by(assetId=package.assetId).first()
         package_group = ADI_EST_Show.query.filter_by(assetId=package.assetId).first()
@@ -107,7 +114,8 @@ def search_est_shows():
             'num_of_seasons': package_group.no_of_seasons,
         })
 
-    adi_data['total'] = ADI_main.query.filter(ADI_main.adi_type == 'est_show').count()
+    adi_data['total'] = ADI_main.query.filter(and_(ADI_main.adi_type == 'est_show'),
+                                         (ADI_metadata.title.like(search))).count()
 
     if adi_data['total'] == 0:  # If no countries found in the continent
         return errorchecker.no_assets_in_db()
@@ -118,9 +126,13 @@ def search_est_shows():
 
 
 def search_est_seasons():
+    title = request.form.get('Title')
+    title_uncoded = urllib.parse.unquote_plus(title)
     adi_data = {}
     adi_data['packages'] = []
-    for package in ADI_main.query.filter(ADI_main.adi_type == 'est_season').all():
+    search = "{}%".format(title_uncoded)
+    for package in ADI_main.query.filter(and_(ADI_main.adi_type == 'est_season'),
+                                         (ADI_metadata.title.like(search))).all():
         package_offer = ADI_offer.query.filter_by(assetId=package.assetId).first()
         package_meta = ADI_metadata.query.filter_by(assetId=package.assetId).first()
         package_group = ADI_EST_Show.query.filter_by(assetId=package.assetId).first()
@@ -136,7 +148,8 @@ def search_est_seasons():
             'season_number': package_group.season_number,
         })
 
-    adi_data['total'] = ADI_main.query.filter(ADI_main.adi_type == 'est_season').count()
+    adi_data['total'] = ADI_main.query.filter(and_(ADI_main.adi_type == 'est_season'),
+                                         (ADI_metadata.title.like(search))).count()
 
     if adi_data['total'] == 0:  # If no countries found in the continent
         return errorchecker.no_assets_in_db()

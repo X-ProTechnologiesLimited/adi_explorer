@@ -136,12 +136,12 @@
     </button>
     <div class="dropdown-content">
       <a href="{{ url_for('main.search_adi_all') }}">View All Titles</a>
-      <a href="{{ url_for('main.search_est_shows') }}">View EST Show Breakup</a>
-      <a href="{{ url_for('main.search_est_seasons') }}">View EST Season Breakup</a>
-      <a href="{{ url_for('main.search_est_episodes') }}">View EST Episodes</a>
       <a href="{{ url_for('main.search_adi') }}">Filter by Asset Title</a>
       <a href="{{ url_for('main.get_asset_metadata') }}">View Asset Metadata</a>
       <a href="{{ url_for('main.get_asset_video') }}">View Asset Video</a>
+      <a href="{{ url_for('main.search_est') }}">View EST Show Data</a>
+      <a href="{{ url_for('main.search_est') }}">View EST Season Data</a>
+      <a href="{{ url_for('main.search_est') }}">View EST Episode Data</a>
     </div>
     </div>
     <div class="dropdown">
@@ -164,15 +164,7 @@
        <a href="{{ url_for('main.update_show_season') }}">Update Group</a>
     </div>
   </div>
-  <div class="dropdown">
-    <button class="dropbtn">Download ADI XML
-      <i class="fa fa-caret-down"></i>
-    </button>
-    <div class="dropdown-content">
-       <a href="{{ url_for('main.get_adi') }}">Download ADI Title</a>
-       <a href="{{ url_for('main.get_est_asset') }}">Download EST Asset</a>
-    </div>
-  </div>
+  <a href="{{ url_for('main.get_adi') }}">Download ADI</a>
 </div>
 
 {% block content %}
