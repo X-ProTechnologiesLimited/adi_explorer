@@ -71,8 +71,16 @@ def get_adi():
 @main.route('/get_adi', methods=['POST'])
 def get_adi_post():
     assetId = request.form.get('AssetId')
-    return get_asset_details.download_adi_package(assetId)
+    return get_asset_details.download_title(assetId)
 
+@main.route('/get_est_asset')
+def get_est_asset():
+    return render_template('retrieve_est_package.html')
+
+@main.route('/get_est_asset', methods=['POST'])
+def get_est_asset_post():
+    assetId = request.form.get('AssetId')
+    return get_asset_details.download_est(assetId)
 
 @main.route('/get_asset_metadata')
 def get_asset_metadata():

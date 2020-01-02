@@ -23,9 +23,20 @@ def sitemap_entry(asset_type, subtitle_flag):
             return 'CUTV.xml'
         else:
             return False
+    elif (asset_type == 'est_show') or (asset_type == 'est_season') or (asset_type == 'est_episode'):
+        return True
     else:
         return False
 
+def sitemap_entry_boxset(asset_type):
+    if (asset_type == 'est_show'):
+        return 'EST_SHOW.xml'
+    elif (asset_type == 'est_season'):
+        return 'EST_SEASON.xml'
+    elif (asset_type == 'est_episode'):
+        return 'EST_EPISODE.xml'
+    else:
+        return False
 
 def multiformat_entry(multiformat_id, asset_timestamp):
     if multiformat_id != "":

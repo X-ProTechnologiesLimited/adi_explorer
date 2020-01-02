@@ -75,7 +75,7 @@ def create_single_title():
     except:
         return errorchecker.internal_server_error()
 
-    return get_asset_details.download_adi_package(asset_timestamp + '01')
+    return get_asset_details.download_title(asset_timestamp + '01')
 
 
 def create_est_show_adi():
@@ -126,18 +126,18 @@ def create_est_show_adi():
         season_asset_id = str(int_timestamp + season)
         season_title = title + ': Season_' + str(season)
         season_synopsis = season_title + ' Synopsis'
-        season_new_package_main = ADI_main(assetId=season_asset_id + str(season) + '1', original_timestamp=season_asset_id,
+        season_new_package_main = ADI_main(assetId=season_asset_id + '11', original_timestamp=season_asset_id,
                                     adi_type='est_season', provider_version=provider_version,
                                     provider_id=season_provider_id)
 
-        season_new_package_meta = ADI_metadata(assetId=season_asset_id + str(season) + '1', title=season_title, par_rating=par_rating,
+        season_new_package_meta = ADI_metadata(assetId=season_asset_id + '11', title=season_title, par_rating=par_rating,
                                         btc_rating=btc_rating, synopsis=season_synopsis)
 
-        season_new_package_offer = ADI_offer(assetId=season_asset_id + str(season) + '1', offer_type=offer_type,
+        season_new_package_offer = ADI_offer(assetId=season_asset_id + '11', offer_type=offer_type,
                                            offerStartTime=offerStartTime, offerEndTime=offerEndTime,
                                            licenseEndTime=licenseEndTime)
 
-        season_new_package_group = ADI_EST_Show(assetId=season_asset_id + str(season) + '1', season_number=str(season),
+        season_new_package_group = ADI_EST_Show(assetId=season_asset_id + '11', season_number=str(season),
                                          no_of_episodes=str(no_of_episodes), show_type=show_type,
                                          parent_group_id=asset_timestamp + '00')
 

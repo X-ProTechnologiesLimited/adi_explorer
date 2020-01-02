@@ -76,6 +76,8 @@ def search_est_episodes():
             'providerId': package.provider_id,
             'offerEndDateTime': package_offer.offerEndTime,
             'parent_group_id': package_group.parent_group_id,
+            'season_number': package_group.season_number,
+            'episode_number': package_group.episode_number,
         })
 
     adi_data['total'] = ADI_main.query.filter(ADI_main.adi_type == 'est_episode').count()
@@ -131,6 +133,7 @@ def search_est_seasons():
             'offerEndDateTime': package_offer.offerEndTime,
             'num_of_episodes': package_group.no_of_episodes,
             'parent_group_id': package_group.parent_group_id,
+            'season_number': package_group.season_number,
         })
 
     adi_data['total'] = ADI_main.query.filter(ADI_main.adi_type == 'est_season').count()

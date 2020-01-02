@@ -164,7 +164,15 @@
        <a href="{{ url_for('main.update_show_season') }}">Update Group</a>
     </div>
   </div>
-  <a href="{{ url_for('main.get_adi') }}">Download ADI</a>
+  <div class="dropdown">
+    <button class="dropbtn">Download ADI XML
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+       <a href="{{ url_for('main.get_adi') }}">Download ADI Title</a>
+       <a href="{{ url_for('main.get_est_asset') }}">Download EST Asset</a>
+    </div>
+  </div>
 </div>
 
 {% block content %}
