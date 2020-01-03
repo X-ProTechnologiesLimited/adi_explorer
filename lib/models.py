@@ -23,6 +23,7 @@ class ADI_metadata(db.Model):
     synopsis = db.Column(db.String(500))
     genre = db.Column(db.String(10))
     production_year = db.Column(db.String(10))
+    title_filter = db.Column(db.String(10))
 
 class ADI_offer(db.Model):
     id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy
@@ -53,6 +54,7 @@ class ADI_media(db.Model):
 class ADI_EST_Show(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
     assetId = db.Column(db.String(100), unique=True)
+    title = db.Column(db.String(200))
     no_of_seasons = db.Column(db.String(10))
     no_of_episodes = db.Column(db.String(10))
     season_number = db.Column(db.String(10))
