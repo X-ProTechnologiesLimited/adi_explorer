@@ -142,31 +142,3 @@ def subtitle_entry(subtitle_flag):
         return subtitle_flag
     else:
         return 'false'
-
-
-def est_show_provider(show_type):
-    if show_type == 'Movie BS':
-        return 'est__movieboxset_hd'
-    else:
-        return 'est__tvboxset_hd'
-
-
-def est_episode_provider(show_type):
-    if show_type == 'Movie BS':
-        return 'est__moviebstitle_hd'
-    else:
-        return 'est__tvepisode_hd'
-
-
-def est_episode_title(show_type, title):
-    if show_type == 'Movie BS':
-        return title + ': Movie: '
-    else:
-        return title + ': Episode: '
-
-
-def est_season_episode_count_entry(season_episode_count):
-    if season_episode_count != "":
-        return season_episode_count
-    else:
-        return '1'

@@ -7,6 +7,8 @@ from . import errorchecker
 from . import offerdate
 from . import package_logic
 from . import get_asset_details
+from .est_show_logic import est_logic_entry
+est_logic = est_logic_entry()
 
 def create_single_title():
     ts = time.time()
@@ -89,12 +91,14 @@ def create_est_show_adi():
     offerEndTime = offerdate.offer_date(offer_window, 0)
     asset_type = 'est_show'
     show_type = request.form.get('est_show_type')
-    no_of_episodes = int(package_logic.est_season_episode_count_entry(request.form.get('no_of_episodes')))
-    num_of_seasons = int(package_logic.est_season_episode_count_entry(request.form.get('seasons')))
-    show_provider_id = package_logic.est_show_provider(show_type)
-    episode_provider_id = package_logic.est_episode_provider(show_type)
     season_provider_id = 'est__season_hd'
     title = request.form.get('title')
+    est_logic.est_show_type_entry(show_type, title)
+    est_logic.est_series_count((request.form.get('seasons')),(request.form.get('no_of_episodes')))
+    show_provider_id = est_logic.est_show_provider
+    episode_provider_id = est_logic.est_episode_provider
+    num_of_seasons = int(est_logic.no_of_seasons)
+    no_of_episodes = int(est_logic.no_of_episodes)
     provider_version_form = request.form.get('provider_version')
     par_rating_form = request.form.get('par_rating')
     btc_rating_form = request.form.get('ca_btc')
@@ -146,7 +150,8 @@ def create_est_show_adi():
 
         for episode in range(1, no_of_episodes+1):
             episode_asset_id = str(int_timestamp + (season*100) + episode)
-            episode_title = package_logic.est_episode_title(show_type, season_title) + str(episode)
+            est_logic.est_show_type_entry(show_type, season_title)
+            episode_title = est_logic.est_episode_title + str(episode)
             episode_synopsis = episode_title + ' Synopsis'
 
             episode_new_package_main = ADI_main(assetId=episode_asset_id + '22', original_timestamp=episode_asset_id,
