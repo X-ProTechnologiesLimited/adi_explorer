@@ -15,8 +15,12 @@ title_checksum = '30c7ef994606991d5706e2f9128f6eb6'
 default_synopsis = 'This is the synopsis of asset named: '
 default_provider_version = '1'
 default_production_year = '2000'
+<<<<<<< HEAD
 default_ca_btc = 'U'
 default_par_rating = '1'
 default_audio_type = 'Dolby Digital'
 default_frame_rate = '25'
 default_subtitle_flag = 'false'
+=======
+default_
+>>>>>>> db63f57c048afb14289b271e0dec8d33d6ea04b8

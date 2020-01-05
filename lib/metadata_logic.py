@@ -10,9 +10,12 @@ class parameter_logic(object):
         self.audio_type = None
         self.frame_rate = None
         self.subtitle_flag = None
+<<<<<<< HEAD
         self.multiformat_id = None
         self.movie_url = None
         self.movie_checksum = None
+=======
+>>>>>>> db63f57c048afb14289b271e0dec8d33d6ea04b8
 
     def param_logic_entry(self, synopsis, title, provider_version, production_year, ca_btc, par_rating, audio_type, frame_rate, subtitle_flag):
         if synopsis != "":
@@ -30,6 +33,7 @@ class parameter_logic(object):
         else:
             self.production_year = movie_config.default_production_year
 
+<<<<<<< HEAD
         if ca_btc != "":
             self.ca_btc = ca_btc
         else:
@@ -78,3 +82,5 @@ class parameter_logic(object):
         else:
             self.movie_url = movie_config.title_movie
             self.movie_checksum = movie_config.title_checksum
+=======
+>>>>>>> db63f57c048afb14289b271e0dec8d33d6ea04b8

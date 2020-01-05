@@ -8,9 +8,13 @@ from . import offerdate
 from . import package_logic
 from . import get_asset_details
 from .est_show_logic import est_logic_entry
+<<<<<<< HEAD
 from .metadata_logic import parameter_logic
 est_logic = est_logic_entry()
 params = parameter_logic()
+=======
+est_logic = est_logic_entry()
+>>>>>>> db63f57c048afb14289b271e0dec8d33d6ea04b8
 
 def create_single_title():
     ts = time.time()
