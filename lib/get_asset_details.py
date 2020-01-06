@@ -2,9 +2,10 @@ from flask import Blueprint, render_template, make_response
 from .models import ADI_main, ADI_media, ADI_metadata, ADI_offer, ADI_EST_Show
 from . import errorchecker
 from . import movie_config
-from . import package_logic
+from .sitemap_create import sitemap_mapper
 from bson.json_util import dumps
 from . import response
+sitemap = sitemap_mapper()
 
 main = Blueprint('main', __name__, static_url_path='', static_folder='../created_adi/', template_folder='../templates')
 
@@ -16,8 +17,8 @@ def download_title(assetId):
         package_meta = ADI_metadata.query.filter_by(assetId=assetId).first()
         package_offer = ADI_offer.query.filter_by(assetId=assetId).first()
         package_media = ADI_media.query.filter_by(assetId=assetId).first()
-        sitemap = package_logic.sitemap_entry(package_main.adi_type, package_meta.subtitle_flag)
-        if sitemap == False:
+        sitemap.sitemap_entry(package_main.adi_type, package_meta.subtitle_flag)
+        if sitemap.sitemap == False:
             return errorchecker.not_supported_asset_type(package_main.adi_type)
 
         if package_main.adi_type == 'PREMIUM VOD':
@@ -54,7 +55,7 @@ def download_title(assetId):
             'image_path': image_path,
         })
 
-        template = render_template(sitemap, values=values)
+        template = render_template(sitemap.sitemap, values=values)
         response = make_response(template)
         response.headers['Content-Type'] = 'application/xml'
 
@@ -72,7 +73,7 @@ def download_est(assetId):
     package_offer = ADI_offer.query.filter_by(assetId=assetId).first()
     package_media = ADI_media.query.filter_by(assetId=assetId).first()
     package_group = ADI_EST_Show.query.filter_by(assetId=assetId).first()
-    sitemap = package_logic.sitemap_entry_boxset(package_main.adi_type)
+    sitemap.sitemap_entry_boxset(package_main.adi_type)
     values = []
 
     if package_main.adi_type == 'est_episode':
@@ -111,7 +112,7 @@ def download_est(assetId):
     elif package_main.adi_type == 'est_show':
         return errorchecker.not_implemented_yet()
 
-    template = render_template(sitemap, values=values)
+    template = render_template(sitemap.sitemap, values=values)
     response = make_response(template)
     response.headers['Content-Type'] = 'application/xml'
 

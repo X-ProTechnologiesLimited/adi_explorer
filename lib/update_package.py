@@ -1,7 +1,6 @@
-from flask import Blueprint, render_template, request
+from flask import request
 from . import db
 from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media
-from sqlalchemy.orm.attributes import flag_modified
 from . import errorchecker
 from . import response
 

@@ -1,4 +1,4 @@
-class est_logic_entry(object):
+class est_show_default_params(object):
 
     def __init__(self):
         self.est_show_provider = None

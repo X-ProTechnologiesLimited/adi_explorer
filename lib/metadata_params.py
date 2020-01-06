@@ -1,5 +1,5 @@
 from . import movie_config
-class parameter_logic(object):
+class metadata_default_params(object):
 
     def __init__(self):
         self.synopsis = None
@@ -10,12 +10,11 @@ class parameter_logic(object):
         self.audio_type = None
         self.frame_rate = None
         self.subtitle_flag = None
-<<<<<<< HEAD
         self.multiformat_id = None
         self.movie_url = None
         self.movie_checksum = None
-=======
->>>>>>> db63f57c048afb14289b271e0dec8d33d6ea04b8
+        self.video_type = None
+        self.offer_type = None
 
     def param_logic_entry(self, synopsis, title, provider_version, production_year, ca_btc, par_rating, audio_type, frame_rate, subtitle_flag):
         if synopsis != "":
@@ -33,7 +32,6 @@ class parameter_logic(object):
         else:
             self.production_year = movie_config.default_production_year
 
-<<<<<<< HEAD
         if ca_btc != "":
             self.ca_btc = ca_btc
         else:
@@ -82,5 +80,15 @@ class parameter_logic(object):
         else:
             self.movie_url = movie_config.title_movie
             self.movie_checksum = movie_config.title_checksum
-=======
->>>>>>> db63f57c048afb14289b271e0dec8d33d6ea04b8
+
+    def video_type_entry(self, provider_id):
+        if ('hdr' in provider_id) or ('4k' in provider_id) or ('hd.' in provider_id) or ('_hd' in provider_id):
+            self.video_type = 'true'
+        else:
+            self.video_type = 'false'
+
+    def offer_type_entry(self, asset_type):
+        if asset_type == 'SUBSCRIPTION VOD':
+            self.offer_type = 'SVOD'
+        else:
+            self.offer_type = 'IPPR'

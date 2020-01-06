@@ -1,20 +1,17 @@
-from flask import Blueprint, render_template, request, jsonify, make_response
+from flask import request
 import datetime
 import time
 from . import db
 from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, ADI_EST_Show
 from . import errorchecker
 from . import offerdate
-from . import package_logic
-from . import get_asset_details
-from .est_show_logic import est_logic_entry
-<<<<<<< HEAD
-from .metadata_logic import parameter_logic
-est_logic = est_logic_entry()
-params = parameter_logic()
-=======
-est_logic = est_logic_entry()
->>>>>>> db63f57c048afb14289b271e0dec8d33d6ea04b8
+from .sitemap_create import sitemap_mapper
+from . import response
+from .est_show_params import est_show_default_params
+from .metadata_params import metadata_default_params
+est_params = est_show_default_params()
+params = metadata_default_params()
+sitemap = sitemap_mapper()
 
 def create_single_title():
     ts = time.time()
@@ -27,15 +24,17 @@ def create_single_title():
     title = request.form.get('title')
     service_key = request.form.get('service_key')
     params.multiformat_entry(request.form.get('multiformat_id'),asset_timestamp)
-    params.param_logic_entry(request.form.get('synopsis'),request.form.get('title'),request.form.get('provider_version'),
-                             request.form.get('production_year'),request.form.get('ca_btc'),request.form.get('par_rating'),
-                             request.form.get('audio_type'),request.form.get('frame_rate'),request.form.get('subtitle_flag'))
+    params.param_logic_entry(request.form.get('synopsis'), request.form.get('title'),
+                             request.form.get('provider_version'),
+                             request.form.get('production_year'), request.form.get('ca_btc'),
+                             request.form.get('par_rating'),
+                             request.form.get('audio_type'), request.form.get('frame_rate'),
+                             request.form.get('subtitle_flag'))
     params.movie_details_entry(provider_id)
-    video_type = package_logic.video_type_entry(provider_id)
-    offer_type = package_logic.offer_type_entry(asset_type)
-
-    sitemap = package_logic.sitemap_entry(asset_type, params.subtitle_flag)
-    if sitemap == False:
+    params.video_type_entry(provider_id)
+    params.offer_type_entry(asset_type)
+    sitemap.sitemap_entry(asset_type,params.subtitle_flag)
+    if sitemap.sitemap == False:
         return errorchecker.not_supported_asset_type(asset_type)
 
     if (service_key == "") and (asset_type == 'CATCHUP'):
@@ -48,10 +47,10 @@ def create_single_title():
 
         new_package_meta = ADI_metadata(assetId=asset_timestamp + '01', title=title, par_rating=params.par_rating,
                                         subtitle_flag=params.subtitle_flag, audio_type=params.audio_type,
-                                        frame_rate=params.frame_rate, btc_rating=params.ca_btc, video_type=video_type,
+                                        frame_rate=params.frame_rate, btc_rating=params.ca_btc, video_type=params.video_type,
                                         synopsis=params.synopsis, production_year=params.production_year, title_filter='true')
 
-        new_package_offer = ADI_offer(assetId=asset_timestamp + '01', offer_type=offer_type,
+        new_package_offer = ADI_offer(assetId=asset_timestamp + '01', offer_type=params.offer_type,
                                       offerStartTime=offerStartTime, offerEndTime=offerEndTime,
                                       licenseEndTime=licenseEndTime, service_key=service_key, epgTime=offerStartTime)
 
@@ -67,48 +66,39 @@ def create_single_title():
     except:
         return errorchecker.internal_server_error()
 
-    return get_asset_details.download_title(asset_timestamp + '01')
+    return response.asset_creation_success(asset_timestamp + '01', title)
 
 
 def create_est_show_adi():
     ts = time.time()
     asset_timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d%H%M%S')
-    LicenseWindow = int(request.form.get('LicenseWindow'))
-    licenseEndTime = offerdate.offer_date(LicenseWindow, 0)
-    offer_window = int(request.form.get('offer_window'))
+    licenseEndTime = offerdate.offer_date(int(request.form.get('LicenseWindow')), 0)
     offerStartTime = offerdate.offer_date(0, 0)
-    offerEndTime = offerdate.offer_date(offer_window, 0)
-    asset_type = 'est_show'
+    offerEndTime = offerdate.offer_date(int(request.form.get('offer_window')), 0)
     show_type = request.form.get('est_show_type')
-    season_provider_id = 'est__season_hd'
     title = request.form.get('title')
-    est_logic.est_show_type_entry(show_type, title)
-    est_logic.est_series_count((request.form.get('seasons')),(request.form.get('no_of_episodes')))
-    show_provider_id = est_logic.est_show_provider
-    episode_provider_id = est_logic.est_episode_provider
-    num_of_seasons = int(est_logic.no_of_seasons)
-    no_of_episodes = int(est_logic.no_of_episodes)
-    provider_version_form = request.form.get('provider_version')
-    par_rating_form = request.form.get('par_rating')
-    btc_rating_form = request.form.get('ca_btc')
-    asset_synopsis = request.form.get('synopsis')
-    movie_url = package_logic.movie_file_entry(show_provider_id)
-    provider_version = package_logic.provider_version_entry(provider_version_form)
-    movie_checksum = package_logic.movie_checksum_entry(show_provider_id)
-    offer_type = package_logic.offer_type_entry(asset_type)
-    synopsis = package_logic.synopsis_entry(asset_synopsis, title)
-    par_rating = package_logic.par_rating_entry(par_rating_form)
-    btc_rating = package_logic.btc_entry(btc_rating_form)
-
+    est_params.est_show_type_entry(show_type, title)
+    est_params.est_series_count((request.form.get('seasons')),(request.form.get('no_of_episodes')))
+    show_provider_id = est_params.est_show_provider
+    num_of_seasons = int(est_params.no_of_seasons)
+    no_of_episodes = int(est_params.no_of_episodes)
+    params.param_logic_entry(request.form.get('synopsis'), request.form.get('title'),
+                             request.form.get('provider_version'),
+                             request.form.get('production_year'), request.form.get('ca_btc'),
+                             request.form.get('par_rating'),
+                             request.form.get('audio_type'), request.form.get('frame_rate'),
+                             request.form.get('subtitle_flag'))
+    params.movie_details_entry(show_provider_id)
+    params.offer_type_entry('est_show')
 
     show_new_package_main = ADI_main(assetId=asset_timestamp + '00', original_timestamp=asset_timestamp,
-                                    adi_type=asset_type, provider_version=provider_version,
-                                    provider_id=show_provider_id)
+                                    adi_type='est_show', provider_version=params.provider_version,
+                                    provider_id=est_params.est_show_provider)
 
-    show_new_package_meta = ADI_metadata(assetId=asset_timestamp + '00', title=title, par_rating=par_rating,
-                                        btc_rating=btc_rating, synopsis=synopsis, title_filter='true')
+    show_new_package_meta = ADI_metadata(assetId=asset_timestamp + '00', title=title, par_rating=params.par_rating,
+                                        btc_rating=params.ca_btc, synopsis=params.synopsis, title_filter='true')
 
-    show_new_package_offer = ADI_offer(assetId=asset_timestamp + '00', offer_type=offer_type,
+    show_new_package_offer = ADI_offer(assetId=asset_timestamp + '00', offer_type=params.offer_type,
                                       offerStartTime=offerStartTime, offerEndTime=offerEndTime,
                                       licenseEndTime=licenseEndTime)
 
@@ -123,13 +113,13 @@ def create_est_show_adi():
         season_title = title + ': Season_' + str(season)
         season_synopsis = season_title + ' Synopsis'
         season_new_package_main = ADI_main(assetId=season_asset_id + '11', original_timestamp=season_asset_id,
-                                    adi_type='est_season', provider_version=provider_version,
-                                    provider_id=season_provider_id)
+                                    adi_type='est_season', provider_version=params.provider_version,
+                                    provider_id='est__season_hd')
 
-        season_new_package_meta = ADI_metadata(assetId=season_asset_id + '11', title=season_title, par_rating=par_rating,
-                                        btc_rating=btc_rating, synopsis=season_synopsis, title_filter='false')
+        season_new_package_meta = ADI_metadata(assetId=season_asset_id + '11', title=season_title, par_rating=params.par_rating,
+                                        btc_rating=params.ca_btc, synopsis=season_synopsis, title_filter='false')
 
-        season_new_package_offer = ADI_offer(assetId=season_asset_id + '11', offer_type=offer_type,
+        season_new_package_offer = ADI_offer(assetId=season_asset_id + '11', offer_type=params.offer_type,
                                            offerStartTime=offerStartTime, offerEndTime=offerEndTime,
                                            licenseEndTime=licenseEndTime)
 
@@ -139,27 +129,27 @@ def create_est_show_adi():
 
         for episode in range(1, no_of_episodes+1):
             episode_asset_id = str(int_timestamp + (season*100) + episode)
-            est_logic.est_show_type_entry(show_type, season_title)
-            episode_title = est_logic.est_episode_title + str(episode)
+            est_params.est_show_type_entry(show_type, season_title)
+            episode_title = est_params.est_episode_title + str(episode)
             episode_synopsis = episode_title + ' Synopsis'
 
             episode_new_package_main = ADI_main(assetId=episode_asset_id + '22', original_timestamp=episode_asset_id,
-                                        adi_type='est_episode', provider_version=provider_version,
-                                        provider_id=episode_provider_id)
+                                        adi_type='est_episode', provider_version=params.provider_version,
+                                        provider_id=est_params.est_episode_provider)
 
-            episode_new_package_meta = ADI_metadata(assetId=episode_asset_id + '22', title=episode_title, par_rating=par_rating,
-                                            btc_rating=btc_rating, synopsis=episode_synopsis, title_filter='false')
+            episode_new_package_meta = ADI_metadata(assetId=episode_asset_id + '22', title=episode_title, par_rating=params.par_rating,
+                                            btc_rating=params.ca_btc, synopsis=episode_synopsis, title_filter='false')
 
             episode_new_package_group = ADI_EST_Show(assetId=episode_asset_id + '22', title=episode_title, no_of_seasons="",
                                                      season_number=str(season), no_of_episodes="", episode_number=str(episode),
                                                      show_type=show_type, parent_group_id=season_asset_id + '11')
 
-            episode_new_package_offer = ADI_offer(assetId=episode_asset_id + '22', offer_type=offer_type,
+            episode_new_package_offer = ADI_offer(assetId=episode_asset_id + '22', offer_type=params.offer_type,
                                                  offerStartTime=offerStartTime, offerEndTime=offerEndTime,
                                                  licenseEndTime=licenseEndTime)
 
-            episode_new_package_media = ADI_media(assetId=episode_asset_id + '22', movie_url=movie_url,
-                                                  movie_checksum=movie_checksum)
+            episode_new_package_media = ADI_media(assetId=episode_asset_id + '22', movie_url=params.movie_url,
+                                                  movie_checksum=params.movie_checksum)
 
             try:
                 db.session.add(episode_new_package_main)
@@ -190,7 +180,7 @@ def create_est_show_adi():
             except:
                 errorchecker.internal_server_error_show('EST_EPISODE')
 
-    return 'Successfully Created EST Show'
+    return response.asset_creation_success(asset_timestamp + '00', title)
 
 
 
