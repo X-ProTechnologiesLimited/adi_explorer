@@ -10,3 +10,13 @@ est_movie_file = 'ten-minutes.ts'
 est_movie_checksum = '429a5f8d146cc82170513cbcd2b7b71b'
 title_movie = 'Main_Video-SD.ts'
 title_checksum = '30c7ef994606991d5706e2f9128f6eb6'
+
+
+default_synopsis = 'This is the synopsis of asset named: '
+default_provider_version = '1'
+default_production_year = '2000'
+default_ca_btc = 'U'
+default_par_rating = '1'
+default_audio_type = 'Dolby Digital'
+default_frame_rate = '25'
+default_subtitle_flag = 'false'
