@@ -28,12 +28,15 @@ class sitemap_mapper(object):
             self.sitemap = False
 
 
-    def sitemap_entry_boxset(self, asset_type):
+    def sitemap_entry_boxset(self, asset_type, show_type):
         if (asset_type == 'est_show'):
             self.sitemap = 'EST_SHOW.xml'
         elif (asset_type == 'est_season'):
             self.sitemap = 'EST_SEASON.xml'
         elif (asset_type == 'est_episode'):
-            self.sitemap = 'EST_EPISODE.xml'
+            if (show_type == 'Movie BS'):
+                self.sitemap = 'EST_MOVIE_EPISODE.xml'
+            else:
+                self.sitemap = 'EST_EPISODE.xml'
         else:
             self.sitemap = False

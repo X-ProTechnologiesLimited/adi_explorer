@@ -67,8 +67,12 @@ def get_adi():
 def get_adi_post():
     assetId = request.form.get('AssetId')
     package = ADI_main.query.filter_by(assetId=assetId).first()
-    if (package.adi_type == 'est_show') or (package.adi_type == 'est_season') or (package.adi_type == 'est_episode'):
-        return get_asset_details.download_est(assetId)
+    if package.adi_type == 'est_episode':
+        return get_asset_details.download_est_episode(assetId)
+    elif package.adi_type == 'est_season':
+        return get_asset_details.download_est_season(assetId)
+    elif package.adi_type == 'est_show':
+        return get_asset_details.download_est_show(assetId)
     else:
         return get_asset_details.download_title(assetId)
 

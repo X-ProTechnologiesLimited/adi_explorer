@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ADI3 xmlns="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1" xmlns:PO="URN:NNDS:CMS:ADI3:PURCHASEOPTIONS:01" xmlns:content="http://www.cablelabs.com/namespaces/metadata/xsd/content/1" xmlns:core="http://www.cablelabs.com/namespaces/metadata/xsd/core/1" xmlns:ext="URN:NNDS:CMS:ADI3:01" xmlns:offer="http://www.cablelabs.com/namespaces/metadata/xsd/offer/1" xmlns:schemaLocation="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1./MD-SP-VODContainer-I01.xsd" xmlns:terms="http://www.cablelabs.com/namespaces/metadata/xsd/terms/1" xmlns:title="http://www.cablelabs.com/namespaces/metadata/xsd/title/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ {% for val in values -%}
+    <Ext>
+ {% for season in seasonlist -%}
+<ext:GroupMember uriId="{{val.providerid}}/GMSE{{season.season_assetid}}" providerVersionNum="{{val.provider_version}}" internalVersionNum="0" creationDateTime="2015-09-14T02:36:52Z" startDateTime="1970-01-01T00:00:00Z" endDateTime="{{val.licensetime}}">
+<ext:MemberRef uriId="{{season.season_providerid}}/CGVT{{season.season_assetid}}"/>
+<ext:OrderNumber>{{season.season_number}}</ext:OrderNumber>
+</ext:GroupMember>
+ {% endfor -%}
+        </Ext>
+        <Title uriId="{{val.providerid}}/TITL{{val.assetid}}" providerVersionNum="{{val.provider_version}}" internalVersionNum="0" creationDateTime="2015-09-14T02:36:52Z" startDateTime="1970-01-01T00:00:00Z" endDateTime="{{val.licensetime}}">
+                <core:AlternateId identifierSystem="ConversationID">6709838</core:AlternateId>
+                <core:Ext>
+                        <ext:LocalizableTitleExt xml:lang="eng">
+                        <ext:MarketingMessage>{{val.title}}: A fantastic series</ext:MarketingMessage>
+                        </ext:LocalizableTitleExt>
+                        <ext:TitleExtensions Language="eng">
+                                <ext:DealSub>{{val.deal_sub}}</ext:DealSub>
+                        </ext:TitleExtensions>
+                        <ext:StudioCode>44012</ext:StudioCode>
+                </core:Ext>
+                <title:LocalizableTitle xml:lang="eng">
+                        <title:TitleSortName>*</title:TitleSortName>
+                        <title:TitleBrief>DUMMY</title:TitleBrief>
+                        <title:TitleMedium>{{val.title}}</title:TitleMedium>
+                        <title:TitleLong>{{val.title}}</title:TitleLong>
+                        <title:SummaryShort>{{val.asset_syn}}</title:SummaryShort>
+                        <title:SummaryMedium>{{val.asset_syn}}</title:SummaryMedium>
+                        <title:SummaryLong>Long Synopsis</title:SummaryLong>
+                        <title:StudioDisplay>Fox Studios</title:StudioDisplay>
+                </title:LocalizableTitle>
+                <title:Rating ratingSystem="BSkyBsi">{{val.par_rating}}</title:Rating>
+                <title:Rating ratingSystem="BSkyBca">{{val.par_rating}}</title:Rating>
+                <title:Rating ratingSystem="BSkyBtc">{{val.btc_rating}}</title:Rating>
+                <title:DisplayRunTime>0:00:00</title:DisplayRunTime>
+                <title:Year>1989</title:Year>
+                <title:Genre>{{val.genre}}</title:Genre>
+                <title:ShowType>Other</title:ShowType>
+        </Title>
+  <Thumbnail creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/THUM{{val.assetid}}">
+    <content:SourceUrl>{{val.image_path}}FinestHours_182x98.jpg</content:SourceUrl>
+    <content:ContentFileSize>100</content:ContentFileSize>
+    <content:ContentCheckSum>e9e23717c0b20f6af34ffbbf6b83add2</content:ContentCheckSum>
+  </Thumbnail>
+  <ContentGroup creationDateTime="2014-11-24T10:34:34Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/CGVT{{val.assetid}}">
+    <core:Ext>
+      <ext:ContentGroupType>Show</ext:ContentGroupType>
+    </core:Ext>
+    <offer:TitleRef uriId="{{val.providerid}}/TITL{{val.assetid}}"/>
+    <offer:ThumbnailRef uriId="{{val.providerid}}/THUM{{val.assetid}}"/>
+    <offer:ContentRef uriId="{{val.providerid}}/CGPP{{val.assetid}}"/>
+  </ContentGroup>
+  <ContentGroup creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/CGPP{{val.assetid}}">
+    <core:Ext>
+      <ext:PressPackImageRef uriId="{{val.providerid}}/PPCO{{val.assetid}}"/>
+      <ext:PressPackImageRef uriId="{{val.providerid}}/PPKK{{val.assetid}}"/>
+      <ext:PressPackImageRef uriId="{{val.providerid}}/PPTH{{val.assetid}}"/>
+      <ext:PressPackImageRef uriId="{{val.providerid}}/PPDD{{val.assetid}}"/>
+    </core:Ext>
+    <offer:TitleRef uriId="{{val.providerid}}/TITL{{val.assetid}}"/>
+  </ContentGroup>
+  <Ext>
+    <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PPCO{{val.assetid}}">
+      <content:SourceUrl>{{val.image_path}}FinestHours_182x243.jpg</content:SourceUrl>
+      <content:ContentFileSize>100</content:ContentFileSize>
+      <content:ContentCheckSum>43a1883f263a9bbae1b5944f24645430</content:ContentCheckSum>
+      <content:X_Resolution>183</content:X_Resolution>
+      <content:Y_Resolution>243</content:Y_Resolution>
+      <ext:Usage>urn:nnds:Metro:metadata:MediaTypeCS:2007:2.6</ext:Usage>
+    </ext:PressPackImage>
+    <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PPKK{{val.assetid}}">
+      <content:SourceUrl>{{val.image_path}}FinestHours_456x257.jpg</content:SourceUrl>
+      <content:ContentFileSize>100</content:ContentFileSize>
+      <content:ContentCheckSum>3396a3ff9fc6e09ae94068011556d0e5</content:ContentCheckSum>
+      <content:X_Resolution>456</content:X_Resolution>
+      <content:Y_Resolution>257</content:Y_Resolution>
+      <ext:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:stb:16-9</ext:Usage>
+    </ext:PressPackImage>
+    <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PPTH{{val.assetid}}">
+      <content:SourceUrl>{{val.image_path}}FinestHours_182x98.jpg</content:SourceUrl>
+      <content:ContentFileSize>100</content:ContentFileSize>
+      <content:ContentCheckSum>e9e23717c0b20f6af34ffbbf6b83add2</content:ContentCheckSum>
+      <content:X_Resolution>182</content:X_Resolution>
+      <content:Y_Resolution>98</content:Y_Resolution>
+      <ext:Usage>STBTHUMB</ext:Usage>
+    </ext:PressPackImage>
+    <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PPDD{{val.assetid}}">
+      <content:SourceUrl>{{val.image_path}}FinestHours_262x349.jpg</content:SourceUrl>
+      <content:ContentFileSize>100</content:ContentFileSize>
+      <content:ContentCheckSum>300343d46b52bbe7b191d9055d12b364</content:ContentCheckSum>
+      <content:X_Resolution>262</content:X_Resolution>
+      <content:Y_Resolution>349</content:Y_Resolution>
+      <ext:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:stb:3-4</ext:Usage>
+    </ext:PressPackImage>
+    <ext:PurchaseOption creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PROP{{val.assetid}}">
+      <PO:mediaType>1</PO:mediaType>
+      <PO:mediaTypeFilter>4</PO:mediaTypeFilter>
+      <PO:optionMetadata><![CDATA[{"physicalReleaseDate":"20170826"}]]></PO:optionMetadata>
+      <PO:defaultPriceBundleRef uriId="{{val.providerid}}/PRBU{{val.assetid}}"/>
+      <PO:purchaseOptionAvailability>
+        <PO:startDateTime>2016-11-02T15:41:01Z</PO:startDateTime>
+        <PO:endDateTime>2019-12-31T00:00:01Z</PO:endDateTime>
+      </PO:purchaseOptionAvailability>
+    </ext:PurchaseOption>
+    <ext:PriceBundle creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PRBU{{val.assetid}}">
+      <PO:priceCategory currency="GBP" marketingSegment="Standard" price="7.99" territory="GBR"/>
+      <PO:priceCategory currency="GBP" marketingSegment="VIP" price="6.99" territory="GBR"/>
+      <PO:priceCategory currency="GBP" marketingSegment="Standard" price="9.99" territory="IRL"/>
+      <PO:priceCategory currency="GBP" marketingSegment="VIP" price="8.99" territory="IRL"/>
+    </ext:PriceBundle>
+  </Ext>
+  <Offer creationDateTime="2016-11-07T15:41:03Z" endDateTime="{{val.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="{{val.offerStartDateTime}}" uriId="{{val.providerid}}/OFBD{{val.assetid}}">
+    <core:Ext>
+      <ext:OfferAvailability endDateTime="{{val.offerEndDateTime}}" offerType="IPPR" startDateTime="{{val.offerStartDateTime}}"/>
+          <ext:optionMetadata><![CDATA[{"DigitalReleaseDate":"2016-11-01T00:00:00Z","EstimatedMediaReleaseDate":"2017-01-15T00:00:00Z"}]]></ext:optionMetadata>
+      <ext:PurchaseOptionRef uriId="{{val.providerid}}/PROP{{val.assetid}}"/>
+    </core:Ext>
+    <offer:BillingId>DUMMY</offer:BillingId>
+    <offer:TermsRef uriId="{{val.providerid}}/TEBD{{val.assetid}}"/>
+    <offer:ContentGroupRef uriId="{{val.providerid}}/CGVT{{val.assetid}}"/>
+  </Offer>
+  <Terms creationDateTime="2016-11-07T15:41:03Z" endDateTime="{{val.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="{{val.offerStartDateTime}}" uriId="{{val.providerid}}/TEBD{{val.assetid}}">
+    <core:Ext>
+      <ext:TermType>EST</ext:TermType>
+      <ext:TermExtensions>
+        <ext:OrderType>Regular</ext:OrderType>
+      </ext:TermExtensions>
+    </core:Ext>
+    <terms:SuggestedPrice>0</terms:SuggestedPrice>
+  </Terms>
+ {% endfor -%}
+</ADI3>

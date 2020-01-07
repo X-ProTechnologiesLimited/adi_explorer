@@ -1,3 +1,4 @@
+from . import movie_config
 class est_show_default_params(object):
 
     def __init__(self):
@@ -9,12 +10,12 @@ class est_show_default_params(object):
 
     def est_show_type_entry(self, show_type, title):
         if show_type == 'Movie BS':
-            self.est_show_provider = 'est__movieboxset_hd'
-            self.est_episode_provider = 'est__moviebstitle_hd'
+            self.est_show_provider = movie_config.movie_show_provider
+            self.est_episode_provider = movie_config.movie_episode_provider
             self.est_episode_title = title + ': Movie: '
         else:
-            self.est_show_provider = 'est__tvboxset_hd'
-            self.est_episode_provider = 'est__tvepisode_hd'
+            self.est_show_provider = movie_config.tv_show_provider
+            self.est_episode_provider = movie_config.tv_episode_provider
             self.est_episode_title = title + ': Episode: '
 
     def est_series_count(self, no_of_seasons, no_of_episodes):

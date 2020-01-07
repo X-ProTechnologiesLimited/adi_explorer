@@ -8,8 +8,9 @@ different type of assets
 3. Clone the ADI Explorer git repo by opening the git bash as administrator
 `git clone https://github.com/X-ProTechnologiesLimited/adi_explorer.git`
 4. Go to the folder adi_explorer. `cd adi_explorer` from git bash command line
-5. Go to the utils directory. `cd utils`
-6. Run the script `./start_app.sh`
+5. Run the command `pip3 install -r requirements.txt`
+6. Go to the utils directory. `cd utils`
+7. Run the script `./start_app.sh`
 
 ## Running in Container
 The project is also enabled to run in Docker Container. It contains the Dockerfile
@@ -30,7 +31,8 @@ The project is also enabled to run in Docker Container. It contains the Dockerfi
 
 ## Configuring the Media Paths for Test Environments
 1. Edit the `<adi_explorer_project_root>/lib/movie_config.py` file to refer the correct files, checksum and location
-of the Media files (video files)
+of the Media files (video files) based on Test Environment Tank file locations
+2. Edit the same file for default metadata
 
 ## Sqlite database browsing
 Download the optional Sqlite DB Browser `https://sqlitebrowser.org/dl/` to browse the database file for the tool:
@@ -38,16 +40,18 @@ Download the optional Sqlite DB Browser `https://sqlitebrowser.org/dl/` to brows
 
 ## Current Scope for the tool
 1. Create Single Title ADIs
-2. Update Metadata for Single Title ADIs
-3. Update Video for Single Title ADIs
-4. View and Filter list of created ADIs
-5. Download created ADI
+2. Create EST Episodes, Shows and Seasons
+3. Update Metadata for Single Title ADIs and EST Assets
+4. Update Video for Single Title ADIs and Episodes
+5. View and Filter list of created ADIs and EST Shows
+6. Download created ADIs for Title, Episode and Shows
 
 ## Enhancements Planned
-1. Creating Show, Seasons and Episodes for Box Sets
-2. DPL
-3. Catchup
-4. Update additional metadata
+1. DPL
+2. Update additional metadata
+3. Additional Offer Types for EST(PreOrder and Coming Soon)
+4. Additional Purchase Options
+5. Ingest ADI into test environments directly from tool
 
 
 

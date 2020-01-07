@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ADI3 xmlns:schemaLocation="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1./MD-SP-VODContainer-I01.xsd" xmlns:terms="http://www.cablelabs.com/namespaces/metadata/xsd/terms/1" xmlns:core="http://www.cablelabs.com/namespaces/metadata/xsd/core/1" xmlns:content="http://www.cablelabs.com/namespaces/metadata/xsd/content/1" xmlns:title="http://www.cablelabs.com/namespaces/metadata/xsd/title/1" xmlns:ext="URN:NNDS:CMS:ADI3:01" xmlns:offer="http://www.cablelabs.com/namespaces/metadata/xsd/offer/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1">
+{% for val in values -%}
+  <Ext>
+ {% for episode in episodelist -%}
+<ext:GroupMember uriId="{{val.providerid}}/GMSE{{episode.episode_assetId}}" providerVersionNum="{{val.provider_version}}" internalVersionNum="0" creationDateTime="2015-09-13T23:00:00Z" startDateTime="1970-01-01T00:00:00Z" endDateTime="{{val.licensetime}}">
+<ext:MemberRef uriId="{{episode.episode_providerid}}/CGBE{{episode.episode_assetId}}" />
+<ext:OrderNumber>{{episode.episode_number}}</ext:OrderNumber>
+</ext:GroupMember>
+  {% endfor -%}
+        </Ext>
+        <Title uriId="{{val.providerid}}/TITL{{val.assetid}}" providerVersionNum="{{val.provider_version}}" internalVersionNum="0" creationDateTime="2015-09-13T23:00:00Z" startDateTime="1970-01-01T00:00:00Z" endDateTime="{{val.licensetime}}">
+                <core:AlternateId identifierSystem="ConversationID">6709837</core:AlternateId>
+                <core:Ext>
+                        <ext:LocalizableTitleExt xml:lang="eng">
+                        <ext:MarketingMessage>{{val.title}} Marketing Message</ext:MarketingMessage>
+                        </ext:LocalizableTitleExt>
+                        <ext:TitleExtensions Language="eng">
+                                <ext:DealSub>{{val.deal_sub}}</ext:DealSub>
+                        </ext:TitleExtensions>
+                        <ext:StudioCode>1</ext:StudioCode>
+                        <ext:SeriesInfo seasonNumber="{{val.season_number}}" />
+                </core:Ext>
+                <title:LocalizableTitle xml:lang="eng">
+                        <title:TitleSortName>*</title:TitleSortName>
+                        <title:TitleBrief>DUMMY</title:TitleBrief>
+                        <title:TitleMedium>{{val.title}}</title:TitleMedium>
+                        <title:TitleLong>SEASON LT</title:TitleLong>
+                        <title:SummaryShort>{{val.asset_syn}}</title:SummaryShort>
+                        <title:SummaryMedium>SEASON SM</title:SummaryMedium>
+                        <title:SummaryLong>SEASON LS</title:SummaryLong>
+                        <title:StudioDisplay>DUMMY</title:StudioDisplay>
+                </title:LocalizableTitle>
+                <title:Rating ratingSystem="BSkyBsi">{{val.par_rating}}</title:Rating>
+                <title:Rating ratingSystem="BSkyBca">{{val.par_rating}}</title:Rating>
+                <title:Rating ratingSystem="BSkyBtc">{{val.btc_rating}}</title:Rating>
+                <title:DisplayRunTime>0:00:00</title:DisplayRunTime>
+                <title:Year>1989</title:Year>
+                <title:Genre>{{val.genre}}</title:Genre>
+                <title:ShowType>Other</title:ShowType>
+        </Title>
+        <ContentGroup uriId="{{val.providerid}}/CGVT{{val.assetid}}" providerVersionNum="{{val.provider_version}}" internalVersionNum="0" creationDateTime="2015-09-13T23:00:00Z" startDateTime="1970-01-01T00:00:00Z" endDateTime="{{val.licensetime}}">
+                <core:Ext>
+ {% for episode in episodelist -%}
+<ext:GroupMemberRef uriId="{{val.providerid}}/GMSE{{episode.episode_assetId}}" />
+ {% endfor -%}
+                        <ext:ContentGroupType>Season</ext:ContentGroupType>
+                </core:Ext>
+                <offer:TitleRef uriId="{{val.providerid}}/TITL{{val.assetid}}" />
+        </ContentGroup>
+        <Terms uriId="{{val.providerid}}/TEBD{{val.assetid}}" providerVersionNum="{{val.provider_version}}" internalVersionNum="0" creationDateTime="2015-09-13T23:00:00Z" startDateTime="1970-01-01T00:00:00Z" endDateTime="{{val.licensetime}}">
+                <core:Ext>
+            <ext:TermType>EST</ext:TermType>
+            <ext:TermExtensions>
+                <ext:OrderType>Regular</ext:OrderType>
+            </ext:TermExtensions>
+            <ext:platform>BE</ext:platform>
+        </core:Ext>
+                <terms:SuggestedPrice>0</terms:SuggestedPrice>
+        </Terms>
+        <Offer uriId="{{val.providerid}}/OFBD{{val.assetid}}" providerVersionNum="{{val.provider_version}}" internalVersionNum="0" creationDateTime="2015-09-13T23:00:00Z" startDateTime="1970-01-01T00:00:00Z" endDateTime="{{val.licensetime}}">
+                <offer:BillingId>DUMMY</offer:BillingId>
+                <offer:TermsRef uriId="{{val.providerid}}/TEBD{{val.assetid}}" />
+                <offer:ContentGroupRef uriId="{{val.providerid}}/CGVT{{val.assetid}}" />
+        </Offer>
+  {% endfor -%}
+</ADI3>

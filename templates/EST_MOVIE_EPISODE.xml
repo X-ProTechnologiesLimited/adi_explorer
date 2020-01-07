@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><ADI3 xmlns="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1" xmlns:PO="URN:NNDS:CMS:ADI3:PURCHASEOPTIONS:01" xmlns:content="http://www.cablelabs.com/namespaces/metadata/xsd/content/1" xmlns:core="http://www.cablelabs.com/namespaces/metadata/xsd/core/1" xmlns:ext="URN:NNDS:CMS:ADI3:01" xmlns:offer="http://www.cablelabs.com/namespaces/metadata/xsd/offer/1" xmlns:schemaLocation="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1./MD-SP-VODContainer-I01.xsd" xmlns:terms="http://www.cablelabs.com/namespaces/metadata/xsd/terms/1" xmlns:title="http://www.cablelabs.com/namespaces/metadata/xsd/title/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+{% for val in values -%}
+  <Title creationDateTime="2014-11-24T10:34:34Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/TITL{{val.assetid}}">
+    <core:AlternateId identifierSystem="ConversationID">281309018</core:AlternateId>
+    <core:Ext>
+          <ext:LocalizableTitleExt xml:lang="eng">
+      </ext:LocalizableTitleExt>
+      <ext:IsSigned>false</ext:IsSigned>
+      <ext:IsSubtitle>true</ext:IsSubtitle>
+      <ext:IsAudioDescribed>true</ext:IsAudioDescribed>
+      <ext:Soundmouse>1166269</ext:Soundmouse>
+      <ext:StudioCode>1</ext:StudioCode>
+      <ext:LinkedObject object="PRCT{{val.assetid}}" type="parentContent"/>
+      <ext:LinkedObject object="MULT{{val.assetid}}" type="MultiFormat"/>
+      <ext:TitleExtensions Language="eng">
+        <ext:ProgramKey>PV1520064</ext:ProgramKey>
+        <ext:LinkedProgramKey>PV1520058</ext:LinkedProgramKey>
+        <ext:DealSub>{{val.deal_sub}}</ext:DealSub>
+      </ext:TitleExtensions>
+    </core:Ext>
+    <title:LocalizableTitle xml:lang="eng">
+      <title:TitleSortName>*</title:TitleSortName>
+      <title:TitleBrief>DUMMY</title:TitleBrief>
+      <title:TitleMedium>{{val.episode_title}}</title:TitleMedium>
+      <title:TitleLong>DUMMY</title:TitleLong>
+      <title:SummaryShort>{{val.asset_syn}}</title:SummaryShort>
+      <title:ActorDisplay>Luke Wilson, Maya Rudolph, Dax Shepard, Justin Long, Terry Crews</title:ActorDisplay>
+      <title:Actor firstName="Luke" fullName="Luke Wilson" lastName="Wilson" sortableName="*"/>
+      <title:Actor firstName="Maya" fullName="Maya Rudolph" lastName="Rudolph" sortableName="*"/>
+      <title:Actor firstName="Dax" fullName="Dax Shepard" lastName="Shepard" sortableName="*"/>
+      <title:Actor firstName="Justin" fullName="Justin Long" lastName="Long" sortableName="*"/>
+      <title:Actor firstName="Terry" fullName="Terry Crews" lastName="Crews" sortableName="*"/>
+      <title:DirectorDisplay>Krishnendu Banerjee</title:DirectorDisplay>
+      <title:Director firstName="Krishnendu" fullName="Krishnendu Banerjee" lastName="Banerjee" sortableName="*"/>
+      <title:StudioDisplay>Sony Pictures</title:StudioDisplay>
+    </title:LocalizableTitle>
+    <title:Rating ratingSystem="BSkyBca">{{val.par_rating}}</title:Rating>
+    <title:Rating ratingSystem="BSkyBsi">{{val.par_rating}}</title:Rating>
+    <title:Rating ratingSystem="BSkyBtc">{{val.btc_rating}}</title:Rating>
+    <title:Advisory>private:LANG</title:Advisory>
+        <title:DisplayRunTime>1:23:00</title:DisplayRunTime>
+    <title:Year>1995</title:Year>
+    <title:Genre>{{val.genre}}</title:Genre>
+    <title:ShowType>private:H</title:ShowType>
+  </Title>
+  <Movie creationDateTime="2014-11-24T10:34:34Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/MOBE{{val.assetid}}">
+    <core:Ext>
+      <ext:MovieExtensions analogueOff="true" mediaId="M1035909" waterMarkingRequired="false"/>
+    </core:Ext>
+        <content:SourceUrl>{{val.movie_path}}{{val.movie_url}}</content:SourceUrl>
+        <content:ContentFileSize>100</content:ContentFileSize>
+        <content:ContentCheckSum>{{val.movie_checksum}}</content:ContentCheckSum>
+    <content:AudioType>Dolby 5.1</content:AudioType>
+    <content:ScreenFormat>Widescreen</content:ScreenFormat>
+    <content:Resolution>1080i</content:Resolution>
+    <content:FrameRate>25</content:FrameRate>
+    <content:Duration>PT1H20M56S</content:Duration>
+    <content:IsHDContent>true</content:IsHDContent>
+    <content:Language>eng</content:Language>
+    <content:CopyControlInfo>
+      <content:IsCopyProtectionVerbose>true</content:IsCopyProtectionVerbose>
+      <content:AnalogProtectionSystem>0</content:AnalogProtectionSystem>
+      <content:EncryptionModeIndicator>0</content:EncryptionModeIndicator>
+      <content:ConstrainedImageTrigger>0</content:ConstrainedImageTrigger>
+      <content:CGMS_A>3</content:CGMS_A>
+    </content:CopyControlInfo>
+  </Movie>
+  <Thumbnail creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/THVT{{val.assetid}}">
+    <content:SourceUrl>{{val.image_path}}FinestHours_182x98.jpg</content:SourceUrl>
+    <content:ContentFileSize>100</content:ContentFileSize>
+    <content:ContentCheckSum>e9e23717c0b20f6af34ffbbf6b83add2</content:ContentCheckSum>
+  </Thumbnail>
+  <ContentGroup creationDateTime="2014-11-24T10:34:34Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/CGBE{{val.assetid}}">
+    <core:Ext>
+      <ext:ContentGroupType>Episode</ext:ContentGroupType>
+      <ext:PressPackImageRef uriId="{{val.providerid}}/PPCO{{val.assetid}}"/>
+      <ext:PressPackImageRef uriId="{{val.providerid}}/PPKK{{val.assetid}}"/>
+      <ext:PressPackImageRef uriId="{{val.providerid}}/PPTH{{val.assetid}}"/>
+      <ext:PressPackImageRef uriId="{{val.providerid}}/PPDD{{val.assetid}}"/>
+    </core:Ext>
+    <offer:TitleRef uriId="{{val.providerid}}/TITL{{val.assetid}}"/>
+    <offer:MovieRef uriId="{{val.providerid}}/MOBE{{val.assetid}}"/>
+    <offer:ThumbnailRef uriId="{{val.providerid}}/THVT{{val.assetid}}"/>
+  </ContentGroup>
+ <Ext>
+    <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PPCO{{val.assetid}}">
+      <content:SourceUrl>{{val.image_path}}FinestHours_182x243.jpg</content:SourceUrl>
+      <content:ContentFileSize>100</content:ContentFileSize>
+      <content:ContentCheckSum>43a1883f263a9bbae1b5944f24645430</content:ContentCheckSum>
+      <content:X_Resolution>183</content:X_Resolution>
+      <content:Y_Resolution>243</content:Y_Resolution>
+      <ext:Usage>urn:nnds:Metro:metadata:MediaTypeCS:2007:2.6</ext:Usage>
+    </ext:PressPackImage>
+    <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PPKK{{val.assetid}}">
+      <content:SourceUrl>{{val.image_path}}FinestHours_456x257.jpg</content:SourceUrl>
+      <content:ContentFileSize>100</content:ContentFileSize>
+      <content:ContentCheckSum>3396a3ff9fc6e09ae94068011556d0e5</content:ContentCheckSum>
+      <content:X_Resolution>456</content:X_Resolution>
+      <content:Y_Resolution>257</content:Y_Resolution>
+      <ext:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:stb:16-9</ext:Usage>
+    </ext:PressPackImage>
+    <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PPTH{{val.assetid}}">
+      <content:SourceUrl>{{val.image_path}}FinestHours_182x98.jpg</content:SourceUrl>
+      <content:ContentFileSize>100</content:ContentFileSize>
+      <content:ContentCheckSum>e9e23717c0b20f6af34ffbbf6b83add2</content:ContentCheckSum>
+      <content:X_Resolution>182</content:X_Resolution>
+      <content:Y_Resolution>98</content:Y_Resolution>
+      <ext:Usage>STBTHUMB</ext:Usage>
+    </ext:PressPackImage>
+    <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PPDD{{val.assetid}}">
+      <content:SourceUrl>{{val.image_path}}FinestHours_262x349.jpg</content:SourceUrl>
+      <content:ContentFileSize>100</content:ContentFileSize>
+      <content:ContentCheckSum>300343d46b52bbe7b191d9055d12b364</content:ContentCheckSum>
+      <content:X_Resolution>262</content:X_Resolution>
+      <content:Y_Resolution>349</content:Y_Resolution>
+      <ext:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:stb:3-4</ext:Usage>
+    </ext:PressPackImage>
+  </Ext>
+  <Offer creationDateTime="2016-10-27T13:10:01Z" endDateTime="{{val.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="{{val.offerStartDateTime}}" uriId="{{val.providerid}}/OAVT{{val.assetid}}">
+    <core:Ext>
+      <ext:OfferAvailability endDateTime="{{val.offerEndDateTime}}" offerType="SVOD" startDateTime="{{val.offerStartDateTime}}"/>
+    </core:Ext>
+    <offer:ProviderContentTier>{{val.providerid}}</offer:ProviderContentTier>
+    <offer:BillingId>DUMMY</offer:BillingId>
+    <offer:TermsRef uriId="{{val.providerid}}/TABE{{val.assetid}}"/>
+    <offer:ContentGroupRef uriId="{{val.providerid}}/CGBE{{val.assetid}}"/>
+  </Offer>
+  <Terms creationDateTime="2016-10-27T13:10:01Z" endDateTime="{{val.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="{{val.offerStartDateTime}}" uriId="{{val.providerid}}/TABE{{val.assetid}}">
+    <core:Ext>
+      <ext:TermType>EST</ext:TermType>
+      <ext:platform>BE</ext:platform>
+      <ext:TermExtensions>
+        <ext:OrderType>Regular</ext:OrderType>
+      </ext:TermExtensions>
+    </core:Ext>
+    <terms:SuggestedPrice>0</terms:SuggestedPrice>
+  </Terms>
+  {% endfor -%}
+</ADI3>

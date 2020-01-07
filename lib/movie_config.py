@@ -1,3 +1,4 @@
+# Movie File Parameters
 video_path = 'Providers/BSS/Content/Distribution/TestFiles/RTP/'
 image_path = 'tank/Images/ByPankaj/'
 hdr_movie_file = 'IdentExternalDDplus_MainWithExternalAtmos_IdentExternalDDplus-Ateme_out_API.ts'
@@ -11,7 +12,7 @@ est_movie_checksum = '429a5f8d146cc82170513cbcd2b7b71b'
 title_movie = 'Main_Video-SD.ts'
 title_checksum = '30c7ef994606991d5706e2f9128f6eb6'
 
-
+# Default Metadata Parameters
 default_synopsis = 'This is the synopsis of asset named: '
 default_provider_version = '1'
 default_production_year = '2000'
@@ -20,3 +21,9 @@ default_par_rating = '1'
 default_audio_type = 'Dolby Digital'
 default_frame_rate = '25'
 default_subtitle_flag = 'false'
+
+# EST Provider Related Parameters
+tv_show_provider = 'est__tvboxset_hd'
+tv_episode_provider = 'est__tvepisode_hd'
+movie_show_provider = 'est__movieboxset_hd'
+movie_episode_provider = 'est__moviebstitle_hd'
