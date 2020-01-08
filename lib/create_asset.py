@@ -29,7 +29,7 @@ def create_single_title():
                              request.form.get('production_year'), request.form.get('ca_btc'),
                              request.form.get('par_rating'),
                              request.form.get('audio_type'), request.form.get('frame_rate'),
-                             request.form.get('subtitle_flag'))
+                             request.form.get('subtitle_flag'), request.form.get('duration'))
     params.movie_details_entry(provider_id)
     params.video_type_entry(provider_id)
     params.offer_type_entry(asset_type)
@@ -48,7 +48,8 @@ def create_single_title():
         new_package_meta = ADI_metadata(assetId=asset_timestamp + '01', title=title, par_rating=params.par_rating,
                                         subtitle_flag=params.subtitle_flag, audio_type=params.audio_type,
                                         frame_rate=params.frame_rate, btc_rating=params.ca_btc, video_type=params.video_type,
-                                        synopsis=params.synopsis, production_year=params.production_year, title_filter='true')
+                                        synopsis=params.synopsis, production_year=params.production_year,
+                                        duration=params.runtime, title_filter='true')
 
         new_package_offer = ADI_offer(assetId=asset_timestamp + '01', offer_type=params.offer_type,
                                       offerStartTime=offerStartTime, offerEndTime=offerEndTime,

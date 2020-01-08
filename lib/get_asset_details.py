@@ -18,6 +18,8 @@ def download_title(assetId):
         package_offer = ADI_offer.query.filter_by(assetId=assetId).first()
         package_media = ADI_media.query.filter_by(assetId=assetId).first()
         sitemap.sitemap_entry(package_main.adi_type, package_meta.subtitle_flag)
+        asset_duration = 'PT'+package_meta.duration.split(':')[0]+'H'+package_meta.duration.split(':')[1]+'M'\
+                         +package_meta.duration.split(':')[2]+'S'
         if sitemap.sitemap == False:
             return errorchecker.not_supported_asset_type(package_main.adi_type)
 
@@ -43,6 +45,8 @@ def download_title(assetId):
             'audio_type': package_meta.audio_type,
             'frame_rate': package_meta.frame_rate,
             'btc_rating': package_meta.btc_rating,
+            'runtime': package_meta.duration,
+            'duration': asset_duration,
             'movie_url': package_media.movie_url,
             'movie_checksum': package_media.movie_checksum,
             'video_type': package_meta.video_type,

@@ -40,7 +40,7 @@
     <title:Rating ratingSystem="BSkyBtc">{{val.btc_rating}}</title:Rating>
     <title:Advisory>private:LANG</title:Advisory>
     <title:Advisory>private:SEX</title:Advisory>
-        <title:DisplayRunTime>1:23:00</title:DisplayRunTime>
+        <title:DisplayRunTime>{{val.runtime}}</title:DisplayRunTime>
     <title:Year>{{val.production_year}}</title:Year>
     <title:Genre>6:1</title:Genre>
     <title:ShowType>private:H</title:ShowType>
@@ -56,7 +56,7 @@
       <content:ScreenFormat>Widescreen</content:ScreenFormat>
     <content:Resolution>1080i</content:Resolution>
     <content:FrameRate>{{val.frame_rate}}</content:FrameRate>
-    <content:Duration>PT1H20M56S</content:Duration>
+    <content:Duration>{{val.duration}}</content:Duration>
     <content:IsHDContent>{{val.video_type}}</content:IsHDContent>
     <content:Language>eng</content:Language>
     <content:SubtitleLanguage>eng</content:SubtitleLanguage>

@@ -21,6 +21,8 @@ default_par_rating = '1'
 default_audio_type = 'Dolby Digital'
 default_frame_rate = '25'
 default_subtitle_flag = 'false'
+default_asset_runtime = '1:00:00'
+default_asset_duration = 'PT1H00M00S'
 
 # EST Provider Related Parameters
 tv_show_provider = 'est__tvboxset_hd'

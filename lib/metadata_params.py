@@ -15,8 +15,10 @@ class metadata_default_params(object):
         self.movie_checksum = None
         self.video_type = None
         self.offer_type = None
+        self.runtime = None
+        self.duration = None
 
-    def param_logic_entry(self, synopsis, title, provider_version, production_year, ca_btc, par_rating, audio_type, frame_rate, subtitle_flag):
+    def param_logic_entry(self, synopsis, title, provider_version, production_year, ca_btc, par_rating, audio_type, frame_rate, subtitle_flag, asset_duration):
         if synopsis != "":
             self.synopsis = synopsis
         else:
@@ -56,6 +58,13 @@ class metadata_default_params(object):
             self.subtitle_flag = subtitle_flag
         else:
             self.subtitle_flag = movie_config.default_subtitle_flag
+
+        if asset_duration != "":
+            self.runtime = asset_duration
+            self.duration = 'PT'+asset_duration.split(':')[0]+'H'+asset_duration.split(':')[1]+'M'+asset_duration.split(':')[2]+'S'
+        else:
+            self.runtime = movie_config.default_asset_runtime
+            self.duration = movie_config.default_asset_duration
 
 
     def multiformat_entry(self, multiformat_id, asset_timestamp):

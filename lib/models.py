@@ -23,6 +23,7 @@ class ADI_metadata(db.Model):
     synopsis = db.Column(db.String(500))
     genre = db.Column(db.String(10))
     production_year = db.Column(db.String(10))
+    duration = db.Column(db.String(10))
     title_filter = db.Column(db.String(10))
 
 class ADI_offer(db.Model):
