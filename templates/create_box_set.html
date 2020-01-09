@@ -7,6 +7,7 @@
     <h2 class="title">Create EST Show</h2>
     <div class="box">
         <form method="POST" action="/create_est_show">
+            <p>** Mandatory Fields. Optional fields populates default values as per 'config.properties' file. </p>
             <h4>Licensing Section</h4>
             <div class="field">
                 <div class="control">
@@ -22,7 +23,7 @@
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="LicenseWindow" placeholder="LicenseWindow" autofocus="" required>
-                    <d>** License Expiry in Days. Example: 365 for 1 year license / 30 for 1 month license</d>
+                    <d>** License Expiry in Days from Now. Eg 30 for 1 month from now.</d>
                 </div>
             </div>
             <h4>Metadata Section</h4>
@@ -35,25 +36,21 @@
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="synopsis" placeholder="Show Synopsis" autofocus="">
-                    <d>Default Value taken from Show Title.</d>
                 </div>
             </div>
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="provider_version" placeholder="Provider Version" autofocus="">
-                    <d>Default Value: 1</d>
                 </div>
             </div>
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="seasons" placeholder="Number of Seasons" autofocus="">
-                    <d>Default Value: 1</d>
                 </div>
             </div>
              <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="no_of_episodes" placeholder="Number of Episodes" autofocus="">
-                    <d>Default Value: 1</d>
                 </div>
             </div>
              <div class="field">
@@ -66,7 +63,6 @@
                       <option value="G">
                     </option>
                     </datalist>
-                    <d>Default Value: U</d>
                 </div>
             </div>
             <div class="field">
@@ -79,19 +75,15 @@
                       <option value="5">
                     </option>
                     </datalist>
-                    <d>Default Value: 1</d>
                 </div>
             </div>
             <h4>Offer Section</h4>
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="offer_window" placeholder="Offer Window" autofocus="" required>
-                    <d>** Availability in days</d>
+                    <d>** Offer Availability in Days from Now. Eg 30 for 1 month from now.</d>
                 </div>
             </div>
-            <p>** Mandatory Fields **</p>
-            <p>   Non Mandatory Fields can be left blank and will set default values</p>
-
             <button class="button is-block is-info is-medium is-fullwidth">Generate Show Package</button>
         </form>
     </div>

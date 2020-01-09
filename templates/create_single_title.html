@@ -1,12 +1,13 @@
 <!-- templates/create_package.html -->
 
 {% extends "base.html" %}
-
+<p>** Mandatory Fields. Optional fields populates default values as per 'config.properties' file. </p>
 {% block content %}
 <div class="column is-4 is-offset-4">
     <h2 class="title">Create ADI</h2>
     <div class="box">
         <form method="POST" action="/create_single_title">
+
             <h4>Licensing Section</h4>
             <div class="field">
                 <div class="control">
@@ -26,7 +27,7 @@
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="LicenseWindow" placeholder="LicenseWindow" autofocus="" required>
-                    <d>** License Expiry in Days. Example: 365 for 1 year license / 30 for 1 month license</d>
+                    <d>** License Expiry in Days from Now. Eg 30 for 1 month from now.</d>
                 </div>
             </div>
             <h4>Metadata Section</h4>
@@ -39,7 +40,6 @@
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="synopsis" placeholder="Asset Synopsis" autofocus="">
-                    <d>Default Value taken from Asset Title.</d>
                 </div>
             </div>
             <div class="field">
@@ -51,19 +51,17 @@
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="provider_version" placeholder="Provider Version" autofocus="">
-                    <d>Default Value: 1</d>
                 </div>
             </div>
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="multiformat_id" placeholder="Multiformat ID" autofocus="">
-                    <d>Default Value taken from Asset ID.</d>
+                    <d> Default value: Taken from Asset Id</d>
                 </div>
             </div>
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="production_year" placeholder="Production Year" autofocus="">
-                    <d>Default Value: 2000</d>
                 </div>
             </div>
             <div class="field">
@@ -74,7 +72,6 @@
                       <option value="false">
                     </option>
                     </datalist>
-                    <d>Default Value: False</d>
                 </div>
              <div class="field">
                 <div class="control">
@@ -86,7 +83,6 @@
                       <option value="G">
                     </option>
                     </datalist>
-                    <d>Default Value: U</d>
                 </div>
             </div>
             <div class="field">
@@ -99,7 +95,6 @@
                       <option value="5">
                     </option>
                     </datalist>
-                    <d>Default Value: 1</d>
                 </div>
             </div>
             <div class="field">
@@ -111,7 +106,6 @@
                       <option value="Dolby Atmos">
                     </option>
                     </datalist>
-                    <d>Default Value: Dolby Digital</d>
                 </div>
             </div>
             <div class="field">
@@ -122,20 +116,19 @@
                       <option value="50">
                     </option>
                     </datalist>
-                    <d>Default Value: 25</d>
                 </div>
             </div>
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="duration" placeholder="Asset Duration" autofocus="">
-                    <d>Format:XX:XX:XX Default Value: 1:00:00</d>
+                    <d>Format:XX:XX:XX</d>
                 </div>
             </div>
             <h4>Offer Section</h4>
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="offer_window" placeholder="Offer Window" autofocus="" required>
-                    <d>** Availability in days</d>
+                    <d>** Offer Availability in Days from Now. Eg 30 for 1 month from now.</d>
                 </div>
             </div>
             <div class="field">
@@ -144,10 +137,6 @@
                     <d>** Only required if Asset Type is Catchup</d>
                 </div>
             </div>
-
-            <p>** Mandatory Fields **</p>
-            <p>   Non Mandatory Fields can be left blank and will set default values</p>
-
             <button class="button is-block is-info is-medium is-fullwidth">Generate ADI XML</button>
         </form>
     </div>

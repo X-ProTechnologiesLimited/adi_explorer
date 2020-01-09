@@ -20,10 +20,10 @@ class est_show_default_params(object):
 
     def est_series_count(self, no_of_seasons, no_of_episodes):
         if no_of_seasons == "":
-            self.no_of_seasons = '1'
+            self.no_of_seasons = movie_config.default_no_of_seasons
         else:
             self.no_of_seasons = no_of_seasons
         if no_of_episodes == "":
-            self.no_of_episodes = '1'
+            self.no_of_episodes = movie_config.default_no_of_episodes
         else:
             self.no_of_episodes = no_of_episodes

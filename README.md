@@ -30,7 +30,7 @@ The project is also enabled to run in Docker Container. It contains the Dockerfi
 5. Run the `./build.sh` script in the project root (adi_explorer)
 
 ## Configuring the Media Paths for Test Environments
-1. Edit the `<adi_explorer_project_root>/lib/movie_config.py` file to refer the correct files, checksum and location
+1. Edit the `<adi_explorer_project_root>/utils/config.properties` file to refer the correct files, checksum and location
 of the Media files (video files) based on Test Environment Tank file locations
 2. Edit the same file for default metadata
 
