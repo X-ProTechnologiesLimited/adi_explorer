@@ -65,16 +65,19 @@ def get_adi():
 
 @main.route('/get_adi', methods=['POST'])
 def get_adi_post():
-    assetId = request.form.get('AssetId')
-    package = ADI_main.query.filter_by(assetId=assetId).first()
-    if package.adi_type == 'est_episode':
-        return get_asset_details.download_est_episode(assetId)
-    elif package.adi_type == 'est_season':
-        return get_asset_details.download_est_season(assetId)
-    elif package.adi_type == 'est_show':
-        return get_asset_details.download_est_show(assetId)
-    else:
-        return get_asset_details.download_title(assetId)
+    try:
+        assetId = request.form.get('AssetId')
+        package = ADI_main.query.filter_by(assetId=assetId).first()
+        if package.adi_type == 'est_episode':
+            return get_asset_details.download_est_episode(assetId)
+        elif package.adi_type == 'est_season':
+            return get_asset_details.download_est_season(assetId)
+        elif package.adi_type == 'est_show':
+            return get_asset_details.download_est_show(assetId)
+        else:
+            return get_asset_details.download_title(assetId)
+    except:
+        return errorchecker.asset_not_found_id('AssetId')
 
 @main.route('/get_asset_metadata')
 def get_asset_metadata():

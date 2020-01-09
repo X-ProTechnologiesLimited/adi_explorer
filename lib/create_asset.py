@@ -88,7 +88,7 @@ def create_est_show_adi():
                              request.form.get('production_year'), request.form.get('ca_btc'),
                              request.form.get('par_rating'),
                              request.form.get('audio_type'), request.form.get('frame_rate'),
-                             request.form.get('subtitle_flag'))
+                             request.form.get('subtitle_flag'), "")
     params.movie_details_entry(show_provider_id)
     params.offer_type_entry('est_show')
 
