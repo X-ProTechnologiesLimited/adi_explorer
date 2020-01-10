@@ -188,3 +188,20 @@ def input_missing(input_field):
         outf.write('{% endblock %}')
 
     return render_template('search_response.html')
+
+
+@errorchecker.errorhandler(502)
+def environment_not_defined(environment):
+    message = {
+            'status': 502,
+            'message': 'Test Environment ' + environment + ' Not Defined or not valid'
+        }
+    output = json2html.convert(json=message,
+                               table_attributes="id=\"Error\" class=\"table table-striped\"" "border=2")
+    with open(html_outfile, 'w') as outf:
+        outf.write('{% extends "base.html" %}')
+        outf.write('{% block content %}')
+        outf.write(output)
+        outf.write('{% endblock %}')
+
+    return render_template('search_response.html')

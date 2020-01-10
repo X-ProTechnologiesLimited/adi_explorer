@@ -119,6 +119,15 @@ def update_video_post():
 def update_show_season():
     return errorchecker.not_implemented_yet()
 
+@main.route('/post_adi')
+def post_adi():
+    return render_template('post_adi.html')
+
+@main.route('/post_adi', methods=['POST'])
+@nocache
+def post_adi_post():
+    return get_asset_details.post_adi_endpoint(request.form.get('assetId'), request.form.get('environment'), request.form.get('source'))
+
 @main.route('/quit')
 def quit():
     func = request.environ.get('werkzeug.server.shutdown')

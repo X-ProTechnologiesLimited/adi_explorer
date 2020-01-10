@@ -1,10 +1,16 @@
 from flask import Blueprint, render_template, make_response
 from .models import ADI_main, ADI_media, ADI_metadata, ADI_offer, ADI_EST_Show
-from . import errorchecker
 from . import movie_config
 from .sitemap_create import sitemap_mapper
 from bson.json_util import dumps
 from . import response
+import requests
+import datetime
+import time
+from .metadata_params import metadata_default_params
+from . import errorchecker
+from .models import ADI_main
+params = metadata_default_params()
 sitemap = sitemap_mapper()
 
 main = Blueprint('main', __name__, static_url_path='', static_folder='../created_adi/', template_folder='../templates')
@@ -244,3 +250,25 @@ def get_asset_video(assetId):
 
     json_data = dumps(adi_metadata)
     return response.asset_retrieve(json_data)
+
+# def post_adi_endpoint(assetId, environment, source):
+#     ts = time.time()
+#     conversationId = datetime.datetime.fromtimestamp(ts).strftime('%d%H%M%S')
+#     params.environment_entry(environment)
+#     package = ADI_main.query.filter_by(assetId=assetId).first()
+#     if package.adi_type == 'est_episode':
+#         request_adi = download_est_episode(assetId)
+#     elif package.adi_type == 'est_season':
+#         request_adi = download_est_season(assetId)
+#     elif package.adi_type == 'est_show':
+#         request_adi = download_est_show(assetId)
+#     else:
+#         request_adi = download_title(assetId)
+#
+#     endpoint_url = params.environment_url + 'source=' + source + '&conversationId=' + conversationId
+#     headers = {'Content-type': 'text/xml;charset=\"utf-8\"'}
+#     response_adi_post = requests.post(url=endpoint_url, data=request_adi, headers=headers)
+#     return response_adi_post
+#
+#     # except:
+#     #     return errorchecker.asset_not_found_id(assetId)

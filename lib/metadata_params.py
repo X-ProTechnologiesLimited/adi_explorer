@@ -1,4 +1,5 @@
 from . import movie_config
+from . import errorchecker
 class metadata_default_params(object):
 
     def __init__(self):
@@ -17,6 +18,7 @@ class metadata_default_params(object):
         self.offer_type = None
         self.runtime = None
         self.duration = None
+        self.environment_url = None
 
     def param_logic_entry(self, synopsis, title, provider_version, production_year, ca_btc, par_rating, audio_type, frame_rate, subtitle_flag, asset_duration):
         if synopsis != "":
@@ -101,3 +103,27 @@ class metadata_default_params(object):
             self.offer_type = 'SVOD'
         else:
             self.offer_type = 'IPPR'
+
+    def environment_entry(self, environment):
+        if environment == 'TS1:CMS':
+            self.environment_url = movie_config.ts1_cms
+        elif environment == 'TS1:VMS':
+            self.environment_url = movie_config.ts1_vms
+        elif environment == 'TS2:CMS':
+            self.environment_url = movie_config.ts2_cms
+        elif environment == 'TS2:VMS':
+            self.environment_url = movie_config.ts2_vms
+        elif environment == 'TS3:CMS':
+            self.environment_url = movie_config.ts3_cms
+        elif environment == 'TS3:VMS':
+            self.environment_url = movie_config.ts3_vms
+        elif environment == 'TS4:CMS':
+            self.environment_url = movie_config.ts4_cms
+        elif environment == 'TS4:VMS':
+            self.environment_url = movie_config.ts4_vms
+        elif environment == 'STAGE:CMS':
+            self.environment_url = movie_config.stage_cms
+        elif environment == 'STAGE:VMS':
+            self.environment_url = movie_config.stage_vms
+        else:
+            return errorchecker.environment_not_defined(environment)

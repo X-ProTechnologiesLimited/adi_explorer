@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Post ADI</h3>
+    <div class="box">
+      {% with messages = get_flashed_messages() %}
+{% if messages %}
+    <div class="notification is-danger">
+        {{ messages[0] }}. Go to <a href="{{ url_for('auth.add_card') }}">add Card page</a>.
+    </div>
+{% endif %}
+{% endwith %}
+        <form method="POST" action="/post_adi">
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="assetId" placeholder="AssetId" autofocus="" required>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="environment" name="environment" placeholder="Test Environment" autofocus="" required>
+                    <datalist id="environment">
+                      <option value="TS1:CMS">
+                      <option value="TS1:VMS">
+                      <option value="TS2:CMS">
+                      <option value="TS2:VMS">
+                      <option value="TS3:CMS">
+                      <option value="TS3:VMS">
+                      <option value="TS4:CMS">
+                      <option value="TS4:VMS">
+                      <option value="STAGE:CMS">
+                      <option value="STAGE:VMS">
+                    </option>
+                    </datalist>
+                    <d>**</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="source" name="source" placeholder="Asset Source" autofocus="" required>
+                    <datalist id="source">
+                      <option value="testsource">
+                      <option value="bss">
+                      <option value="uhdbss">
+                      <option value="3BS">
+                      <option value="3ST">
+                      <option value="3EP">
+                    </option>
+                    </datalist>
+                    <d>**</d>
+                </div>
+            </div>
+
+
+            <p></p>
+
+            <button class="button is-block is-info is-medium is-fullwidth">POST ADI</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
