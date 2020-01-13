@@ -251,24 +251,25 @@ def get_asset_video(assetId):
     json_data = dumps(adi_metadata)
     return response.asset_retrieve(json_data)
 
-# def post_adi_endpoint(assetId, environment, source):
-#     ts = time.time()
-#     conversationId = datetime.datetime.fromtimestamp(ts).strftime('%d%H%M%S')
-#     params.environment_entry(environment)
-#     package = ADI_main.query.filter_by(assetId=assetId).first()
-#     if package.adi_type == 'est_episode':
-#         request_adi = download_est_episode(assetId)
-#     elif package.adi_type == 'est_season':
-#         request_adi = download_est_season(assetId)
-#     elif package.adi_type == 'est_show':
-#         request_adi = download_est_show(assetId)
-#     else:
-#         request_adi = download_title(assetId)
-#
-#     endpoint_url = params.environment_url + 'source=' + source + '&conversationId=' + conversationId
-#     headers = {'Content-type': 'text/xml;charset=\"utf-8\"'}
-#     response_adi_post = requests.post(url=endpoint_url, data=request_adi, headers=headers)
-#     return response_adi_post
-#
-#     # except:
-#     #     return errorchecker.asset_not_found_id(assetId)
+def post_adi_endpoint(assetId, environment, source):
+    ts = time.time()
+    conversationId = datetime.datetime.fromtimestamp(ts).strftime('%d%H%M%S')
+    params.environment_entry(environment)
+    package = ADI_main.query.filter_by(assetId=assetId).first()
+    if package.adi_type == 'est_episode':
+        request_adi = download_est_episode(assetId)
+    elif package.adi_type == 'est_season':
+        request_adi = download_est_season(assetId)
+    elif package.adi_type == 'est_show':
+        request_adi = download_est_show(assetId)
+    else:
+        request_adi = download_title(assetId)
+
+    with open('adi.xml', 'wb') as file:
+        file.write(request_adi)
+        endpoint_url = params.environment_url + 'source=' + source + '&conversationId=' + conversationId
+        headers = {'Content-type': 'text/xml; charset=UTF-8'}
+        response_post_adi = requests.post(url=endpoint_url, data=open(request_adi, 'rb'), headers=headers)
+
+    # except:
+    #     return errorchecker.asset_not_found_id(assetId)

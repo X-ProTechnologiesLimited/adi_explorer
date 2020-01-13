@@ -1,6 +1,8 @@
 # main.py
 
 from flask import Blueprint, render_template, request
+import requests
+import os
 from . import errorchecker
 from .nocache import nocache
 from . import create_asset
@@ -8,6 +10,13 @@ from . import search
 from . import get_asset_details
 from . import update_package
 from .models import ADI_main
+import datetime
+import time
+from .metadata_params import metadata_default_params
+params = metadata_default_params()
+path_to_script = os.path.dirname(os.path.abspath(__file__))
+
+
 
 main = Blueprint('main', __name__, static_url_path='', static_folder='../created_adi/', template_folder='../templates')
 
@@ -59,14 +68,10 @@ def search_est_post():
 def search_adi_all():
     return search.search_all_packages()
 
-@main.route('/get_adi')
-def get_adi():
-    return render_template('retrieve_package.html')
 
-@main.route('/get_adi', methods=['POST'])
-def get_adi_post():
+@main.route('/get_adi/<assetId>')
+def get_back_adi(assetId):
     try:
-        assetId = request.form.get('AssetId')
         package = ADI_main.query.filter_by(assetId=assetId).first()
         if package.adi_type == 'est_episode':
             return get_asset_details.download_est_episode(assetId)
@@ -78,6 +83,15 @@ def get_adi_post():
             return get_asset_details.download_title(assetId)
     except:
         return errorchecker.asset_not_found_id('AssetId')
+
+@main.route('/get_adi')
+def get_adi():
+    return render_template('retrieve_package.html')
+
+@main.route('/get_adi', methods=['POST'])
+def get_adi_post():
+    assetId = request.form.get('AssetId')
+    return get_back_adi(assetId)
 
 @main.route('/get_asset_metadata')
 def get_asset_metadata():
@@ -126,7 +140,23 @@ def post_adi():
 @main.route('/post_adi', methods=['POST'])
 @nocache
 def post_adi_post():
-    return get_asset_details.post_adi_endpoint(request.form.get('assetId'), request.form.get('environment'), request.form.get('source'))
+    my_filename = os.path.join(path_to_script, "adi.xml")
+    ts = time.time()
+    conversationId = datetime.datetime.fromtimestamp(ts).strftime('%d%H%M%S')
+    environment = request.form.get('environment')
+    params.environment_entry(environment)
+    assetId = request.form.get('assetId')
+    source = request.form.get('source')
+    get_adi_url = 'http://localhost:5000/get_adi/'+assetId
+    response_adi = requests.get(url=get_adi_url)
+    with open(my_filename, 'w') as f:
+        f.write(response_adi.text)
+    endpoint_url = params.environment_url + 'source=' + source + '&conversationId=' + conversationId
+    headers = {'Content-type': 'text/xml; charset=UTF-8'}
+    data = open(my_filename, 'rb').read()
+    response_post_adi = requests.post(url=endpoint_url, data=data, headers=headers)
+    return 'success'
+
 
 @main.route('/quit')
 def quit():

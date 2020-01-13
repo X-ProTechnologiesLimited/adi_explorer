@@ -6,3 +6,4 @@ search_response.html
 *.iml
 !/.gitignore
 /logs/*
+adi.xml
