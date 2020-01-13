@@ -38,6 +38,10 @@ of the Media files (video files) based on Test Environment Tank file locations
 Download the optional Sqlite DB Browser `https://sqlitebrowser.org/dl/` to browse the database file for the tool:
 `<adi_explorer_project_root>/lib/db.sqlite`
 
+Tunnelling for the tool for Ingest Purpose
+ssh -v -N -L 14231:<vam_host>:14231 kba08@192.168.42.6
+putty open tunnel with source port 14231
+
 ## Current Scope for the tool
 1. Create Single Title ADIs
 2. Create EST Episodes, Shows and Seasons
@@ -45,15 +49,15 @@ Download the optional Sqlite DB Browser `https://sqlitebrowser.org/dl/` to brows
 4. Update Video for Single Title ADIs and Episodes
 5. View and Filter list of created ADIs and EST Shows
 6. Download created ADIs for Title, Episode and Shows
+7. Ingest ADI into test environments directly from tool
 
 ## Enhancements Planned
 1. DPL
 2. Update additional metadata
 3. Additional Offer Types for EST(PreOrder and Coming Soon)
 4. Additional Purchase Options
-5. Ingest ADI into test environments directly from tool
 
-
-
-
-
+## Tunnelling for the tool for Ingest Purpose
+Since the VAM is not reachable from Local WorkStations, we need to open a socks tunnel to VAM nodes
+1. Login to any unix jump boxes and `ssh -v -N -L <vam_port>:<vam_host>:<vam_port> username@jump_host`
+2. Open putty.exe and open session to same Jump box with a tunnel with source port 14231

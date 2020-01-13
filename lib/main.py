@@ -10,8 +10,10 @@ from . import search
 from . import get_asset_details
 from . import update_package
 from .models import ADI_main
+from . import response
 import datetime
 import time
+from bson.json_util import dumps
 from .metadata_params import metadata_default_params
 params = metadata_default_params()
 path_to_script = os.path.dirname(os.path.abspath(__file__))
@@ -154,9 +156,21 @@ def post_adi_post():
     endpoint_url = params.environment_url + 'source=' + source + '&conversationId=' + conversationId
     headers = {'Content-type': 'text/xml; charset=UTF-8'}
     data = open(my_filename, 'rb').read()
-    response_post_adi = requests.post(url=endpoint_url, data=data, headers=headers)
-    return 'success'
+    post_response = {}
+    try:
+        response_post_adi = requests.post(url=endpoint_url, data=data, headers=headers)
+        post_response['Status'] = '200'
+        post_response['Message'] = 'AssetID: '+ assetId + ' ingested successfully'
+        post_response['Endpoint'] = endpoint_url
+        post_response['ConversationId'] = conversationId
+        post_response['Endpoint_Response'] = response_post_adi.text
+    except:
+        post_response['Status'] = '404'
+        post_response['Message'] = 'Error connecting to Endpoint: '+ endpoint_url
+        post_response['ConversationId'] = conversationId
 
+    json_data = dumps(post_response)
+    return response.asset_retrieve(json_data)
 
 @main.route('/quit')
 def quit():
