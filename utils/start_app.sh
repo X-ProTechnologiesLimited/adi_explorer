@@ -6,8 +6,10 @@ get_project_dir() { # Gets the root directory of the repository
 }
 if [[ $CONTAINERISED != "true" ]] ; then
     PROJECT_DIR=$(get_project_dir)
+    FLASK_HOST_NAME='localhost'
 else
     PROJECT_DIR="/app"
+    FLASK_HOST_NAME='host.docker.internal'
 fi
 
 mkdir -p $PROJECT_DIR/logs

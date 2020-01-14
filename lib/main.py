@@ -3,13 +3,14 @@
 from flask import Blueprint, render_template, request
 import requests
 import os
+from . import db
 from . import errorchecker
 from .nocache import nocache
 from . import create_asset
 from . import search
 from . import get_asset_details
 from . import update_package
-from .models import ADI_main
+from .models import ADI_main, ADI_INGEST_HISTORY
 from . import response
 import datetime
 import time
@@ -18,10 +19,7 @@ from .metadata_params import metadata_default_params
 params = metadata_default_params()
 path_to_script = os.path.dirname(os.path.abspath(__file__))
 
-
-
 main = Blueprint('main', __name__, static_url_path='', static_folder='../created_adi/', template_folder='../templates')
-
 
 @main.route('/')
 def index():
@@ -164,6 +162,11 @@ def post_adi_post():
         post_response['Endpoint'] = endpoint_url
         post_response['ConversationId'] = conversationId
         post_response['Endpoint_Response'] = response_post_adi.text
+        package = ADI_main.query.filter_by(assetId=assetId).first()
+        ingest_response = ADI_INGEST_HISTORY(assetId=assetId, provider_version=package.provider_version,
+                                             environment=environment, conversationId=conversationId)
+        db.session.add(ingest_response)
+        db.session.commit()
     except:
         post_response['Status'] = '404'
         post_response['Message'] = 'Error connecting to Endpoint: '+ endpoint_url

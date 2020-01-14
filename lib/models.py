@@ -62,3 +62,11 @@ class ADI_EST_Show(db.Model):
     episode_number = db.Column(db.String(10))
     parent_group_id = db.Column(db.String(100))
     show_type = db.Column(db.String(10))
+
+class ADI_INGEST_HISTORY(db.Model):
+    id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
+    assetId = db.Column(db.String(100), unique=True)
+    provider_version = db.Column(db.String(10))
+    environment = db.Column(db.String(10))
+    conversationId = db.Column(db.String(100))
+
