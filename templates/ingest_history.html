@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Get Ingest History</h3>
+    <div class="box">
+        <form method="POST" action="/get_ingest_history">
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="assetId" placeholder="Asset ID" autofocus="" required>
+                </div>
+            </div>
+
+            <p></p>
+
+            <button class="button is-block is-info is-medium is-fullwidth">Get Ingest History</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

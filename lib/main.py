@@ -1,6 +1,6 @@
 # main.py
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify, abort, send_from_directory, flash, redirect, url_for
 import requests
 import os
 from . import db
@@ -18,6 +18,7 @@ from bson.json_util import dumps
 from .metadata_params import metadata_default_params
 params = metadata_default_params()
 path_to_script = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_DIRECTORY = "../created_adi"
 
 main = Blueprint('main', __name__, static_url_path='', static_folder='../created_adi/', template_folder='../templates')
 
@@ -174,6 +175,53 @@ def post_adi_post():
 
     json_data = dumps(post_response)
     return response.asset_retrieve(json_data)
+
+
+@main.route("/files")
+def list_files():
+    """Endpoint to list files on the server."""
+    files = []
+    for filename in os.listdir(UPLOAD_DIRECTORY):
+        path = os.path.join(UPLOAD_DIRECTORY, filename)
+        if os.path.isfile(path):
+            files.append(filename)
+    return jsonify(files)
+
+
+@main.route("/files/<path:path>")
+def get_file(path):
+    """Download a file."""
+    return send_from_directory(UPLOAD_DIRECTORY, path, as_attachment=True)
+
+
+@main.route("/post_files_post", methods=['GET', 'POST'])
+def post_files_post():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file:
+            file.save(os.path.join(UPLOAD_DIRECTORY, file.filename))
+            return 'success'
+    return render_template('upload_files.html')
+
+
+@main.route("/get_ingest_history")
+def get_ingest_history():
+    return render_template('ingest_history.html')
+
+@main.route("/get_ingest_history", methods=['POST'])
+def get_ingest_history_post():
+    assetId = request.form.get('assetId')
+    return search.search_ingest_history(assetId)
+
 
 @main.route('/quit')
 def quit():

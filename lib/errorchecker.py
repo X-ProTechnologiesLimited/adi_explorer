@@ -205,3 +205,20 @@ def environment_not_defined(environment):
         outf.write('{% endblock %}')
 
     return render_template('search_response.html')
+
+
+@errorchecker.errorhandler(404)
+def no_ingest_history(assetId):
+    message = {
+            'status': 404,
+            'message': 'No Ingest History Found for this asset' + assetId
+        }
+    output = json2html.convert(json=message,
+                               table_attributes="id=\"Error\" class=\"table table-striped\"" "border=2")
+    with open(html_outfile, 'w') as outf:
+        outf.write('{% extends "base.html" %}')
+        outf.write('{% block content %}')
+        outf.write(output)
+        outf.write('{% endblock %}')
+
+    return render_template('search_response.html')

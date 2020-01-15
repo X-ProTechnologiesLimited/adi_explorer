@@ -140,6 +140,7 @@
       <a href="{{ url_for('main.get_asset_metadata') }}">View Asset Metadata</a>
       <a href="{{ url_for('main.get_asset_video') }}">View Asset Video</a>
       <a href="{{ url_for('main.search_est') }}">View EST Show Data</a>
+      <a href="{{ url_for('main.get_ingest_history') }}">View Ingest History</a>
     </div>
     </div>
     <div class="dropdown">
@@ -164,6 +165,7 @@
   </div>
   <a href="{{ url_for('main.get_adi') }}">Download ADI</a>
   <a href="{{ url_for('main.post_adi') }}">Ingest ADI</a>
+  <a href="{{ url_for('main.post_files_post') }}">Upload Files</a>
 </div>
 
 {% block content %}

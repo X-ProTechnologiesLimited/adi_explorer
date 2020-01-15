@@ -65,7 +65,7 @@ class ADI_EST_Show(db.Model):
 
 class ADI_INGEST_HISTORY(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
-    assetId = db.Column(db.String(100), unique=True)
+    assetId = db.Column(db.String(100))
     provider_version = db.Column(db.String(10))
     environment = db.Column(db.String(10))
     conversationId = db.Column(db.String(100))

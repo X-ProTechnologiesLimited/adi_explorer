@@ -1,5 +1,5 @@
 from flask import request
-from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, ADI_EST_Show
+from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, ADI_EST_Show, ADI_INGEST_HISTORY
 from . import errorchecker
 import urllib.parse
 from bson.json_util import dumps
@@ -91,5 +91,26 @@ def search_est_assets():
         return errorchecker.no_assets_in_db()
     else:
         json_data = dumps(adi_data)
+
+    return response.asset_retrieve(json_data)
+
+
+def search_ingest_history(assetId):
+    ingest_data = {}
+    ingest_data['history'] = []
+    for package in ADI_INGEST_HISTORY.query.filter_by(assetId=assetId).all():
+        ingest_data['history'].append({
+            'assetId': package.assetId,
+            'provider_version': package.provider_version,
+            'environment': package.environment,
+            'conversationId': package.conversationId
+        })
+
+    ingest_data['total'] = ADI_INGEST_HISTORY.query.filter_by(assetId=assetId).count()
+
+    if ingest_data['total'] == 0:  # If no countries found in the continent
+        return errorchecker.no_ingest_history(assetId)
+    else:
+        json_data = dumps(ingest_data)
 
     return response.asset_retrieve(json_data)
