@@ -21,6 +21,7 @@ import os.path
 params = metadata_default_params()
 path_to_script = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_DIRECTORY = "../premium_files"
+VRP_PACKAGE_DIR = "../created_package"
 
 main = Blueprint('main', __name__, static_url_path='', static_folder='../premium_files/', template_folder='../templates')
 
@@ -191,11 +192,41 @@ def list_files():
     return response.asset_retrieve(json_data)
 
 
+@main.route("/tar_files")
+def list_tar_files():
+    """Endpoint to list files on the server."""
+    files = []
+    for filename in os.listdir(VRP_PACKAGE_DIR):
+        path = os.path.join(VRP_PACKAGE_DIR, filename)
+        if os.path.isfile(path):
+            files.append(filename)
+    json_data = dumps(files)
+    return response.asset_retrieve(json_data)
+
+
 
 @main.route("/files/<path:path>")
 def get_file(path):
     """Download a file."""
     return send_from_directory(UPLOAD_DIRECTORY, path, as_attachment=True)
+
+@main.route("/send_tar_files/<path:path>")
+def send_tar_file(path):
+    """Download a file."""
+    return send_from_directory(VRP_PACKAGE_DIR, path, as_attachment=True)
+
+
+@main.route("/download_tar_files")
+def get_tar_file():
+    """Download a file."""
+    return render_template('get_tar.html')
+
+
+@main.route("/download_tar_files", methods=['POST'])
+def get_tar_file_post():
+    """Download a file."""
+    filename = request.form.get('filename')
+    return send_from_directory(VRP_PACKAGE_DIR, filename, as_attachment=True)
 
 
 @main.route("/post_files_post", methods=['GET', 'POST'])
@@ -235,21 +266,24 @@ def make_tarfile():
 def make_tarfile_post():
     output_filename = request.form.get('filename')
     video_type = request.form.get('video_type')
-    tar_filename = '../premium_files/'+output_filename
+    tar_filename = '../created_package/'+output_filename
     if video_type == 'HD':
-        subprocess.call(['tar', '-cf', tar_filename, '../premium_files/*.jpg', '../premium_files/FinestHours_Trailer.ts',
-                         '../premium_files/HD_MOVIE.ts', '../premium_files/ADI.xml'])
-        return get_file(output_filename)
+        subprocess.call(['tar', '-C', '../premium_files', '-cf', tar_filename, 'FinestHours_182x98.jpg',
+                         'FinestHours_182x243.jpg', 'FinestHours_262x349.jpg', 'FinestHours_456x257.jpg',
+                         'FinestHours_Trailer.ts', 'HD_MOVIE.ts', 'ADI.xml'])
+        return send_tar_file(output_filename)
     elif video_type == 'SDR':
         subprocess.call(
-            ['tar', '-cf', tar_filename, '../premium_files/*.jpg', '../premium_files/FinestHours_Trailer.ts',
-             '../premium_files/CATS_EP1_UHD_3170_1mins.ts', '../premium_files/ADI.xml'])
-        return get_file(output_filename)
+            ['tar', '-C', '../premium_files', '-cf', tar_filename, 'FinestHours_182x98.jpg',
+              'FinestHours_182x243.jpg', 'FinestHours_262x349.jpg', 'FinestHours_456x257.jpg',
+              'FinestHours_Trailer.ts', 'CATS_EP1_UHD_3170_1mins.ts', 'ADI.xml'])
+        return send_tar_file(output_filename)
     elif video_type == 'HDR':
         subprocess.call(
-            ['tar', '-cf', tar_filename, '../premium_files/*.jpg', '../premium_files/FinestHours_Trailer.ts',
-             '../premium_files/IdentExternalDDplus_MainWithExternalAtmos_IdentExternalDDplus-Ateme_out_API.ts', '../premium_files/ADI.xml'])
-        return get_file(output_filename)
+            ['tar', '-C', '../premium_files', '-cf', tar_filename, 'FinestHours_182x98.jpg',
+              'FinestHours_182x243.jpg', 'FinestHours_262x349.jpg', 'FinestHours_456x257.jpg',
+              'FinestHours_Trailer.ts', 'IdentExternalDDplus_MainWithExternalAtmos_IdentExternalDDplus-Ateme_out_API.ts', 'ADI.xml'])
+        return send_tar_file(output_filename)
     else:
         return errorchecker.internal_server_error_show(video_type)
 

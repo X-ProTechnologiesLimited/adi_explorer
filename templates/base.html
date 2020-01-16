@@ -170,9 +170,11 @@
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">
-       <a href="{{ url_for('main.list_files') }}">List Uploaded Files</a>
        <a href="{{ url_for('main.post_files_post') }}">Upload Files</a>
-       <a href="{{ url_for('main.make_tarfile') }}">Create Premium Tar</a>
+       <a href="{{ url_for('main.list_files') }}">List Supporting Files</a>
+       <a href="{{ url_for('main.make_tarfile') }}">Create Premium Tar File</a>
+       <a href="{{ url_for('main.list_tar_files') }}">List TAR Files</a>
+       <a href="{{ url_for('main.get_tar_file') }}">Download Tar Files</a>
     </div>
   </div>
 </div>
