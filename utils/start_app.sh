@@ -13,7 +13,8 @@ else
 fi
 
 mkdir -p $PROJECT_DIR/logs
-mkdir -p $PROJECT_DIR/created_adi
+mkdir -p $PROJECT_DIR/premium_files
+
 cp $PROJECT_DIR/utils/config.properties $PROJECT_DIR/lib/movie_config.py
 
 echo "Starting the ADI Manager App..."

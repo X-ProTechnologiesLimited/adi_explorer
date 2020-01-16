@@ -16,11 +16,13 @@ import datetime
 import time
 from bson.json_util import dumps
 from .metadata_params import metadata_default_params
+import subprocess
+import os.path
 params = metadata_default_params()
 path_to_script = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_DIRECTORY = "../created_adi"
+UPLOAD_DIRECTORY = "../premium_files"
 
-main = Blueprint('main', __name__, static_url_path='', static_folder='../created_adi/', template_folder='../templates')
+main = Blueprint('main', __name__, static_url_path='', static_folder='../premium_files/', template_folder='../templates')
 
 @main.route('/')
 def index():
@@ -185,7 +187,9 @@ def list_files():
         path = os.path.join(UPLOAD_DIRECTORY, filename)
         if os.path.isfile(path):
             files.append(filename)
-    return jsonify(files)
+    json_data = dumps(files)
+    return response.asset_retrieve(json_data)
+
 
 
 @main.route("/files/<path:path>")
@@ -209,7 +213,7 @@ def post_files_post():
             return redirect(request.url)
         if file:
             file.save(os.path.join(UPLOAD_DIRECTORY, file.filename))
-            return 'success'
+            return list_files()
     return render_template('upload_files.html')
 
 
@@ -221,6 +225,33 @@ def get_ingest_history():
 def get_ingest_history_post():
     assetId = request.form.get('assetId')
     return search.search_ingest_history(assetId)
+
+@main.route("/create_tar")
+def make_tarfile():
+    return render_template('prem_tar.html')
+
+
+@main.route("/create_tar", methods=['POST'])
+def make_tarfile_post():
+    output_filename = request.form.get('filename')
+    video_type = request.form.get('video_type')
+    tar_filename = '../premium_files/'+output_filename
+    if video_type == 'HD':
+        subprocess.call(['tar', '-cf', tar_filename, '../premium_files/*.jpg', '../premium_files/FinestHours_Trailer.ts',
+                         '../premium_files/HD_MOVIE.ts', '../premium_files/ADI.xml'])
+        return get_file(output_filename)
+    elif video_type == 'SDR':
+        subprocess.call(
+            ['tar', '-cf', tar_filename, '../premium_files/*.jpg', '../premium_files/FinestHours_Trailer.ts',
+             '../premium_files/CATS_EP1_UHD_3170_1mins.ts', '../premium_files/ADI.xml'])
+        return get_file(output_filename)
+    elif video_type == 'HDR':
+        subprocess.call(
+            ['tar', '-cf', tar_filename, '../premium_files/*.jpg', '../premium_files/FinestHours_Trailer.ts',
+             '../premium_files/IdentExternalDDplus_MainWithExternalAtmos_IdentExternalDDplus-Ateme_out_API.ts', '../premium_files/ADI.xml'])
+        return get_file(output_filename)
+    else:
+        return errorchecker.internal_server_error_show(video_type)
 
 
 @main.route('/quit')

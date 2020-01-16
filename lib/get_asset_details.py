@@ -13,7 +13,7 @@ from .models import ADI_main
 params = metadata_default_params()
 sitemap = sitemap_mapper()
 
-main = Blueprint('main', __name__, static_url_path='', static_folder='../created_adi/', template_folder='../templates')
+main = Blueprint('main', __name__, static_url_path='', static_folder='../premium_files/', template_folder='../templates')
 
 
 

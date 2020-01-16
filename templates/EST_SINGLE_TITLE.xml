@@ -68,7 +68,7 @@
 <core:Ext>
 <ext:MovieExtensions analogueOff="true" mediaId="M1035909" waterMarkingRequired="false"/>
 </core:Ext>
-<content:SourceUrl>Providers/BSS/Content/Distribution/TestFiles/{{val.movie_url}}</content:SourceUrl>
+<content:SourceUrl>Providers/BSS/Content/Distribution/TestFiles/adi_t/{{val.movie_url}}</content:SourceUrl>
 <content:ContentFileSize>100</content:ContentFileSize>
 <content:ContentCheckSum>{{val.movie_checksum}}</content:ContentCheckSum>
 <content:AudioType>{{val.audio_type}}</content:AudioType>

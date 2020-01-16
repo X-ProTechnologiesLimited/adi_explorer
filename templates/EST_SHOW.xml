@@ -100,7 +100,7 @@
       <PO:defaultPriceBundleRef uriId="{{val.providerid}}/PRBU{{val.assetid}}"/>
       <PO:purchaseOptionAvailability>
         <PO:startDateTime>2016-11-02T15:41:01Z</PO:startDateTime>
-        <PO:endDateTime>2019-12-31T00:00:01Z</PO:endDateTime>
+        <PO:endDateTime>{{val.offerEndDateTime}}</PO:endDateTime>
       </PO:purchaseOptionAvailability>
     </ext:PurchaseOption>
     <ext:PriceBundle creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PRBU{{val.assetid}}">
