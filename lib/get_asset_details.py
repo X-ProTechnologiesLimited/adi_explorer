@@ -1,21 +1,22 @@
-from flask import Blueprint, render_template, make_response
+from flask import Blueprint, render_template, make_response, request
 from .models import ADI_main, ADI_media, ADI_metadata, ADI_offer, ADI_EST_Show
 from . import movie_config
 from .sitemap_create import sitemap_mapper
 from bson.json_util import dumps
 from . import response
-import requests
 import datetime
 import time
 from .metadata_params import metadata_default_params
 from . import errorchecker
-from .models import ADI_main
+import requests
+import os
+from . import db
+from .models import ADI_main, ADI_INGEST_HISTORY
+path_to_script = os.path.dirname(os.path.abspath(__file__))
 params = metadata_default_params()
 sitemap = sitemap_mapper()
 
 main = Blueprint('main', __name__, static_url_path='', static_folder='../premium_files/', template_folder='../templates')
-
-
 
 def download_title(assetId):
     try:
@@ -74,7 +75,6 @@ def download_title(assetId):
     except:
         return errorchecker.asset_not_found_id(assetId)
 
-
 def download_est_episode(assetId):
     movie_path = movie_config.video_path
     image_path = movie_config.image_path
@@ -122,7 +122,6 @@ def download_est_episode(assetId):
 
     return response
 
-
 def download_est_season(assetId):
     package_main = ADI_main.query.filter_by(assetId=assetId).first()
     package_meta = ADI_metadata.query.filter_by(assetId=assetId).first()
@@ -166,7 +165,6 @@ def download_est_season(assetId):
     response.headers['Content-Type'] = 'application/xml'
 
     return response
-
 
 def download_est_show(assetId):
     image_path = movie_config.image_path
@@ -216,7 +214,6 @@ def download_est_show(assetId):
     return response
 
 
-
 def get_asset_data(assetId):
     adi_metadata = {}
     adi_metadata['packages'] = {}
@@ -251,25 +248,38 @@ def get_asset_video(assetId):
     json_data = dumps(adi_metadata)
     return response.asset_retrieve(json_data)
 
-def post_adi_endpoint(assetId, environment, source):
+def post_adi_endpoint():
+    my_filename = os.path.join(path_to_script, "adi.xml")
     ts = time.time()
     conversationId = datetime.datetime.fromtimestamp(ts).strftime('%d%H%M%S')
+    environment = request.form.get('environment')
     params.environment_entry(environment)
-    package = ADI_main.query.filter_by(assetId=assetId).first()
-    if package.adi_type == 'est_episode':
-        request_adi = download_est_episode(assetId)
-    elif package.adi_type == 'est_season':
-        request_adi = download_est_season(assetId)
-    elif package.adi_type == 'est_show':
-        request_adi = download_est_show(assetId)
-    else:
-        request_adi = download_title(assetId)
+    assetId = request.form.get('assetId')
+    source = request.form.get('source')
+    get_adi_url = 'http://localhost:5000/get_adi/' + assetId
+    response_adi = requests.get(url=get_adi_url)
+    with open(my_filename, 'w') as f:
+        f.write(response_adi.text)
+    endpoint_url = params.environment_url + 'source=' + source + '&conversationId=' + conversationId
+    headers = {'Content-type': 'text/xml; charset=UTF-8'}
+    data = open(my_filename, 'rb').read()
+    post_response = {}
+    try:
+        response_post_adi = requests.post(url=endpoint_url, data=data, headers=headers)
+        post_response['Status'] = '200'
+        post_response['Message'] = 'AssetID: ' + assetId + ' ingested successfully'
+        post_response['Endpoint'] = endpoint_url
+        post_response['ConversationId'] = conversationId
+        post_response['Endpoint_Response'] = response_post_adi.text
+        package = ADI_main.query.filter_by(assetId=assetId).first()
+        ingest_response = ADI_INGEST_HISTORY(assetId=assetId, provider_version=package.provider_version,
+                                             environment=environment, conversationId=conversationId)
+        db.session.add(ingest_response)
+        db.session.commit()
+    except:
+        post_response['Status'] = '404'
+        post_response['Message'] = 'Error connecting to Endpoint: ' + endpoint_url
+        post_response['ConversationId'] = conversationId
 
-    with open('adi.xml', 'wb') as file:
-        file.write(request_adi)
-        endpoint_url = params.environment_url + 'source=' + source + '&conversationId=' + conversationId
-        headers = {'Content-type': 'text/xml; charset=UTF-8'}
-        response_post_adi = requests.post(url=endpoint_url, data=open(request_adi, 'rb'), headers=headers)
-
-    # except:
-    #     return errorchecker.asset_not_found_id(assetId)
+    json_data = dumps(post_response)
+    return response.asset_retrieve(json_data)

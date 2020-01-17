@@ -1,22 +1,18 @@
 # main.py
 
-from flask import Blueprint, render_template, request, jsonify, abort, send_from_directory, flash, redirect, url_for
-import requests
+from flask import Blueprint, render_template, request, send_from_directory, flash, redirect
 import os
-from . import db
 from . import errorchecker
 from .nocache import nocache
 from . import create_asset
 from . import search
 from . import get_asset_details
 from . import update_package
-from .models import ADI_main, ADI_INGEST_HISTORY
+from .models import ADI_main
 from . import response
-import datetime
-import time
 from bson.json_util import dumps
 from .metadata_params import metadata_default_params
-import subprocess
+from . import create_tar
 import os.path
 params = metadata_default_params()
 path_to_script = os.path.dirname(os.path.abspath(__file__))
@@ -144,41 +140,7 @@ def post_adi():
 @main.route('/post_adi', methods=['POST'])
 @nocache
 def post_adi_post():
-    my_filename = os.path.join(path_to_script, "adi.xml")
-    ts = time.time()
-    conversationId = datetime.datetime.fromtimestamp(ts).strftime('%d%H%M%S')
-    environment = request.form.get('environment')
-    params.environment_entry(environment)
-    assetId = request.form.get('assetId')
-    source = request.form.get('source')
-    get_adi_url = 'http://localhost:5000/get_adi/'+assetId
-    response_adi = requests.get(url=get_adi_url)
-    with open(my_filename, 'w') as f:
-        f.write(response_adi.text)
-    endpoint_url = params.environment_url + 'source=' + source + '&conversationId=' + conversationId
-    headers = {'Content-type': 'text/xml; charset=UTF-8'}
-    data = open(my_filename, 'rb').read()
-    post_response = {}
-    try:
-        response_post_adi = requests.post(url=endpoint_url, data=data, headers=headers)
-        post_response['Status'] = '200'
-        post_response['Message'] = 'AssetID: '+ assetId + ' ingested successfully'
-        post_response['Endpoint'] = endpoint_url
-        post_response['ConversationId'] = conversationId
-        post_response['Endpoint_Response'] = response_post_adi.text
-        package = ADI_main.query.filter_by(assetId=assetId).first()
-        ingest_response = ADI_INGEST_HISTORY(assetId=assetId, provider_version=package.provider_version,
-                                             environment=environment, conversationId=conversationId)
-        db.session.add(ingest_response)
-        db.session.commit()
-    except:
-        post_response['Status'] = '404'
-        post_response['Message'] = 'Error connecting to Endpoint: '+ endpoint_url
-        post_response['ConversationId'] = conversationId
-
-    json_data = dumps(post_response)
-    return response.asset_retrieve(json_data)
-
+    return get_asset_details.post_adi_endpoint()
 
 @main.route("/files")
 def list_files():
@@ -264,28 +226,7 @@ def make_tarfile():
 
 @main.route("/create_tar", methods=['POST'])
 def make_tarfile_post():
-    output_filename = request.form.get('filename')
-    video_type = request.form.get('video_type')
-    tar_filename = '../created_package/'+output_filename
-    if video_type == 'HD':
-        subprocess.call(['tar', '-C', '../premium_files', '-cf', tar_filename, 'FinestHours_182x98.jpg',
-                         'FinestHours_182x243.jpg', 'FinestHours_262x349.jpg', 'FinestHours_456x257.jpg',
-                         'FinestHours_Trailer.ts', 'HD_MOVIE.ts', 'ADI.xml'])
-        return send_tar_file(output_filename)
-    elif video_type == 'SDR':
-        subprocess.call(
-            ['tar', '-C', '../premium_files', '-cf', tar_filename, 'FinestHours_182x98.jpg',
-              'FinestHours_182x243.jpg', 'FinestHours_262x349.jpg', 'FinestHours_456x257.jpg',
-              'FinestHours_Trailer.ts', 'CATS_EP1_UHD_3170_1mins.ts', 'ADI.xml'])
-        return send_tar_file(output_filename)
-    elif video_type == 'HDR':
-        subprocess.call(
-            ['tar', '-C', '../premium_files', '-cf', tar_filename, 'FinestHours_182x98.jpg',
-              'FinestHours_182x243.jpg', 'FinestHours_262x349.jpg', 'FinestHours_456x257.jpg',
-              'FinestHours_Trailer.ts', 'IdentExternalDDplus_MainWithExternalAtmos_IdentExternalDDplus-Ateme_out_API.ts', 'ADI.xml'])
-        return send_tar_file(output_filename)
-    else:
-        return errorchecker.internal_server_error_show(video_type)
+    return create_tar.make_tarfile_premium()
 
 
 @main.route('/quit')
