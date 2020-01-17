@@ -7,16 +7,17 @@ get_project_dir() { # Gets the root directory of the repository
 if [[ $CONTAINERISED != "true" ]] ; then
     PROJECT_DIR=$(get_project_dir)
     FLASK_HOST_NAME='localhost'
+    cp $PROJECT_DIR/utils/config.properties $PROJECT_DIR/lib/movie_config.py
 else
     PROJECT_DIR="/app"
     FLASK_HOST_NAME='host.docker.internal'
+    cp $PROJECT_DIR/utils/docker_config.properties $PROJECT_DIR/lib/movie_config.py
 fi
 
 mkdir -p $PROJECT_DIR/logs
 mkdir -p $PROJECT_DIR/premium_files
 mkdir -p $PROJECT_DIR/created_package
 
-cp $PROJECT_DIR/utils/config.properties $PROJECT_DIR/lib/movie_config.py
 
 echo "Starting the ADI Manager App..."
 echo "Starting the ADI Manager App..." >> $PROJECT_DIR/logs/$filename

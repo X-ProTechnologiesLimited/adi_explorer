@@ -14,10 +14,11 @@ from bson.json_util import dumps
 from .metadata_params import metadata_default_params
 from . import create_tar
 import os.path
+from . import movie_config
 params = metadata_default_params()
 path_to_script = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_DIRECTORY = "../premium_files"
-VRP_PACKAGE_DIR = "../created_package"
+UPLOAD_DIRECTORY = movie_config.premium_upload_dir
+VRP_PACKAGE_DIR = movie_config.premium_vrp_dir
 
 main = Blueprint('main', __name__, static_url_path='', static_folder='../premium_files/', template_folder='../templates')
 
