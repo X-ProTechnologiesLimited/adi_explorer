@@ -37,7 +37,7 @@ def create_single_title():
     if sitemap.sitemap == False:
         return errorchecker.not_supported_asset_type(asset_type)
 
-    if (service_key == "") and (asset_type == 'CATCHUP'):
+    if (service_key == "") and ('CATCHUP' in asset_type):
         return errorchecker.input_missing('service_key')
 
     try:

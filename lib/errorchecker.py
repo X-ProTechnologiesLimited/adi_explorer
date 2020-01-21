@@ -44,6 +44,15 @@ def not_supported_asset_type(asset_type):
     return error_response_creator(message)
 
 
+@errorchecker.errorhandler(502)
+def vrp_asset_type(asset_type):
+    message = {
+            'status': 502,
+            'message': 'Asset Type: ' + asset_type + ' should be created from VRP or DPL menu. Please refer User Guide.'
+        }
+    return error_response_creator(message)
+
+
 
 @errorchecker.errorhandler(502)
 def use_different_method(asset_type):

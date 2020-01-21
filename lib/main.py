@@ -19,6 +19,8 @@ params = metadata_default_params()
 path_to_script = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_DIRECTORY = movie_config.premium_upload_dir
 VRP_PACKAGE_DIR = movie_config.premium_vrp_dir
+UPLOAD_DPL_DIRECTORY = movie_config.dpl_upload_dir
+VRP_PACKAGE_DPL_DIR = movie_config.dpl_vrp_dir
 
 main = Blueprint('main', __name__, static_url_path='', static_folder='../premium_files/', template_folder='../templates')
 
@@ -154,6 +156,17 @@ def list_files():
     json_data = dumps(files)
     return response.asset_retrieve(json_data)
 
+@main.route("/files_dpl")
+def list_files_dpl():
+    """Endpoint to list files on the server."""
+    files = []
+    for filename in os.listdir(UPLOAD_DPL_DIRECTORY):
+        path = os.path.join(UPLOAD_DPL_DIRECTORY, filename)
+        if os.path.isfile(path):
+            files.append(filename)
+    json_data = dumps(files)
+    return response.asset_retrieve(json_data)
+
 
 @main.route("/tar_files")
 def list_tar_files():
@@ -211,6 +224,25 @@ def post_files_post():
     return render_template('upload_files.html')
 
 
+@main.route("/post_files_post_dpl", methods=['GET', 'POST'])
+def post_files_post_dpl():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file:
+            file.save(os.path.join(UPLOAD_DPL_DIRECTORY, file.filename))
+            return list_files_dpl()
+    return render_template('upload_files.html')
+
+
 @main.route("/get_ingest_history")
 def get_ingest_history():
     return render_template('ingest_history.html')
@@ -222,12 +254,17 @@ def get_ingest_history_post():
 
 @main.route("/create_tar")
 def make_tarfile():
-    return render_template('prem_tar.html')
-
+    return render_template('create_tar.html')
 
 @main.route("/create_tar", methods=['POST'])
 def make_tarfile_post():
-    return create_tar.make_tarfile_premium()
+    tar_type = request.form.get('tar_type')
+    if tar_type == 'General':
+        return create_tar.make_tarfile()
+    elif tar_type == 'DPL':
+        return errorchecker.not_implemented_yet()
+    else:
+        return errorchecker.input_missing('General/DPL')
 
 
 @main.route('/quit')

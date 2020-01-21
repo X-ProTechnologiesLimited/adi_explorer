@@ -47,5 +47,7 @@ stage_cms = 'http://localhost:14231/gateway/submit?'
 stage_vms = 'http://vmswkflowapt01.broadcast.bskyb.com/opencase/ContentProcessor/resource/rest/triggerworkflow?'
 
 # TAR DIRECTORIES
-premium_upload_dir = '../premium_files'
+premium_upload_dir = '../supp_files'
+dpl_upload_dir = '../dpl_files'
 premium_vrp_dir = '../created_package'
+dpl_vrp_dir = '../created_package'

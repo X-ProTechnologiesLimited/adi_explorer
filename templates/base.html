@@ -136,45 +136,46 @@
     </button>
     <div class="dropdown-content">
       <a href="{{ url_for('main.search_adi_all') }}">View All Titles</a>
-      <a href="{{ url_for('main.search_adi') }}">Filter by Asset Title</a>
       <a href="{{ url_for('main.get_asset_metadata') }}">View Asset Metadata</a>
       <a href="{{ url_for('main.get_asset_video') }}">View Asset Video</a>
-      <a href="{{ url_for('main.search_est') }}">View EST Show Data</a>
       <a href="{{ url_for('main.get_ingest_history') }}">View Ingest History</a>
+      <a href="{{ url_for('main.search_adi') }}">Filter by Asset Title</a>
+      <a href="{{ url_for('main.search_est') }}">Filter EST Show by Title</a>
+      <a href="{{ url_for('main.get_adi') }}">Download ADI</a>
     </div>
     </div>
     <div class="dropdown">
-    <button class="dropbtn">Create Package
+    <button class="dropbtn">Create ADI
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">
       <a href="{{ url_for('main.create_single_title') }}">Single Title</a>
-      <a href="{{ url_for('main.create_series_episode') }}">Series Episode</a>
+      <a href="{{ url_for('main.create_series_episode') }}">SVOD Episode</a>
       <a href="{{ url_for('main.create_est_show') }}">EST Box-Set</a>
     </div>
     </div>
     <div class="dropdown">
-    <button class="dropbtn">Update Existing Package
+    <button class="dropbtn">Update Existing ADI
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">
        <a href="{{ url_for('main.update_single_title') }}">Update Single Title Metadata</a>
        <a href="{{ url_for('main.update_video') }}">Update Package Video</a>
-       <a href="{{ url_for('main.update_show_season') }}">Update Group</a>
     </div>
   </div>
-  <a href="{{ url_for('main.get_adi') }}">Download ADI</a>
   <a href="{{ url_for('main.post_adi') }}">Ingest ADI</a>
-   <div class="dropdown">
-    <button class="dropbtn">Premium Management
+  <div class="dropdown">
+    <button class="dropbtn">VRP Management
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">
-       <a href="{{ url_for('main.post_files_post') }}">Upload Files</a>
-       <a href="{{ url_for('main.list_files') }}">List Supporting Files</a>
-       <a href="{{ url_for('main.make_tarfile') }}">Create Premium Tar File</a>
-       <a href="{{ url_for('main.list_tar_files') }}">List TAR Files</a>
-       <a href="{{ url_for('main.get_tar_file') }}">Download Tar Files</a>
+       <a href="{{ url_for('main.post_files_post') }}">Upload Images and Videos</a>
+       <a href="{{ url_for('main.post_files_post_dpl') }}">Upload DPL Images and Videos</a>
+       <a href="{{ url_for('main.list_files') }}">Show VRP Files</a>
+       <a href="{{ url_for('main.list_files_dpl') }}">Show DPL VRP Files</a>
+       <a href="{{ url_for('main.make_tarfile') }}">Create VRP Package</a>
+       <a href="{{ url_for('main.list_tar_files') }}">Show Created VRP Packages</a>
+       <a href="{{ url_for('main.get_tar_file') }}">Download VRP Packages</a>
     </div>
   </div>
 </div>

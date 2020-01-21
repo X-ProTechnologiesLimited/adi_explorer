@@ -30,7 +30,7 @@ def download_title(assetId):
         if sitemap.sitemap == False:
             return errorchecker.not_supported_asset_type(package_main.adi_type)
 
-        if package_main.adi_type == 'PREMIUM VOD':
+        if 'VRP' in package_main.adi_type:
             movie_path = ""
             image_path = ""
         else:
@@ -249,7 +249,7 @@ def get_asset_video(assetId):
     return response.asset_retrieve(json_data)
 
 def post_adi_endpoint():
-    my_filename = os.path.join(path_to_script, "adi.xml")
+    my_filename = movie_config.premium_vrp_dir+'/ADI.xml'
     ts = time.time()
     conversationId = datetime.datetime.fromtimestamp(ts).strftime('%d%H%M%S')
     environment = request.form.get('environment')
