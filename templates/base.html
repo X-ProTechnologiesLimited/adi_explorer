@@ -149,8 +149,8 @@
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">
-      <a href="{{ url_for('main.create_single_title') }}">Single Title</a>
-      <a href="{{ url_for('main.create_series_episode') }}">SVOD Episode</a>
+      <a href="{{ url_for('main.create_single_title_standard') }}">Standard Title</a>
+      <a href="{{ url_for('main.create_single_title_vrp') }}">VRP Title</a>
       <a href="{{ url_for('main.create_est_show') }}">EST Box-Set</a>
     </div>
     </div>
@@ -169,10 +169,8 @@
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">
-       <a href="{{ url_for('main.post_files_post') }}">Upload Images and Videos</a>
-       <a href="{{ url_for('main.post_files_post_dpl') }}">Upload DPL Images and Videos</a>
-       <a href="{{ url_for('main.list_files') }}">Show VRP Files</a>
-       <a href="{{ url_for('main.list_files_dpl') }}">Show DPL VRP Files</a>
+       <a href="{{ url_for('main.post_files_post') }}">Upload Files to VRP Library</a>
+       <a href="{{ url_for('main.list_files') }}">Show VRP Library</a>
        <a href="{{ url_for('main.make_tarfile') }}">Create VRP Package</a>
        <a href="{{ url_for('main.list_tar_files') }}">Show Created VRP Packages</a>
        <a href="{{ url_for('main.get_tar_file') }}">Download VRP Packages</a>

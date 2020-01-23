@@ -33,10 +33,8 @@ def asset_retrieve(json_data):
 def asset_update_success(assetId, update_field):
     message = {
             'status': 200,
-            'message': update_field + ' of Asset with assetId: ' + assetId + ' updated successfully'
+            'message': update_field + ': updated successfully for asset with AssetId: ' + assetId
         }
-    output = json2html.convert(json=message,
-                               table_attributes="id=\"Error\" class=\"table table-striped\"" "border=2")
     return response_creator(message)
 
 
@@ -44,7 +42,7 @@ def asset_update_success(assetId, update_field):
 def asset_creation_success(assetId, title):
     message = {
             'status': 200,
-            'message': 'Asset with AssetId: ' + assetId + ' and Title: ' + title + ' created successfully',
-            'download': 'To download the asset ADI, use the Download Menu'
+            'message': 'Asset: ' + title + ' created successfully with AssetId: ' + assetId,
+            'download': 'To download the asset ADI, use the View > Download ADI Menu'
         }
     return response_creator(message)

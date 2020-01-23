@@ -1,0 +1,157 @@
+<!-- templates/create_package.html -->
+
+{% extends "base.html" %}
+<p>** Mandatory Fields. Optional fields populates default values as per 'config.properties' file. </p>
+{% block content %}
+<div class="column is-4 is-offset-4">
+    <h2 class="title">Create Standard ADI</h2>
+    <div class="box">
+        <form method="POST" action="/create_single_title_standard">
+
+            <h4>Licensing Section</h4>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="asset_type" name="asset_type" placeholder="Type of Asset" autofocus="" required>
+                    <datalist id="asset_type">
+                      <option value="EST SINGLE TITLE">
+                      <option value="SUBSCRIPTION VOD">
+                      <option value="RENTAL">
+                      <option value="CATCHUP">
+                      <option value="SUBSCRIPTION EPISODE">
+                      <option value="DPL SUBSCRIPTION VOD">
+                      <option value="DPL RENTAL">
+                      <option value="DPL CATCHUP">
+                      <option value="DPL SUBSCRIPTION EPISODE">
+                    </option>
+                    </datalist>
+                    <d>**</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="LicenseWindow" placeholder="LicenseWindow" autofocus="" required>
+                    <d>** License Expiry in Days from Now. Eg 30 for 1 month from now.</d>
+                </div>
+            </div>
+            <h4>Metadata Section</h4>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="title" placeholder="Asset Title" autofocus="" required>
+                    <d>**</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="synopsis" placeholder="Asset Synopsis" autofocus="">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="provider_id" placeholder="Provider" autofocus="" required>
+                    <d>**</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="provider_version" placeholder="Provider Version" autofocus="">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="multiformat_id" placeholder="Multiformat ID" autofocus="">
+                    <d> Default value: Taken from Asset Id</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="production_year" placeholder="Production Year" autofocus="">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="subtitle_flag" name="subtitle_flag" placeholder="Subtitled" autofocus="">
+                    <datalist id="subtitle_flag">
+                      <option value="true">
+                      <option value="false">
+                    </option>
+                    </datalist>
+                </div>
+             <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="btc_rating" name="ca_btc" placeholder="CA/BTC Rating" autofocus="">
+                    <datalist id="btc_rating">
+                      <option value="U">
+                      <option value="PG">
+                      <option value="SU">
+                      <option value="G">
+                    </option>
+                    </datalist>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="par_rating" name="par_rating" placeholder="Parental Rating" autofocus="">
+                    <datalist id="par_rating">
+                      <option value="1">
+                      <option value="2">
+                      <option value="4">
+                      <option value="5">
+                    </option>
+                    </datalist>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="audio_type" name="audio_type" placeholder="Audio Type" autofocus="">
+                    <datalist id="audio_type">
+                      <option value="Dolby 5.1">
+                      <option value="Dolby Digital">
+                      <option value="Dolby Atmos">
+                    </option>
+                    </datalist>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="frame_rate" name="frame_rate" placeholder="Video Frame Rate" autofocus="">
+                    <datalist id="frame_rate">
+                      <option value="25">
+                      <option value="50">
+                    </option>
+                    </datalist>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="duration" placeholder="Asset Duration" autofocus="">
+                    <d>Format X:XX:XX</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="svod_season_number" placeholder="SVOD Season Number" autofocus="">
+                    <d></d>
+                    <input class="input is-large" type="text" name="svod_episode_number" placeholder="SVOD Episode Number" autofocus="">
+                    <d></d>
+                    <input class="input is-large" type="text" name="svod_total_episodes" placeholder="Total Episodes" autofocus="">
+                    <d>** Only required if Asset Type is SVOD Episode</d>
+                </div>
+            </div>
+            <h4>Offer Section</h4>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="offer_window" placeholder="Offer Window" autofocus="" required>
+                    <d>** Offer Availability in Days from Now. Eg 30 for 1 month from now.</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="service_key" placeholder="CUTV Service Key" autofocus="">
+                    <d>** Only required if Asset Type is Catchup</d>
+                </div>
+            </div>
+            <button class="button is-block is-info is-medium is-fullwidth">Generate ADI XML</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

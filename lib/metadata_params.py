@@ -19,8 +19,13 @@ class metadata_default_params(object):
         self.runtime = None
         self.duration = None
         self.environment_url = None
+        self.svod_season_number = None
+        self.svod_episode_number = None
+        self.svod_total_episodes = None
 
-    def param_logic_entry(self, synopsis, title, provider_version, production_year, ca_btc, par_rating, audio_type, frame_rate, subtitle_flag, asset_duration):
+    def param_logic_entry(self, synopsis, title, provider_version, production_year, ca_btc, par_rating, audio_type,
+                          frame_rate, subtitle_flag, asset_duration, svod_season_number, svod_episode_number,
+                          svod_total_episodes):
         if synopsis != "":
             self.synopsis = synopsis
         else:
@@ -67,6 +72,21 @@ class metadata_default_params(object):
         else:
             self.runtime = movie_config.default_asset_runtime
             self.duration = movie_config.default_asset_duration
+
+        if svod_season_number != "":
+            self.svod_season_number = svod_season_number
+        else:
+            self.svod_season_number = '1'
+
+        if svod_episode_number != "":
+            self.svod_episode_number = svod_episode_number
+        else:
+            self.svod_episode_number = '1'
+
+        if svod_total_episodes != "":
+            self.svod_total_episodes = svod_total_episodes
+        else:
+            self.svod_total_episodes = '1'
 
 
     def multiformat_entry(self, multiformat_id, asset_timestamp):

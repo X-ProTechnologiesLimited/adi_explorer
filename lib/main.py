@@ -28,12 +28,20 @@ main = Blueprint('main', __name__, static_url_path='', static_folder='../premium
 def index():
     return render_template('index.html')
 
-@main.route('/create_single_title')
-def create_single_title():
-    return render_template('create_single_title.html')
+@main.route('/create_single_title_standard')
+def create_single_title_standard():
+    return render_template('create_single_title_standard.html')
 
-@main.route('/create_single_title', methods=['POST'])
-def create_single_title_post():
+@main.route('/create_single_title_standard', methods=['POST'])
+def create_single_title_standard_post():
+    return create_asset.create_single_title()
+
+@main.route('/create_single_title_vrp')
+def create_single_title_vrp():
+    return render_template('create_single_title_vrp.html')
+
+@main.route('/create_single_title_vrp', methods=['POST'])
+def create_single_title_vrp_post():
     return create_asset.create_single_title()
 
 @main.route('/create_series_episode')
@@ -156,17 +164,6 @@ def list_files():
     json_data = dumps(files)
     return response.asset_retrieve(json_data)
 
-@main.route("/files_dpl")
-def list_files_dpl():
-    """Endpoint to list files on the server."""
-    files = []
-    for filename in os.listdir(UPLOAD_DPL_DIRECTORY):
-        path = os.path.join(UPLOAD_DPL_DIRECTORY, filename)
-        if os.path.isfile(path):
-            files.append(filename)
-    json_data = dumps(files)
-    return response.asset_retrieve(json_data)
-
 
 @main.route("/tar_files")
 def list_tar_files():
@@ -221,25 +218,6 @@ def post_files_post():
         if file:
             file.save(os.path.join(UPLOAD_DIRECTORY, file.filename))
             return list_files()
-    return render_template('upload_files.html')
-
-
-@main.route("/post_files_post_dpl", methods=['GET', 'POST'])
-def post_files_post_dpl():
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file:
-            file.save(os.path.join(UPLOAD_DPL_DIRECTORY, file.filename))
-            return list_files_dpl()
     return render_template('upload_files.html')
 
 

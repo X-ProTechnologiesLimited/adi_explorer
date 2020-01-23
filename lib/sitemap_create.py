@@ -5,21 +5,25 @@ class sitemap_mapper(object):
 
     def sitemap_entry(self, asset_type, subtitle_flag):
         if subtitle_flag == 'true':
-            if ('VOD' in asset_type) or ('RENTAL' in asset_type):
+            if 'DPL' not in asset_type and (('VOD' in asset_type) or ('RENTAL' in asset_type)):
                 self.sitemap = 'VOD_SINGLE_TITLE.xml'
             elif asset_type == 'EST SINGLE TITLE':
                 self.sitemap = 'EST_SINGLE_TITLE.xml'
             elif 'CATCHUP' in asset_type:
                 self.sitemap = 'CUTV.xml'
+            elif (asset_type == 'SUBSCRIPTION EPISODE') or (asset_type == 'VRP SUBSCRIPTION EPISODE'):
+                self.sitemap = 'SVOD_E.xml'
             else:
                 self.sitemap = False
         elif subtitle_flag == 'false':
-            if ('VOD' in asset_type) or ('RENTAL' in asset_type):
+            if 'DPL' not in asset_type and (('VOD' in asset_type) or ('RENTAL' in asset_type)):
                 self.sitemap = 'VOD_SINGLE_TITLE_NOSUB.xml'
             elif asset_type == 'EST SINGLE TITLE':
                 self.sitemap = 'EST_SINGLE_TITLE.xml'
             elif 'CATCHUP' in asset_type:
                 self.sitemap = 'CUTV.xml'
+            elif (asset_type == 'SUBSCRIPTION EPISODE') or (asset_type == 'VRP SUBSCRIPTION EPISODE'):
+                self.sitemap = 'SVOD_E.xml'
             else:
                 self.sitemap = False
         elif (asset_type == 'est_show') or (asset_type == 'est_season') or (asset_type == 'est_episode'):

@@ -15,6 +15,7 @@ from .models import ADI_main, ADI_INGEST_HISTORY
 path_to_script = os.path.dirname(os.path.abspath(__file__))
 params = metadata_default_params()
 sitemap = sitemap_mapper()
+UPLOAD_DIRECTORY = movie_config.premium_vrp_dir
 
 main = Blueprint('main', __name__, static_url_path='', static_folder='../premium_files/', template_folder='../templates')
 
@@ -62,6 +63,10 @@ def download_title(assetId):
             'epgTime': package_offer.epgTime,
             'asset_syn': package_meta.synopsis,
             'production_year': package_meta.production_year,
+            'svod_episode_name': package_meta.svod_episode_name,
+            'svod_episode_number': package_meta.svod_episode_number,
+            'svod_season_number': package_meta.svod_season_number,
+            'svod_total_episodes': package_meta.svod_total_episodes,
             'movie_path': movie_path,
             'image_path': image_path,
         })
@@ -248,38 +253,73 @@ def get_asset_video(assetId):
     json_data = dumps(adi_metadata)
     return response.asset_retrieve(json_data)
 
+
 def post_adi_endpoint():
-    my_filename = movie_config.premium_vrp_dir+'/ADI.xml'
     ts = time.time()
     conversationId = datetime.datetime.fromtimestamp(ts).strftime('%d%H%M%S')
     environment = request.form.get('environment')
     params.environment_entry(environment)
-    assetId = request.form.get('assetId')
     source = request.form.get('source')
-    get_adi_url = 'http://localhost:5000/get_adi/' + assetId
-    response_adi = requests.get(url=get_adi_url)
-    with open(my_filename, 'w') as f:
-        f.write(response_adi.text)
     endpoint_url = params.environment_url + 'source=' + source + '&conversationId=' + conversationId
     headers = {'Content-type': 'text/xml; charset=UTF-8'}
-    data = open(my_filename, 'rb').read()
-    post_response = {}
-    try:
-        response_post_adi = requests.post(url=endpoint_url, data=data, headers=headers)
-        post_response['Status'] = '200'
-        post_response['Message'] = 'AssetID: ' + assetId + ' ingested successfully'
-        post_response['Endpoint'] = endpoint_url
-        post_response['ConversationId'] = conversationId
-        post_response['Endpoint_Response'] = response_post_adi.text
-        package = ADI_main.query.filter_by(assetId=assetId).first()
-        ingest_response = ADI_INGEST_HISTORY(assetId=assetId, provider_version=package.provider_version,
-                                             environment=environment, conversationId=conversationId)
-        db.session.add(ingest_response)
-        db.session.commit()
-    except:
-        post_response['Status'] = '404'
-        post_response['Message'] = 'Error connecting to Endpoint: ' + endpoint_url
-        post_response['ConversationId'] = conversationId
+    if 'file' not in request.files and request.form.get('assetId') == "":
+        return errorchecker.input_missing('AssetId or ADI Filename')
+    elif request.form.get('assetId') == "":
+        file = request.files['file']
+        if file.filename == '':
+            return errorchecker.input_missing('AssetId or ADI Filename')
+        else:
+            file.save(os.path.join(UPLOAD_DIRECTORY, file.filename))
+            my_filename = movie_config.premium_vrp_dir + '/' + file.filename
+            data = open(my_filename, 'rb').read()
+            post_response = {}
+            try:
+                response_post_adi = requests.post(url=endpoint_url, data=data, headers=headers)
+                post_response['Status'] = '200'
+                post_response['Message'] = file.filename + ' ingested successfully'
+                post_response['Endpoint'] = endpoint_url
+                post_response['ConversationId'] = conversationId
+                post_response['Endpoint_Response'] = response_post_adi.text
+            except:
+                post_response['Status'] = '404'
+                post_response['Message'] = 'Error connecting to Endpoint: ' + endpoint_url
+                post_response['ConversationId'] = conversationId
 
-    json_data = dumps(post_response)
-    return response.asset_retrieve(json_data)
+            json_data = dumps(post_response)
+            return response.asset_retrieve(json_data)
+
+
+    else:
+        my_filename = movie_config.premium_vrp_dir+'/ADI.xml'
+        assetId = request.form.get('assetId')
+        try:
+            package = ADI_main.query.filter_by(assetId=assetId).first()
+            assetId_db = package.assetId
+            get_adi_url = 'http://localhost:5000/get_adi/' + assetId
+            response_adi = requests.get(url=get_adi_url)
+            with open(my_filename, 'w') as f:
+                f.write(response_adi.text)
+            data = open(my_filename, 'rb').read()
+            post_response = {}
+            try:
+                response_post_adi = requests.post(url=endpoint_url, data=data, headers=headers)
+                post_response['Status'] = '200'
+                post_response['Message'] = 'AssetID: ' + assetId_db + ' ingested successfully'
+                post_response['Endpoint'] = endpoint_url
+                post_response['ConversationId'] = conversationId
+                post_response['Endpoint_Response'] = response_post_adi.text
+                package = ADI_main.query.filter_by(assetId=assetId).first()
+                ingest_response = ADI_INGEST_HISTORY(assetId=assetId, provider_version=package.provider_version,
+                                                     environment=environment, conversationId=conversationId)
+                db.session.add(ingest_response)
+                db.session.commit()
+            except:
+                post_response['Status'] = '404'
+                post_response['Message'] = 'Error connecting to Endpoint: ' + endpoint_url
+                post_response['ConversationId'] = conversationId
+
+            json_data = dumps(post_response)
+            return response.asset_retrieve(json_data)
+
+        except:
+            return errorchecker.asset_not_found_id(assetId)

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?><ADI3 xmlns="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1" xmlns:PO="URN:NNDS:CMS:ADI3:PURCHASEOPTIONS:01" xmlns:content="http://www.cablelabs.com/namespaces/metadata/xsd/content/1" xmlns:core="http://www.cablelabs.com/namespaces/metadata/xsd/core/1" xmlns:ext="URN:NNDS:CMS:ADI3:01" xmlns:offer="http://www.cablelabs.com/namespaces/metadata/xsd/offer/1" xmlns:schemaLocation="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1./MD-SP-VODContainer-I01.xsd" xmlns:terms="http://www.cablelabs.com/namespaces/metadata/xsd/terms/1" xmlns:title="http://www.cablelabs.com/namespaces/metadata/xsd/title/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
- {% for val in values -%}
+   {% for val in values -%}
   <Title creationDateTime="2014-11-24T10:34:34Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/TITL{{val.assetid}}01">
     <core:AlternateId identifierSystem="ConversationID">281309018</core:AlternateId>
     <core:Ext>
           <ext:LocalizableTitleExt xml:lang="eng">
-        <ext:EpisodeName>{{val.svod_episode_name}}</ext:EpisodeName>
+      <ext:EpisodeName>{{val.svod_episode_name}}</ext:EpisodeName>
       </ext:LocalizableTitleExt>
       <ext:SeriesInfo seasonNumber="{{val.svod_season_number}}" episodeNumber="{{val.svod_episode_number}}" totalEpisodes="{{val.svod_total_episodes}}"/>
       <ext:IsSigned>false</ext:IsSigned>
-      <ext:IsSubtitle>{{val.subtitle_flag}}</ext:IsSubtitle>
+      <ext:IsSubtitle>true</ext:IsSubtitle>
       <ext:IsAudioDescribed>true</ext:IsAudioDescribed>
-      <ext:Soundmouse>566444</ext:Soundmouse>
+      <ext:Soundmouse>1166269</ext:Soundmouse>
       <ext:StudioCode>1</ext:StudioCode>
       <ext:LinkedObject object="PRCT{{val.assetid}}01" type="parentContent"/>
       <ext:LinkedObject object="{{val.multiformatid}}" type="MultiFormat"/>
@@ -22,16 +22,16 @@
       <title:TitleMedium>{{val.title}}</title:TitleMedium>
       <title:TitleLong>DUMMY</title:TitleLong>
       <title:SummaryShort>{{val.asset_syn}}</title:SummaryShort>
-      <title:ActorDisplay>Rob Hughes, Raj Puri, Kumaran Devaneson, Nelash Chauhan, Terry Crews</title:ActorDisplay>
-      <title:Actor firstName="Rob" fullName="Rob Hughes" lastName="Hughes" sortableName="*"/>
-      <title:Actor firstName="Raj" fullName="Raj Puri" lastName="Puri" sortableName="*"/>
-      <title:Actor firstName="Kumaran" fullName="Kumaran Devaneson" lastName="Devaneson" sortableName="*"/>
-      <title:Actor firstName="Nelash" fullName="Nelash Chauhan" lastName="Chauhan" sortableName="*"/>
+      <title:ActorDisplay>Luke Wilson, Maya Rudolph, Dax Shepard, Justin Long, Terry Crews</title:ActorDisplay>
+      <title:Actor firstName="Luke" fullName="Luke Wilson" lastName="Wilson" sortableName="*"/>
+      <title:Actor firstName="Maya" fullName="Maya Rudolph" lastName="Rudolph" sortableName="*"/>
+      <title:Actor firstName="Dax" fullName="Dax Shepard" lastName="Shepard" sortableName="*"/>
+      <title:Actor firstName="Justin" fullName="Justin Long" lastName="Long" sortableName="*"/>
       <title:Actor firstName="Terry" fullName="Terry Crews" lastName="Crews" sortableName="*"/>
       <title:DirectorDisplay>Krishnendu Banerjee</title:DirectorDisplay>
-      <title:Director firstName="Rob" fullName="Rob Hughes" lastName="Hughes" sortableName="*"/>
-      <title:StudioDisplay>Walt Disney Pictures</title:StudioDisplay>
-   </title:LocalizableTitle>
+      <title:Director firstName="Krishnendu" fullName="Krishnendu Banerjee" lastName="banerjee" sortableName="*"/>
+      <title:StudioDisplay>Universal Pictures</title:StudioDisplay>
+    </title:LocalizableTitle>
     <title:Rating ratingSystem="BSkyBca">{{val.par_rating}}</title:Rating>
     <title:Rating ratingSystem="BSkyBsi">{{val.par_rating}}</title:Rating>
     <title:Rating ratingSystem="BSkyBtc">{{val.btc_rating}}</title:Rating>
@@ -39,8 +39,8 @@
     <title:Advisory>private:SEX</title:Advisory>
         <title:DisplayRunTime>{{val.runtime}}</title:DisplayRunTime>
     <title:Year>{{val.production_year}}</title:Year>
-    <title:Genre>6:1</title:Genre>
-    <title:ShowType>private:H</title:ShowType>
+    <title:Genre>3:4</title:Genre>
+    <title:ShowType>Other</title:ShowType>
   </Title>
   <Movie creationDateTime="2014-11-24T10:34:34Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/MAIN{{val.assetid}}01">
     <core:Ext>
@@ -64,22 +64,6 @@
       <content:CGMS_A>3</content:CGMS_A>
     </content:CopyControlInfo>
   </Movie>
-  <Preview creationDateTime="2014-11-24T10:34:34Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/TRVT{{val.assetid}}01">
-                <core:Ext>
-                        <ext:PreviewExtensions mediaId="03175259">
-                                <ext:closedCaption>false</ext:closedCaption>
-                                <ext:promoTitle>Trailer</ext:promoTitle>
-                        </ext:PreviewExtensions>
-                </core:Ext>
-                <content:SourceUrl>{{val.movie_path}}FinestHours_Trailer.ts</content:SourceUrl>
-                <content:ContentFileSize>100</content:ContentFileSize>
-                <content:ContentCheckSum>f4ee486d734bb812498b31624354f248</content:ContentCheckSum>
-                <content:AudioType>Dolby 5.1</content:AudioType>
-                <content:Duration>PT00H02M00S</content:Duration>
-                <content:IsHDContent>false</content:IsHDContent>
-                <content:Language>eng</content:Language>
-                <content:Rating ratingSystem="BSkyBsi">0</content:Rating>
-  </Preview>
   <Thumbnail creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/THEP{{val.assetid}}01">
     <content:SourceUrl>{{val.image_path}}FinestHours_182x98.jpg</content:SourceUrl>
     <content:ContentFileSize>100</content:ContentFileSize>
@@ -88,14 +72,12 @@
   <ContentGroup creationDateTime="2014-11-24T10:34:34Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/CGVT{{val.assetid}}01">
     <core:Ext>
       <ext:ContentGroupType>AV</ext:ContentGroupType>
-    <ext:PressPackImageRef uriId="{{val.providerid}}/PPAT{{val.assetid}}01"/>
-      <ext:PressPackImageRef uriId="{{val.providerid}}/PRSW{{val.assetid}}01"/>
-      <ext:PressPackImageRef uriId="{{val.providerid}}/PRSB{{val.assetid}}01"/>
+      <ext:PressPackImageRef uriId="{{val.providerid}}/PPAT{{val.assetid}}01"/>
     </core:Ext>
     <offer:TitleRef uriId="{{val.providerid}}/TITL{{val.assetid}}01"/>
     <offer:MovieRef uriId="{{val.providerid}}/MAIN{{val.assetid}}01"/>
     <offer:PreviewRef uriId="{{val.providerid}}/TRVT{{val.assetid}}01"/>
-        <offer:ThumbnailRef uriId="{{val.providerid}}/THEP{{val.assetid}}01"/>
+    <offer:ThumbnailRef uriId="{{val.providerid}}/THEP{{val.assetid}}01"/>
   </ContentGroup>
  <Ext>
     <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PPAT{{val.assetid}}01">
@@ -106,41 +88,22 @@
       <content:Y_Resolution>243</content:Y_Resolution>
       <ext:Usage>urn:nnds:Metro:metadata:MediaTypeCS:2007:2.6</ext:Usage>
     </ext:PressPackImage>
-    <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PRSW{{val.assetid}}01">
-      <content:SourceUrl>{{val.image_path}}FinestHours_262x349.jpg</content:SourceUrl>
-      <content:ContentFileSize>100</content:ContentFileSize>
-      <content:ContentCheckSum>300343d46b52bbe7b191d9055d12b364</content:ContentCheckSum>
-      <content:X_Resolution>262</content:X_Resolution>
-      <content:Y_Resolution>349</content:Y_Resolution>
-      <ext:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:stb:3-4</ext:Usage>
-    </ext:PressPackImage>
-    <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PRSB{{val.assetid}}01">
-      <content:SourceUrl>{{val.image_path}}FinestHours_456x257.jpg</content:SourceUrl>
-      <content:ContentFileSize>100</content:ContentFileSize>
-      <content:ContentCheckSum>3396a3ff9fc6e09ae94068011556d0e5</content:ContentCheckSum>
-      <content:X_Resolution>456</content:X_Resolution>
-      <content:Y_Resolution>257</content:Y_Resolution>
-      <ext:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:stb:16-9</ext:Usage>
-    </ext:PressPackImage>
   </Ext>
-  <Offer creationDateTime="2016-10-27T13:10:01Z" endDateTime="{{val.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="{{val.offerStartDateTime}}" uriId="{{val.providerid}}/OAVT{{val.assetid}}01">
+  <Offer creationDateTime="2016-10-27T13:10:01Z" endDateTime="{{val.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2018-01-01T00:00:01Z" uriId="{{val.providerid}}/OAVT{{val.assetid}}01">
     <core:Ext>
-     <ext:CutvEvent epgDateTime="{{val.epgTime}}" leadServiceKey="{{val.service_key}}">
-        <ext:Service serviceKey="{{val.service_key}}" />
-      </ext:CutvEvent>
-     <ext:OfferAvailability endDateTime="{{val.offerEndDateTime}}" offerType="{{val.offer_type}}" startDateTime="{{val.offerStartDateTime}}"/>
+      <ext:OfferAvailability endDateTime="{{val.offerEndDateTime}}" offerType="{{val.offer_type}}" startDateTime="{{val.offerStartDateTime}}"/>
     </core:Ext>
     <offer:ProviderContentTier>{{val.providerid}}</offer:ProviderContentTier>
     <offer:BillingId>DUMMY</offer:BillingId>
     <offer:TermsRef uriId="{{val.providerid}}/TAVT{{val.assetid}}01"/>
     <offer:ContentGroupRef uriId="{{val.providerid}}/CGVT{{val.assetid}}01"/>
   </Offer>
-  <Terms creationDateTime="2016-10-27T13:10:01Z" endDateTime="{{val.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="{{val.offerStartDateTime}}" uriId="{{val.providerid}}/TAVT{{val.assetid}}01">
+  <Terms creationDateTime="2016-10-27T13:10:01Z" endDateTime="{{val.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2018-01-01T00:00:01Z" uriId="{{val.providerid}}/TAVT{{val.assetid}}01">
     <core:Ext>
-      <ext:TermType>CUTV</ext:TermType>
+      <ext:TermType>Archive</ext:TermType>
       <ext:platform>VT</ext:platform>
     </core:Ext>
     <terms:SuggestedPrice>0</terms:SuggestedPrice>
   </Terms>
-  {% endfor -%}
+ {% endfor -%}
 </ADI3>

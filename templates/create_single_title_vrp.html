@@ -4,29 +4,24 @@
 <p>** Mandatory Fields. Optional fields populates default values as per 'config.properties' file. </p>
 {% block content %}
 <div class="column is-4 is-offset-4">
-    <h2 class="title">Create ADI</h2>
+    <h2 class="title">Create VRP ADI</h2>
     <div class="box">
-        <form method="POST" action="/create_single_title">
+        <form method="POST" action="/create_single_title_vrp">
 
             <h4>Licensing Section</h4>
             <div class="field">
                 <div class="control">
                     <input class="input is-large" list="asset_type" name="asset_type" placeholder="Type of Asset" autofocus="" required>
                     <datalist id="asset_type">
-                      <option value="EST SINGLE TITLE">
-                      <option value="SUBSCRIPTION VOD">
-                      <option value="RENTAL">
-                      <option value="CATCHUP">
-                      <option value="DPL SUBSCRIPTION">
-                      <option value="DPL IPPR">
-                      <option value="DPL CUTV">
                       <option value="VRP PREMIUM VOD">
                       <option value="VRP SUBSCRIPTION VOD">
                       <option value="VRP RENTAL">
                       <option value="VRP CATCHUP">
-                      <option value="VRP DPL SUBSCRIPTION">
-                      <option value="VRP DPL IPPR">
-                      <option value="VRP DPL CUTV">
+                      <option value="VRP SUBSCRIPTION EPISODE">
+                      <option value="VRP DPL SUBSCRIPTION VOD">
+                      <option value="VRP DPL RENTAL">
+                      <option value="VRP DPL CATCHUP">
+                      <option value="VRP DPL SUBSCRIPTION EPISODE">
                     </option>
                     </datalist>
                     <d>**</d>
@@ -130,6 +125,16 @@
                 <div class="control">
                     <input class="input is-large" type="text" name="duration" placeholder="Asset Duration" autofocus="">
                     <d>Format X:XX:XX</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="svod_season_number" placeholder="SVOD Season Number" autofocus="">
+                    <d></d>
+                    <input class="input is-large" type="text" name="svod_episode_number" placeholder="SVOD Episode Number" autofocus="">
+                    <d></d>
+                    <input class="input is-large" type="text" name="svod_total_episodes" placeholder="Total Episodes" autofocus="">
+                    <d>** Only required if Asset Type is VRP SVOD Episode</d>
                 </div>
             </div>
             <h4>Offer Section</h4>
