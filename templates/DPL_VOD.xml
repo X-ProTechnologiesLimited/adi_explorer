@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<adi:ADI3 xmlns:adi="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1"
+          xmlns:content="http://www.cablelabs.com/namespaces/metadata/xsd/content/1"
+          xmlns:core="http://www.cablelabs.com/namespaces/metadata/xsd/core/1"
+          xmlns:offer="http://www.cablelabs.com/namespaces/metadata/xsd/offer/1"
+          xmlns:terms="http://www.cablelabs.com/namespaces/metadata/xsd/terms/1"
+          xmlns:title="http://www.cablelabs.com/namespaces/metadata/xsd/title/1"
+          xmlns:vod30="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1"
+          xmlns:ext="URN:NNDS:CMS:ADI3:01">
+   {% for val in values -%}
+   <adi:ContentGroup uriId="{{val.providerid}}/UKTV{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
+                     creationDateTime="2019-12-04T16:01:57Z"
+                     startDateTime="2019-12-01T08:40:00Z"
+                     endDateTime="{{val.licensetime}}">
+      <core:Ext>
+         <ext:ContentGroupType>AV</ext:ContentGroupType>
+         <ext:CategoryImageRef uriId="{{val.providerid}}/CATI{{val.assetid}}01"/>
+         <ext:PressPackImageRef uriId="{{val.providerid}}/PRAW{{val.assetid}}01"/>
+         <ext:PressPackImageRef uriId="{{val.providerid}}/PRIW{{val.assetid}}01"/>
+         <ext:PressPackImageRef uriId="{{val.providerid}}/PRSW{{val.assetid}}01"/>
+         <ext:PressPackImageRef uriId="{{val.providerid}}/PRMW{{val.assetid}}01"/>
+      </core:Ext>
+      <offer:TitleRef uriId="{{val.providerid}}/TITL{{val.assetid}}01"/>
+      <offer:MovieRef uriId="{{val.providerid}}/MAIN{{val.assetid}}01"/>
+      <offer:ThumbnailRef uriId="{{val.providerid}}/THUM{{val.assetid}}01"/>
+   </adi:ContentGroup>
+   <adi:Title uriId="{{val.providerid}}/TITL{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
+              creationDateTime="2019-12-04T16:01:57Z"
+              startDateTime="2019-12-01T08:40:00Z"
+              endDateTime="{{val.licensetime}}">
+      <title:LocalizableTitle>
+         <title:TitleBrief>DUMMY</title:TitleBrief>
+         <title:TitleMedium>{{val.title}}</title:TitleMedium>
+         <title:TitleLong>DUMMY</title:TitleLong>
+         <title:SummaryShort>{{val.asset_syn}}</title:SummaryShort>
+      </title:LocalizableTitle>
+      <title:Rating ratingSystem="BSkyBca">{{val.par_rating}}</title:Rating>
+      <title:Rating ratingSystem="BSkyBsi">{{val.par_rating}}</title:Rating>
+      <title:DisplayRunTime>{{val.runtime}}</title:DisplayRunTime>
+      <title:Genre>3:4</title:Genre>
+      <title:ShowType>Other</title:ShowType>
+   </adi:Title>
+   <adi:Movie uriId="{{val.providerid}}/MAIN{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
+              creationDateTime="2019-12-04T16:01:57Z"
+              startDateTime="2019-12-01T08:40:00Z"
+              endDateTime="{{val.licensetime}}">
+      <core:Ext>
+         <ext:MovieExtensions>
+            <ext:playListTemplateId>{{val.dpl_template}}</ext:playListTemplateId>
+            <ext:numMidRolls>{{val.mid_rolls}}</ext:numMidRolls>
+            <ext:encodingProfile>0x54402400</ext:encodingProfile>
+            {% for dpl in dpl_items -%}
+            <ext:assetPart partNum="{{dpl.part_no}}">
+               <ext:SourceUrl>{{val.movie_path}}{{val.movie_url}}</ext:SourceUrl>
+               <ext:ContentFileSize>314456320</ext:ContentFileSize>
+               <ext:ContentCheckSum>{{val.movie_checksum}}</ext:ContentCheckSum>
+            </ext:assetPart>
+            {% endfor -%}
+            <ext:playlistSupportOnly>false</ext:playlistSupportOnly>
+         </ext:MovieExtensions>
+      </core:Ext>
+      <content:AudioType>{{val.audio_type}}</content:AudioType>
+      <content:ScreenFormat>Widescreen</content:ScreenFormat>
+      <content:Duration>{{val.duration}}</content:Duration>
+      <content:IsHDContent>{{val.video_type}}</content:IsHDContent>
+   </adi:Movie>
+   <adi:Thumbnail uriId="{{val.providerid}}/THUM{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
+                  creationDateTime="2019-12-04T16:01:57Z"
+                  startDateTime="2019-12-01T08:40:00Z"
+                  endDateTime="{{val.licensetime}}">
+      <content:SourceUrl>{{val.image_path}}DPL_THUM.jpg</content:SourceUrl>
+      <content:ContentFileSize>7681</content:ContentFileSize>
+      <content:ContentCheckSum>d358bb394e2e7a11912305e29f16c3dd</content:ContentCheckSum>
+   </adi:Thumbnail>
+   <adi:Ext>
+      <ext:CategoryImage uriId="{{val.providerid}}/CATI{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
+                         creationDateTime="2019-12-04T16:01:57Z"
+                         startDateTime="2019-12-01T08:40:00Z"
+                         endDateTime="{{val.licensetime}}">
+         <content:SourceUrl>{{val.image_path}}DPL_CATI.jpg</content:SourceUrl>
+         <content:ContentFileSize>3856</content:ContentFileSize>
+         <content:ContentCheckSum>8f8c5d272ad69ae5a4664fcd28e8f7d8</content:ContentCheckSum>
+      </ext:CategoryImage>
+      <ext:PressPackImage uriId="{{val.providerid}}/PRAW{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
+                          startDateTime="2019-12-01T08:40:00Z"
+                          endDateTime="{{val.licensetime}}">
+         <content:SourceUrl>{{val.image_path}}DPL_PRAW.jpg</content:SourceUrl>
+         <content:ContentFileSize>91464</content:ContentFileSize>
+         <content:ContentCheckSum>1e81300aaa6bb7e1637119ba6f9cb336</content:ContentCheckSum>
+         <content:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:android:16-9</content:Usage>
+      </ext:PressPackImage>
+      <ext:PressPackImage uriId="{{val.providerid}}/PRIW{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
+                          startDateTime="2019-12-01T08:40:00Z"
+                          endDateTime="{{val.licensetime}}">
+         <content:SourceUrl>{{val.image_path}}DPL_PRIW.jpg</content:SourceUrl>
+         <content:ContentFileSize>32284</content:ContentFileSize>
+         <content:ContentCheckSum>083a1b2cb2ffeee83bc28f78c90c8d7a</content:ContentCheckSum>
+         <content:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:ios:16-9</content:Usage>
+      </ext:PressPackImage>
+      <ext:PressPackImage uriId="{{val.providerid}}/PRSW{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
+                          startDateTime="2019-12-01T08:40:00Z"
+                          endDateTime="{{val.licensetime}}">
+         <content:SourceUrl>{{val.image_path}}DPL_PRSW.jpg</content:SourceUrl>
+         <content:ContentFileSize>31659</content:ContentFileSize>
+         <content:ContentCheckSum>307e7a7482a7c11bb4dbc15c0958cd34</content:ContentCheckSum>
+         <content:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:stb:16-9</content:Usage>
+      </ext:PressPackImage>
+      <ext:PressPackImage uriId="{{val.providerid}}/PRMW{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
+                          startDateTime="2019-12-01T08:40:00Z"
+                          endDateTime="{{val.licensetime}}">
+         <content:SourceUrl>{{val.image_path}}DPL_PRMW.jpg</content:SourceUrl>
+         <content:ContentFileSize>252995</content:ContentFileSize>
+         <content:ContentCheckSum>e686dbbfd1e11ad36d851e6c79c00517</content:ContentCheckSum>
+         <content:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:master:16-9</content:Usage>
+      </ext:PressPackImage>
+   </adi:Ext>
+   <adi:Offer uriId="{{val.providerid}}/OFFR{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
+              creationDateTime="2019-12-04T16:01:57Z"
+              startDateTime="{{val.offerStartDateTime}}"
+              endDateTime="{{val.offerEndDateTime}}">
+<!--       <core:Ext>
+         <ext:CutvEvent epgDateTime="2019-12-23T07:42:00Z" leadServiceKey="2612">
+            <ext:Service serviceKey="2612"/>
+         </ext:CutvEvent>
+      </core:Ext> -->
+      <offer:BillingId>DUMMY</offer:BillingId>
+      <offer:TermsRef uriId="{{val.providerid}}/TERM{{val.assetid}}01"/>
+      <offer:ContentGroupRef uriId="{{val.providerid}}/UKTV{{val.assetid}}01"/>
+   </adi:Offer>
+   <adi:Terms uriId="{{val.providerid}}/TERM{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
+              creationDateTime="2019-12-04T16:01:57Z"
+              startDateTime="{{val.offerStartDateTime}}"
+              endDateTime="{{val.offerEndDateTime}}">
+      <core:Ext>
+         <ext:TermType>Archive</ext:TermType>
+      </core:Ext>
+      <terms:SuggestedPrice>0</terms:SuggestedPrice>
+   </adi:Terms>
+ {% endfor -%}
+</adi:ADI3>

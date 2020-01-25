@@ -22,10 +22,12 @@ class metadata_default_params(object):
         self.svod_season_number = None
         self.svod_episode_number = None
         self.svod_total_episodes = None
+        self.svod_episode_name = None
+        self.dpl_asset_parts = None
+        self.dpl_template = None
 
     def param_logic_entry(self, synopsis, title, provider_version, production_year, ca_btc, par_rating, audio_type,
-                          frame_rate, subtitle_flag, asset_duration, svod_season_number, svod_episode_number,
-                          svod_total_episodes):
+                          frame_rate, subtitle_flag, asset_duration):
         if synopsis != "":
             self.synopsis = synopsis
         else:
@@ -73,21 +75,6 @@ class metadata_default_params(object):
             self.runtime = movie_config.default_asset_runtime
             self.duration = movie_config.default_asset_duration
 
-        if svod_season_number != "":
-            self.svod_season_number = svod_season_number
-        else:
-            self.svod_season_number = '1'
-
-        if svod_episode_number != "":
-            self.svod_episode_number = svod_episode_number
-        else:
-            self.svod_episode_number = '1'
-
-        if svod_total_episodes != "":
-            self.svod_total_episodes = svod_total_episodes
-        else:
-            self.svod_total_episodes = '1'
-
 
     def multiformat_entry(self, multiformat_id, asset_timestamp):
         if multiformat_id != "":
@@ -95,19 +82,22 @@ class metadata_default_params(object):
         else:
             self.multiformat_id = 'BSKYPR' + asset_timestamp
 
-    def movie_details_entry(self, provider_id):
-        if 'hdr' in provider_id:
+    def movie_details_entry(self, provider_id, asset_type):
+        if 'hdr' in provider_id and 'DPL' not in asset_type:
             self.movie_url = movie_config.hdr_movie_file
             self.movie_checksum = movie_config.hdr_movie_checksum
-        elif '4k' in provider_id:
+        elif '4k' in provider_id and 'DPL' not in asset_type:
             self.movie_url = movie_config.sdr_movie_file
             self.movie_checksum = movie_config.sdr_movie_checksum
-        elif 'est' in provider_id:
+        elif 'est' in provider_id and 'DPL' not in asset_type:
             self.movie_url = movie_config.est_movie_file
             self.movie_checksum = movie_config.est_movie_checksum
-        elif ('hd.' in provider_id) or ('_hd' in provider_id):
+        elif (('hd.' in provider_id) or ('_hd' in provider_id)) and 'DPL' not in asset_type:
             self.movie_url = movie_config.hd_movie_file
             self.movie_checksum = movie_config.hd_movie_checksum
+        elif 'DPL' in asset_type:
+            self.movie_url = movie_config.dpl_movie_url
+            self.movie_checksum = movie_config.dpl_movie_checksum
         else:
             self.movie_url = movie_config.title_movie
             self.movie_checksum = movie_config.title_checksum
@@ -123,6 +113,49 @@ class metadata_default_params(object):
             self.offer_type = 'SVOD'
         else:
             self.offer_type = 'IPPR'
+
+    def svod_episode_entry(self, svod_season_number, svod_episode_number, svod_total_episodes, asset_type, title):
+        if 'EPISODE' in asset_type:
+            if svod_season_number != "":
+                self.svod_season_number = svod_season_number
+            else:
+                self.svod_season_number = '1'
+
+            if svod_episode_number != "":
+                self.svod_episode_number = svod_episode_number
+            else:
+                self.svod_episode_number = '1'
+
+            if svod_total_episodes != "":
+                self.svod_total_episodes = svod_total_episodes
+            else:
+                self.svod_total_episodes = svod_episode_number
+
+            self.svod_episode_name = 'EpisodeName for: ' + title + ', Season: ' + self.svod_season_number + ', Episode: ' \
+                                     + self.svod_episode_number
+
+        else:
+            self.svod_season_number = ""
+            self.svod_episode_number = ""
+            self.svod_total_episodes = ""
+            self.svod_episode_name = ""
+
+
+
+
+    def dpl_entry(self, dpl_asset_parts, asset_type, asset_timestamp):
+        if 'DPL' in asset_type:
+            if dpl_asset_parts != "":
+                self.dpl_asset_parts = dpl_asset_parts
+            else:
+                self.dpl_asset_parts = '2'
+
+            self.dpl_template = asset_timestamp + '_template_' + self.dpl_asset_parts
+        else:
+            self.dpl_asset_parts = ""
+            self.dpl_template = ""
+
+
 
     def environment_entry(self, environment):
         if environment == 'TS1:CMS':

@@ -24,11 +24,12 @@ class ADI_metadata(db.Model):
     genre = db.Column(db.String(10))
     production_year = db.Column(db.String(10))
     duration = db.Column(db.String(10))
-    duration = db.Column(db.String(10))
     svod_episode_name = db.Column(db.String(100))
     svod_season_number = db.Column(db.String(10))
     svod_episode_number = db.Column(db.String(10))
     svod_total_episodes = db.Column(db.String(10))
+    total_asset_parts = db.Column(db.String(10))
+    dpl_template = db.Column(db.String(100))
     title_filter = db.Column(db.String(10))
 
 class ADI_offer(db.Model):

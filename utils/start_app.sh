@@ -16,7 +16,6 @@ fi
 
 mkdir -p $PROJECT_DIR/logs
 mkdir -p $PROJECT_DIR/supp_files
-mkdir -p $PROJECT_DIR/dpl_files
 mkdir -p $PROJECT_DIR/created_package
 
 

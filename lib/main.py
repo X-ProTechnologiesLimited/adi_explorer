@@ -19,8 +19,6 @@ params = metadata_default_params()
 path_to_script = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_DIRECTORY = movie_config.premium_upload_dir
 VRP_PACKAGE_DIR = movie_config.premium_vrp_dir
-UPLOAD_DPL_DIRECTORY = movie_config.dpl_upload_dir
-VRP_PACKAGE_DPL_DIR = movie_config.dpl_vrp_dir
 
 main = Blueprint('main', __name__, static_url_path='', static_folder='../premium_files/', template_folder='../templates')
 
@@ -179,6 +177,7 @@ def list_tar_files():
 
 
 @main.route("/files/<path:path>")
+@nocache
 def get_file(path):
     """Download a file."""
     return send_from_directory(UPLOAD_DIRECTORY, path, as_attachment=True)
@@ -220,6 +219,26 @@ def post_files_post():
             return list_files()
     return render_template('upload_files.html')
 
+
+@main.route("/delete_tar")
+def delete_tar_file():
+    return render_template('delete_tar.html')
+
+@main.route("/delete_tar", methods=['POST'])
+def delete_tar_file_post():
+    filename = request.form.get('filename')
+    os.remove(os.path.join(VRP_PACKAGE_DIR, filename))
+    return list_tar_files()
+
+@main.route("/delete_file")
+def delete_file():
+    return render_template('delete_supp_file.html')
+
+@main.route("/delete_file", methods=['POST'])
+def delete_file_post():
+    filename = request.form.get('filename')
+    os.remove(os.path.join(UPLOAD_DIRECTORY, filename))
+    return list_files()
 
 @main.route("/get_ingest_history")
 def get_ingest_history():

@@ -29,15 +29,16 @@ def create_single_title():
                              request.form.get('production_year'), request.form.get('ca_btc'),
                              request.form.get('par_rating'),
                              request.form.get('audio_type'), request.form.get('frame_rate'),
-                             request.form.get('subtitle_flag'), request.form.get('duration'),
-                             request.form.get('svod_season_number'), request.form.get('svod_episode_number'),
-                             request.form.get('svod_total_episodes'))
-    svod_episode_name = 'EpisodeName for: ' + title + ', Season: ' + params.svod_season_number + ', Episode: ' + \
-                        params.svod_episode_number
-    params.movie_details_entry(provider_id)
+                             request.form.get('subtitle_flag'), request.form.get('duration'))
+
+    params.svod_episode_entry(request.form.get('svod_season_number'), request.form.get('svod_episode_number'),
+                              request.form.get('svod_total_episodes'), asset_type, title)
+    params.dpl_entry(request.form.get('dpl_asset_parts'), asset_type, asset_timestamp)
+    params.movie_details_entry(provider_id, asset_type)
     params.video_type_entry(provider_id)
     params.offer_type_entry(asset_type)
     sitemap.sitemap_entry(asset_type,params.subtitle_flag)
+
     if sitemap.sitemap == False:
         return errorchecker.not_supported_asset_type(asset_type)
 
@@ -53,10 +54,11 @@ def create_single_title():
                                         subtitle_flag=params.subtitle_flag, audio_type=params.audio_type,
                                         frame_rate=params.frame_rate, btc_rating=params.ca_btc, video_type=params.video_type,
                                         synopsis=params.synopsis, production_year=params.production_year,
-                                        duration=params.runtime, title_filter='true', svod_episode_name=svod_episode_name,
+                                        duration=params.runtime, title_filter='true', svod_episode_name=params.svod_episode_name,
                                         svod_season_number=params.svod_season_number,
                                         svod_episode_number=params.svod_episode_number,
-                                        svod_total_episodes=params.svod_total_episodes)
+                                        svod_total_episodes=params.svod_total_episodes,
+                                        total_asset_parts=params.dpl_asset_parts, dpl_template=params.dpl_template)
 
         new_package_offer = ADI_offer(assetId=asset_timestamp + '01', offer_type=params.offer_type,
                                       offerStartTime=offerStartTime, offerEndTime=offerEndTime,
@@ -64,6 +66,8 @@ def create_single_title():
 
         new_package_media = ADI_media(assetId=asset_timestamp + '01', movie_url=params.movie_url,
                                       movie_checksum=params.movie_checksum)
+
+
 
         db.session.add(new_package_main)
         db.session.add(new_package_meta)
@@ -96,7 +100,7 @@ def create_est_show_adi():
                              request.form.get('par_rating'),
                              request.form.get('audio_type'), request.form.get('frame_rate'),
                              request.form.get('subtitle_flag'), "")
-    params.movie_details_entry(show_provider_id)
+    params.movie_details_entry(show_provider_id, 'EST')
     params.offer_type_entry('est_show')
 
     show_new_package_main = ADI_main(assetId=asset_timestamp + '00', original_timestamp=asset_timestamp,

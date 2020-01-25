@@ -8,7 +8,7 @@
     <title>ADI Package Manager</title>
     <link rel="stylesheet" type=text/css href="stylesheet.css">
 </head>
-
+<img src="/files/sky_logo_bib.jpg" alt="Sky Logo" width="110"height="46.5" align="left">
 <style>
   body {
   font-family: Arial, Helvetica, sans-serif;
@@ -17,7 +17,7 @@
 
 .navbar {
   overflow: hidden;
-  background-color: #30CB58;
+  background-color: #338BFF;
 }
 
 .navbar a {
@@ -112,7 +112,7 @@
 }
 
 .button.is-info {
-  background-color: #30CB58;
+  background-color: #338BFF;
   border-color: transparent;
   color: #fff;
 }
@@ -125,9 +125,10 @@
   display: flex;
   width: 20%;
 }
+
+
 </style>
 <body>
-
 <div class="navbar">
   <a href="{{ url_for('main.index') }}">Home</a>
     <div class="dropdown">
@@ -176,10 +177,20 @@
        <a href="{{ url_for('main.get_tar_file') }}">Download VRP Packages</a>
     </div>
   </div>
+  <div class="dropdown">
+    <button class="dropbtn">Delete
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+       <a href="{{ url_for('main.delete_file') }}">Delete Supporting Files</a>
+       <a href="{{ url_for('main.delete_tar_file') }}">Delete Tar Files</a>
+    </div>
+  </div>
 </div>
 
 {% block content %}
 {% endblock %}
+
 </body>
 
 </html>

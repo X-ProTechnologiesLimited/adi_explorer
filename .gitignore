@@ -7,7 +7,7 @@ search_response.html
 !/.gitignore
 /logs/*
 adi.xml
-/supp_files/*
+/supp_files/*.ts
+/supp_files/*.xml
 /created_package/*
-/dpl_files/*
 app_run.config

@@ -8,6 +8,8 @@ from . import errorchecker
 
 UPLOAD_DIRECTORY = movie_config.premium_upload_dir
 VRP_PACKAGE_DIR = movie_config.premium_vrp_dir
+image = movie_config.standard_image_group
+trailer_file = movie_config.trailer_file
 
 def make_tarfile():
     output_filename = request.form.get('filename')
@@ -34,9 +36,8 @@ def make_tarfile():
         else:
             return errorchecker.internal_server_error_show(video_type)
 
-        subprocess.call(['tar', '-C', UPLOAD_DIRECTORY, '-cf', tar_filename, 'FinestHours_182x98.jpg',
-                             'FinestHours_182x243.jpg', 'FinestHours_262x349.jpg', 'FinestHours_456x257.jpg',
-                             'FinestHours_Trailer.ts', media_file, 'ADI.xml'])
+        subprocess.call(['tar', '-C', UPLOAD_DIRECTORY, '-cf', tar_filename, image[0], image[1], image[2], image[3],
+                         trailer_file, media_file, 'ADI.xml'])
         return main.send_tar_file(output_filename)
 
     else:
@@ -49,7 +50,6 @@ def make_tarfile():
         else:
             return errorchecker.internal_server_error_show(video_type)
 
-        subprocess.call(['tar', '-C', UPLOAD_DIRECTORY, '-cf', tar_filename, 'FinestHours_182x98.jpg',
-                             'FinestHours_182x243.jpg', 'FinestHours_262x349.jpg', 'FinestHours_456x257.jpg',
-                             'FinestHours_Trailer.ts', media_file, 'ADI.xml'])
+        subprocess.call(['tar', '-C', UPLOAD_DIRECTORY, '-cf', tar_filename, image[0], image[1], image[2], image[3],
+                         trailer_file, media_file, 'ADI.xml'])
         return main.send_tar_file(output_filename)

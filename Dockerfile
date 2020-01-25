@@ -6,6 +6,7 @@ COPY utils /app/utils/
 COPY initialise_db.py /app/
 COPY templates/ /app/templates/
 COPY lib /app/lib
+COPY supp_files /app/supp_files
 
 ENV CONTAINERISED true
 

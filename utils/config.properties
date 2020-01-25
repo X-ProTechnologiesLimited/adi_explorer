@@ -13,6 +13,8 @@ est_movie_file = 'HD_MOVIE.ts'
 est_movie_checksum = '2e78cb32788e099db6a3118a074bc9a9'
 title_movie = 'SD_2_min.ts'
 title_checksum = '8e003a54635310a6da4d7bdff4f96c46'
+dpl_movie_url = 'VT-3954178-1-1-THD-CP_001.ts'
+dpl_movie_checksum = '2e78cb32788e099db6a3118a074bc9a9'
 
 # Default Metadata Parameters
 default_synopsis = 'This is the synopsis of title named: '
@@ -48,6 +50,6 @@ stage_vms = 'http://vmswkflowapt01.broadcast.bskyb.com/opencase/ContentProcessor
 
 # TAR DIRECTORIES
 premium_upload_dir = '../supp_files'
-dpl_upload_dir = '../dpl_files'
 premium_vrp_dir = '../created_package'
-dpl_vrp_dir = '../created_package'
+trailer_file = 'FinestHours_Trailer.ts'
+standard_image_group = ['FinestHours_182x98.jpg', 'FinestHours_182x243.jpg', 'FinestHours_262x349.jpg', 'FinestHours_456x257.jpg']

@@ -31,6 +31,11 @@ def download_title(assetId):
         if sitemap.sitemap == False:
             return errorchecker.not_supported_asset_type(package_main.adi_type)
 
+        if 'DPL' in package_main.adi_type:
+            mid_rolls = str(int(package_meta.total_asset_parts)-1)
+        else:
+            mid_rolls = 'null'
+
         if 'VRP' in package_main.adi_type:
             movie_path = ""
             image_path = ""
@@ -69,9 +74,20 @@ def download_title(assetId):
             'svod_total_episodes': package_meta.svod_total_episodes,
             'movie_path': movie_path,
             'image_path': image_path,
+            'dpl_template': package_meta.dpl_template,
+            'mid_rolls': mid_rolls,
         })
 
-        template = render_template(sitemap.sitemap, values=values)
+        if 'DPL' in package_main.adi_type:
+            dpl_items = []
+            for parts in range(1, int(package_meta.total_asset_parts) + 1):
+                dpl_items.append({
+                    'part_no': parts,
+                })
+            template = render_template(sitemap.sitemap, values=values, dpl_items=dpl_items)
+        else:
+            template = render_template(sitemap.sitemap, values=values)
+
         response = make_response(template)
         response.headers['Content-Type'] = 'application/xml'
 
