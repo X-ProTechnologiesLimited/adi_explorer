@@ -1,11 +1,12 @@
 ## Do not delete or rename any parameters. Only change the default values within quotes if required ##
-
+default_standard_package = ['EST SINGLE TITLE', 'SVOD', 'RENTAL', 'CATCHUP VOD', 'CATCHUP EPISODE', 'SVOD EPISODE', 'DPL SVOD', 'DPL CATCHUP', 'DPL SVOD EPISODE', 'DPL CATCHUP EPISODE']
+default_vrp_package = ['VRP SVOD', 'VRP PREMIUM VOD', 'VRP_RENTAL', 'VRP CATCHUP VOD', 'VRP CATCHUP EPISODE', 'VRP SVOD EPISODE', 'VRP DPL SVOD', 'VRP DPL CATCHUP', 'VRP DPL SVOD EPISODE', 'VRP DPL CATCHUP EPISODE']
 # Movie File Parameters
 video_path = 'Providers/BSS/Content/Distribution/TestFiles/adi_t/'
 image_path = 'tank/Images/adi_t/'
-hdr_movie_file = 'IdentExternalDDplus_MainWithExternalAtmos_IdentExternalDDplus-Ateme_out_API.ts'
+hdr_movie_file = 'HDR_MOVIE.ts'
 hdr_movie_checksum = 'cb6a578d7551d7908c7ee88c3bdf9deb'
-sdr_movie_file = 'CATS_EP1_UHD_3170_1mins.ts'
+sdr_movie_file = '4K_SDR_MOVIE.ts'
 sdr_movie_checksum = '806761c26916f9a26abb547188c62cf6'
 hd_movie_file = 'HD_MOVIE.ts'
 hd_movie_checksum = '2e78cb32788e099db6a3118a074bc9a9'
@@ -13,7 +14,7 @@ est_movie_file = 'HD_MOVIE.ts'
 est_movie_checksum = '2e78cb32788e099db6a3118a074bc9a9'
 title_movie = 'SD_2_min.ts'
 title_checksum = '8e003a54635310a6da4d7bdff4f96c46'
-dpl_movie_url = 'VT-3954178-1-1-THD-CP_001.ts'
+dpl_movie_url = 'DPL_VIDEO_FILE.ts'
 dpl_movie_checksum = '2e78cb32788e099db6a3118a074bc9a9'
 
 # Default Metadata Parameters

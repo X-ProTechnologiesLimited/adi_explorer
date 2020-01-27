@@ -109,10 +109,12 @@ class metadata_default_params(object):
             self.video_type = 'false'
 
     def offer_type_entry(self, asset_type):
-        if asset_type == 'SUBSCRIPTION VOD':
-            self.offer_type = 'SVOD'
-        else:
+        if 'RENTAL' in asset_type or 'PREMIUM' in asset_type:
             self.offer_type = 'IPPR'
+        elif 'est' in asset_type:
+            self.offer_type = 'IPPR'
+        else:
+            self.offer_type = 'SVOD'
 
     def svod_episode_entry(self, svod_season_number, svod_episode_number, svod_total_episodes, asset_type, title):
         if 'EPISODE' in asset_type:

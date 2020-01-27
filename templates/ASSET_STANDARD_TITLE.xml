@@ -3,21 +3,28 @@
   <Title creationDateTime="2014-11-24T10:34:34Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/TITL{{val.assetid}}01">
     <core:AlternateId identifierSystem="ConversationID">281309018</core:AlternateId>
     <core:Ext>
+      {% for episode in episodes -%}
           <ext:LocalizableTitleExt xml:lang="eng">
-        <ext:MarketingMessage>{{val.title}} Marketing Message</ext:MarketingMessage>
+        <ext:EpisodeName>{{episode.svod_episode_name}}</ext:EpisodeName>
       </ext:LocalizableTitleExt>
+      <ext:SeriesInfo seasonNumber="{{episode.svod_season_number}}" episodeNumber="{{episode.svod_episode_number}}" totalEpisodes="{{episode.svod_total_episodes}}"/>
+      {% endfor -%}
       <ext:IsSigned>false</ext:IsSigned>
-      <ext:IsSubtitle>{{val.subtitle_flag}}</ext:IsSubtitle>
+      {% for sub in subtitle -%}
+      <ext:IsSubtitle>{{sub.subtitle_flag}}</ext:IsSubtitle>
+      {% endfor -%}
       <ext:IsAudioDescribed>true</ext:IsAudioDescribed>
       <ext:Soundmouse>566444</ext:Soundmouse>
       <ext:StudioCode>66</ext:StudioCode>
       <ext:LinkedObject object="PRCT{{val.assetid}}01" type="parentContent"/>
       <ext:LinkedObject object="{{val.multiformatid}}" type="MultiFormat"/>
+      {% for vod in vodextensions -%}
       <ext:TitleExtensions Language="eng">
         <ext:ProgramKey>PV1520064</ext:ProgramKey>
         <ext:LinkedProgramKey>PV1520058</ext:LinkedProgramKey>
-        <ext:DealSub>M/N</ext:DealSub>
+        <ext:DealSub>{{vod.vod_deal_sub}}</ext:DealSub>
       </ext:TitleExtensions>
+      {% endfor -%}
     </core:Ext>
     <title:LocalizableTitle xml:lang="eng">
       <title:TitleSortName>*</title:TitleSortName>
@@ -53,12 +60,15 @@
         <content:ContentFileSize>100</content:ContentFileSize>
         <content:ContentCheckSum>{{val.movie_checksum}}</content:ContentCheckSum>
     <content:AudioType>{{val.audio_type}}</content:AudioType>
-    <content:ScreenFormat>Widescreen</content:ScreenFormat>
+      <content:ScreenFormat>Widescreen</content:ScreenFormat>
     <content:Resolution>1080i</content:Resolution>
     <content:FrameRate>{{val.frame_rate}}</content:FrameRate>
     <content:Duration>{{val.duration}}</content:Duration>
     <content:IsHDContent>{{val.video_type}}</content:IsHDContent>
     <content:Language>eng</content:Language>
+    {% for sub in subtitle -%}
+    <content:SubtitleLanguage>eng</content:SubtitleLanguage>
+    {% endfor -%}
     <content:CopyControlInfo>
       <content:IsCopyProtectionVerbose>true</content:IsCopyProtectionVerbose>
       <content:AnalogProtectionSystem>0</content:AnalogProtectionSystem>
@@ -128,6 +138,11 @@
   </Ext>
   <Offer creationDateTime="2016-10-27T13:10:01Z" endDateTime="{{val.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="{{val.offerStartDateTime}}" uriId="{{val.providerid}}/OAVT{{val.assetid}}01">
     <core:Ext>
+      {% for cu in cutv -%}
+      <ext:CutvEvent epgDateTime="{{cu.epgTime}}" leadServiceKey="{{cu.service_key}}">
+        <ext:Service serviceKey="{{cu.service_key}}" />
+      </ext:CutvEvent>
+      {% endfor -%}
       <ext:OfferAvailability endDateTime="{{val.offerEndDateTime}}" offerType="{{val.offer_type}}" startDateTime="{{val.offerStartDateTime}}"/>
     </core:Ext>
     <offer:ProviderContentTier>{{val.providerid}}</offer:ProviderContentTier>
@@ -137,7 +152,9 @@
   </Offer>
   <Terms creationDateTime="2016-10-27T13:10:01Z" endDateTime="{{val.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="{{val.offerStartDateTime}}" uriId="{{val.providerid}}/TAVT{{val.assetid}}01">
     <core:Ext>
-      <ext:TermType>Archive</ext:TermType>
+      {% for term in terms -%}
+      <ext:TermType>{{term.term_type}}</ext:TermType>
+      {% endfor -%}
       <ext:platform>VT</ext:platform>
     </core:Ext>
     <terms:SuggestedPrice>0</terms:SuggestedPrice>

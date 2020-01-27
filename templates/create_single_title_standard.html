@@ -11,16 +11,18 @@
             <h4>Licensing Section</h4>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" list="asset_type" name="asset_type" placeholder="Type of Asset" autofocus="" required>
+                    <input class="input is-large" list="asset_type" name="asset_type" placeholder="Type of Asset" autofocus="" autocomplete="off" required>
                     <datalist id="asset_type">
                       <option value="EST SINGLE TITLE">
-                      <option value="SUBSCRIPTION VOD">
+                      <option value="SVOD">
                       <option value="RENTAL">
-                      <option value="CATCHUP">
-                      <option value="SUBSCRIPTION EPISODE">
-                      <option value="DPL SUBSCRIPTION VOD">
+                      <option value="CATCHUP VOD">
+                      <option value="CATCHUP EPISODE">
+                      <option value="SVOD EPISODE">
+                      <option value="DPL SVOD">
                       <option value="DPL CATCHUP">
-                      <option value="DPL SUBSCRIPTION EPISODE">
+                      <option value="DPL SVOD EPISODE">
+                      <option value="DPL CATCHUP EPISODE">
                     </option>
                     </datalist>
                     <d>**</d>
@@ -138,7 +140,7 @@
                     <input class="input is-large" type="text" name="svod_episode_number" placeholder="SVOD Episode Number" autofocus="">
                     <d></d>
                     <input class="input is-large" type="text" name="svod_total_episodes" placeholder="Total Episodes" autofocus="">
-                    <d>** Only required if Asset Type is SVOD Episode</d>
+                    <d>** Only required if Asset Type is Episode</d>
                 </div>
             </div>
             <h4>Offer Section</h4>

@@ -91,7 +91,7 @@ def get_back_adi(assetId):
         else:
             return get_asset_details.download_title(assetId)
     except:
-        return errorchecker.asset_not_found_id('AssetId')
+        return errorchecker.asset_not_found_id(assetId)
 
 @main.route('/get_adi')
 def get_adi():

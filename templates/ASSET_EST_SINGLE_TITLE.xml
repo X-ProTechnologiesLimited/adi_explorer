@@ -93,9 +93,9 @@
 <ext:promoTitle>Trailer</ext:promoTitle>
 </ext:PreviewExtensions>
 </core:Ext>
-<content:SourceUrl>Providers/BSS/Content/Distribution/TestFiles/Promo30s-1-THD-CP.ts</content:SourceUrl>
+<content:SourceUrl>{{val.movie_path}}FinestHours_Trailer.ts</content:SourceUrl>
 <content:ContentFileSize>100</content:ContentFileSize>
-<content:ContentCheckSum>6880125fb3c16d2cbb64284540e752ed</content:ContentCheckSum>
+<content:ContentCheckSum>f4ee486d734bb812498b31624354f248</content:ContentCheckSum>
 <content:AudioType>Dolby 5.1</content:AudioType>
 <content:Duration>PT00H02M00S</content:Duration>
 <content:IsHDContent>false</content:IsHDContent>
@@ -103,9 +103,9 @@
 <content:Rating ratingSystem="BSkyBsi">0</content:Rating>
 </Preview>
 <Thumbnail creationDateTime="2019-11-27T16:12:59Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2019-11-17T16:12:59Z" uriId="{{val.providerid}}/THEP{{val.assetid}}01">
-<content:SourceUrl>tank/Images/ByPankaj/Humans_182x98.jpg</content:SourceUrl>
+<content:SourceUrl>{{val.image_path}}FinestHours_182x98.jpg</content:SourceUrl>
 <content:ContentFileSize>100</content:ContentFileSize>
-<content:ContentCheckSum>2798b9982863dbedca911c02f42acbb4</content:ContentCheckSum>
+<content:ContentCheckSum>e9e23717c0b20f6af34ffbbf6b83add2</content:ContentCheckSum>
 </Thumbnail>
 <Ext>
 <ext:PurchaseOption creationDateTime="2019-11-27T16:12:59Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2019-11-17T16:12:59Z" uriId="{{val.providerid}}/PROP{{val.assetid}}01">
@@ -125,25 +125,25 @@
 <PO:priceCategory currency="EUR" marketingSegment="VIP" price="9.56" territory="IRL"/>
 </ext:PriceBundle>
 <ext:PressPackImage creationDateTime="2019-11-27T16:12:59Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2019-11-17T16:12:59Z" uriId="{{val.providerid}}/PPAT{{val.assetid}}01">
-<content:SourceUrl>tank/Images/ByPankaj/Humans_182x243.jpg</content:SourceUrl>
+<content:SourceUrl>{{val.image_path}}FinestHours_182x243.jpg</content:SourceUrl>
 <content:ContentFileSize>100</content:ContentFileSize>
-<content:ContentCheckSum>69454f705726b99d593d9e56cd17e823</content:ContentCheckSum>
+<content:ContentCheckSum>43a1883f263a9bbae1b5944f24645430</content:ContentCheckSum>
 <content:X_Resolution>183</content:X_Resolution>
 <content:Y_Resolution>243</content:Y_Resolution>
 <ext:Usage>urn:nnds:Metro:metadata:MediaTypeCS:2007:2.6</ext:Usage>
 </ext:PressPackImage>
 <ext:PressPackImage creationDateTime="2019-11-27T16:12:59Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2019-11-17T16:12:59Z" uriId="{{val.providerid}}/PRSW{{val.assetid}}01">
-<content:SourceUrl>tank/Images/ByPankaj/Humans_262x349.jpg</content:SourceUrl>
+<content:SourceUrl>{{val.image_path}}FinestHours_262x349.jpg</content:SourceUrl>
 <content:ContentFileSize>100</content:ContentFileSize>
-<content:ContentCheckSum>f3723bdabaa72c87aa3d881b48c80a48</content:ContentCheckSum>
+<content:ContentCheckSum>300343d46b52bbe7b191d9055d12b364</content:ContentCheckSum>
 <content:X_Resolution>262</content:X_Resolution>
 <content:Y_Resolution>349</content:Y_Resolution>
 <ext:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:stb:3-4</ext:Usage>
 </ext:PressPackImage>
 <ext:PressPackImage creationDateTime="2019-11-27T16:12:59Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2019-11-17T16:12:59Z" uriId="{{val.providerid}}/PRSB{{val.assetid}}01">
-<content:SourceUrl>tank/Images/ByPankaj/Humans_456x257.jpg</content:SourceUrl>
+<content:SourceUrl>{{val.image_path}}FinestHours_456x257.jpg</content:SourceUrl>
 <content:ContentFileSize>100</content:ContentFileSize>
-<content:ContentCheckSum>4601f98c4c99ce7d5902b7a865d6e345</content:ContentCheckSum>
+<content:ContentCheckSum>3396a3ff9fc6e09ae94068011556d0e5</content:ContentCheckSum>
 <content:X_Resolution>456</content:X_Resolution>
 <content:Y_Resolution>257</content:Y_Resolution>
 <ext:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:stb:16-9</ext:Usage>

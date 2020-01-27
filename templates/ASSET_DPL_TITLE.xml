@@ -28,6 +28,12 @@
               creationDateTime="2019-12-04T16:01:57Z"
               startDateTime="2019-12-01T08:40:00Z"
               endDateTime="{{val.licensetime}}">
+      {% for episode in episodes -%}
+          <ext:LocalizableTitleExt xml:lang="eng">
+        <ext:EpisodeName>{{episode.svod_episode_name}}</ext:EpisodeName>
+      </ext:LocalizableTitleExt>
+      <ext:SeriesInfo seasonNumber="{{episode.svod_season_number}}" episodeNumber="{{episode.svod_episode_number}}" totalEpisodes="{{episode.svod_total_episodes}}"/>
+      {% endfor -%}
       <title:LocalizableTitle>
          <title:TitleBrief>DUMMY</title:TitleBrief>
          <title:TitleMedium>{{val.title}}</title:TitleMedium>
@@ -46,8 +52,10 @@
               endDateTime="{{val.licensetime}}">
       <core:Ext>
          <ext:MovieExtensions>
-            <ext:playListTemplateId>{{val.dpl_template}}</ext:playListTemplateId>
-            <ext:numMidRolls>{{val.mid_rolls}}</ext:numMidRolls>
+            {% for items in dpl_base -%}
+            <ext:playListTemplateId>{{items.dpl_template}}</ext:playListTemplateId>
+            <ext:numMidRolls>{{items.mid_rolls}}</ext:numMidRolls>
+            {% endfor -%}
             <ext:encodingProfile>0x54402400</ext:encodingProfile>
             {% for dpl in dpl_items -%}
             <ext:assetPart partNum="{{dpl.part_no}}">
@@ -118,11 +126,13 @@
               creationDateTime="2019-12-04T16:01:57Z"
               startDateTime="{{val.offerStartDateTime}}"
               endDateTime="{{val.offerEndDateTime}}">
-<!--       <core:Ext>
-         <ext:CutvEvent epgDateTime="2019-12-23T07:42:00Z" leadServiceKey="2612">
-            <ext:Service serviceKey="2612"/>
+      {% for cu in cutv -%}
+     <core:Ext>
+         <ext:CutvEvent epgDateTime="{{cu.epgTime}}" leadServiceKey="{{cu.service_key}}">
+            <ext:Service serviceKey="{{cu.service_key}}"/>
          </ext:CutvEvent>
-      </core:Ext> -->
+      </core:Ext>
+      {% endfor -%}
       <offer:BillingId>DUMMY</offer:BillingId>
       <offer:TermsRef uriId="{{val.providerid}}/TERM{{val.assetid}}01"/>
       <offer:ContentGroupRef uriId="{{val.providerid}}/UKTV{{val.assetid}}01"/>
@@ -132,7 +142,9 @@
               startDateTime="{{val.offerStartDateTime}}"
               endDateTime="{{val.offerEndDateTime}}">
       <core:Ext>
-         <ext:TermType>Archive</ext:TermType>
+      {% for term in terms -%}
+      <ext:TermType>{{term.term_type}}</ext:TermType>
+      {% endfor -%}
       </core:Ext>
       <terms:SuggestedPrice>0</terms:SuggestedPrice>
    </adi:Terms>

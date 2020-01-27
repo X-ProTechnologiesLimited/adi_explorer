@@ -7,6 +7,7 @@ from . import errorchecker
 from . import offerdate
 from .sitemap_create import sitemap_mapper
 from . import response
+from . import movie_config
 from .est_show_params import est_show_default_params
 from .metadata_params import metadata_default_params
 est_params = est_show_default_params()
@@ -20,6 +21,8 @@ def create_single_title():
     offerStartTime = offerdate.offer_date(0, 0)
     offerEndTime = offerdate.offer_date(int(request.form.get('offer_window')), 0)
     asset_type = request.form.get('asset_type')
+    if (asset_type not in movie_config.default_standard_package) and (asset_type not in movie_config.default_vrp_package):
+        return errorchecker.not_supported_asset_type(asset_type)
     provider_id = request.form.get('provider_id')
     title = request.form.get('title')
     service_key = request.form.get('service_key')
@@ -37,10 +40,7 @@ def create_single_title():
     params.movie_details_entry(provider_id, asset_type)
     params.video_type_entry(provider_id)
     params.offer_type_entry(asset_type)
-    sitemap.sitemap_entry(asset_type,params.subtitle_flag)
-
-    if sitemap.sitemap == False:
-        return errorchecker.not_supported_asset_type(asset_type)
+    sitemap.sitemap_entry(asset_type)
 
     if (service_key == "") and ('CATCHUP' in asset_type):
         return errorchecker.input_missing('service_key')

@@ -7,6 +7,7 @@ from . import response
 import datetime
 import time
 from .metadata_params import metadata_default_params
+from .load_adi_logic import adi_package_logic
 from . import errorchecker
 import requests
 import os
@@ -15,6 +16,7 @@ from .models import ADI_main, ADI_INGEST_HISTORY
 path_to_script = os.path.dirname(os.path.abspath(__file__))
 params = metadata_default_params()
 sitemap = sitemap_mapper()
+adicreate = adi_package_logic()
 UPLOAD_DIRECTORY = movie_config.premium_vrp_dir
 
 main = Blueprint('main', __name__, static_url_path='', static_folder='../premium_files/', template_folder='../templates')
@@ -25,23 +27,11 @@ def download_title(assetId):
         package_meta = ADI_metadata.query.filter_by(assetId=assetId).first()
         package_offer = ADI_offer.query.filter_by(assetId=assetId).first()
         package_media = ADI_media.query.filter_by(assetId=assetId).first()
-        sitemap.sitemap_entry(package_main.adi_type, package_meta.subtitle_flag)
-        asset_duration = 'PT'+package_meta.duration.split(':')[0]+'H'+package_meta.duration.split(':')[1]+'M'\
-                         +package_meta.duration.split(':')[2]+'S'
-        if sitemap.sitemap == False:
-            return errorchecker.not_supported_asset_type(package_main.adi_type)
-
-        if 'DPL' in package_main.adi_type:
-            mid_rolls = str(int(package_meta.total_asset_parts)-1)
-        else:
-            mid_rolls = 'null'
-
-        if 'VRP' in package_main.adi_type:
-            movie_path = ""
-            image_path = ""
-        else:
-            movie_path = movie_config.video_path
-            image_path = movie_config.image_path
+        sitemap.sitemap_entry(package_main.adi_type)
+        adicreate.duration_calc(package_meta.duration)
+        adicreate.path_builder(package_main.adi_type)
+        adicreate.dpl_midroll_calc(package_main.adi_type, package_meta.total_asset_parts)
+        adicreate.term_type_generate(package_main.adi_type)
 
         values = []
         values.append({
@@ -53,48 +43,95 @@ def download_title(assetId):
             'offerStartDateTime': package_offer.offerStartTime,
             'offerEndDateTime': package_offer.offerEndTime,
             'multiformatid': package_main.multiformat_id,
-            'subtitle_flag': package_meta.subtitle_flag,
             'par_rating': package_meta.par_rating,
             'audio_type': package_meta.audio_type,
             'frame_rate': package_meta.frame_rate,
             'btc_rating': package_meta.btc_rating,
             'runtime': package_meta.duration,
-            'duration': asset_duration,
+            'duration': adicreate.asset_duration,
             'movie_url': package_media.movie_url,
             'movie_checksum': package_media.movie_checksum,
             'video_type': package_meta.video_type,
             'offer_type': package_offer.offer_type,
-            'service_key': package_offer.service_key,
-            'epgTime': package_offer.epgTime,
             'asset_syn': package_meta.synopsis,
             'production_year': package_meta.production_year,
+            'movie_path': adicreate.movie_path,
+            'image_path': adicreate.image_path,
+        })
+
+        vodextensions = []
+        vodextensions.append({
+            'vod_deal_sub': 'M/N',
+        })
+        cutv = []
+        cutv.append({
+            'service_key': package_offer.service_key,
+            'epgTime': package_offer.epgTime
+        })
+        terms = []
+        terms.append({
+            'term_type': adicreate.term_type,
+        })
+        episodes = []
+        episodes.append({
             'svod_episode_name': package_meta.svod_episode_name,
             'svod_episode_number': package_meta.svod_episode_number,
             'svod_season_number': package_meta.svod_season_number,
             'svod_total_episodes': package_meta.svod_total_episodes,
-            'movie_path': movie_path,
-            'image_path': image_path,
-            'dpl_template': package_meta.dpl_template,
-            'mid_rolls': mid_rolls,
+        })
+        subtitle = []
+        subtitle.append({
+            'subtitle_flag': package_meta.subtitle_flag,
         })
 
         if 'DPL' in package_main.adi_type:
+            dpl_base = []
+            dpl_base.append({
+                'dpl_template': package_meta.dpl_template,
+                'mid_rolls': adicreate.dpl_mid_rolls,
+            })
+
             dpl_items = []
             for parts in range(1, int(package_meta.total_asset_parts) + 1):
                 dpl_items.append({
                     'part_no': parts,
                 })
-            template = render_template(sitemap.sitemap, values=values, dpl_items=dpl_items)
-        else:
-            template = render_template(sitemap.sitemap, values=values)
+
+        if 'EPISODE' not in package_main.adi_type and 'CATCHUP' not in package_main.adi_type:
+            if 'DPL' not in package_main.adi_type and package_meta.subtitle_flag == 'true':
+                template = render_template(sitemap.sitemap, values=values, vodextensions=vodextensions, terms=terms, subtitle=subtitle)
+            elif 'DPL' not in package_main.adi_type and package_meta.subtitle_flag == 'false':
+                template = render_template(sitemap.sitemap, values=values, vodextensions=vodextensions, terms=terms)
+            else:
+                template = render_template(sitemap.sitemap, values=values, vodextensions=vodextensions, terms=terms, dpl_items=dpl_items,
+                                       dpl_base=dpl_base)
+        elif 'EPISODE' not in package_main.adi_type and 'CATCHUP' in package_main.adi_type:
+            if 'DPL' not in package_main.adi_type:
+                template = render_template(sitemap.sitemap, values=values, terms=terms, cutv=cutv)
+            else:
+                template = render_template(sitemap.sitemap, values=values, terms=terms, dpl_items=dpl_items, dpl_base=dpl_base, cutv=cutv)
+        elif 'EPISODE' in package_main.adi_type and 'CATCHUP' not in package_main.adi_type:
+            if 'DPL' not in package_main.adi_type:
+                template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms)
+            else:
+                template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms, dpl_items=dpl_items,
+                                       dpl_base=dpl_base)
+        elif 'EPISODE' in package_main.adi_type and 'CATCHUP' in package_main.adi_type:
+            if 'DPL' not in package_main.adi_type:
+                template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms, cutv=cutv)
+            else:
+                template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms, cutv=cutv, dpl_items=dpl_items,
+                                       dpl_base=dpl_base)
 
         response = make_response(template)
         response.headers['Content-Type'] = 'application/xml'
-
         return response
 
     except:
-        return errorchecker.asset_not_found_id(assetId)
+        return errorchecker.internal_server_error()
+
+
+
 
 def download_est_episode(assetId):
     movie_path = movie_config.video_path
