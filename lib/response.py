@@ -37,6 +37,13 @@ def asset_update_success(assetId, update_field):
         }
     return response_creator(message)
 
+def asset_delete_success(assetId):
+    message = {
+            'status': 200,
+            'message': 'Asset with AssetId: ' + assetId + ' deleted successfully'
+        }
+    return response_creator(message)
+
 
 
 def asset_creation_success(assetId, title):

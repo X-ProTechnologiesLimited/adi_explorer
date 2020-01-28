@@ -1,5 +1,5 @@
 from flask import request
-from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, ADI_EST_Show, ADI_INGEST_HISTORY
+from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, ADI_EST_Show, ADI_INGEST_HISTORY, MEDIA_LIBRARY
 from . import errorchecker
 import urllib.parse
 from bson.json_util import dumps
@@ -114,3 +114,23 @@ def search_ingest_history(assetId):
         json_data = dumps(ingest_data)
 
     return response.asset_retrieve(json_data)
+
+
+def search_all_files():
+    filedetails = {}
+    filedetails['files'] = []
+    for file in MEDIA_LIBRARY.query.all():
+        filedetails['files'].append({
+            'filename': file.filename,
+            'checksum': file.checksum
+        })
+
+    filedetails['total'] = MEDIA_LIBRARY.query.count()
+
+    if filedetails['total'] == 0:  # If no countries found in the continent
+        return errorchecker.no_files_in_library()
+    else:
+        json_data = dumps(filedetails)
+
+    return response.asset_retrieve(json_data)
+

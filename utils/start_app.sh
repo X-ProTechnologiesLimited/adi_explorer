@@ -31,6 +31,9 @@ then
     echo "Created new database for application..."
     echo "Created new database for application..." >> $PROJECT_DIR/logs/$filename
     python -m flask run --host=0.0.0.0 >> $PROJECT_DIR/logs/$filename 2>&1 &
+    echo "Now loading default image data..."
+    sleep 5
+    curl 'http://localhost:5000/load_defaults'
      
 elif [ "$DATABASE_NEW" = 0 ]
 then
@@ -45,7 +48,7 @@ else
 fi
 
 echo "Wating for the application to initialise...."
-sleep 10
+sleep 5
 echo "Application Started Successfully"
 echo "Container for ADI Manager Started successfully. ADI Manager API is ready to serve http requests now...."
 echo "To Shutdown Container, press Ctrl+C AND run /utils/shutdown.sh (For Standalone and Detached Containers)"

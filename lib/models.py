@@ -57,6 +57,10 @@ class ADI_media(db.Model):
     image_checksum_3 = db.Column(db.String(100))
     image_url_4 = db.Column(db.String(100))
     image_checksum_4 = db.Column(db.String(100))
+    image_url_5 = db.Column(db.String(100))
+    image_checksum_5 = db.Column(db.String(100))
+    image_url_6 = db.Column(db.String(100))
+    image_checksum_6 = db.Column(db.String(100))
 
 class ADI_EST_Show(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
@@ -75,4 +79,10 @@ class ADI_INGEST_HISTORY(db.Model):
     provider_version = db.Column(db.String(10))
     environment = db.Column(db.String(10))
     conversationId = db.Column(db.String(100))
+
+class MEDIA_LIBRARY(db.Model):
+    id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
+    filename = db.Column(db.String(100), unique=True)
+    checksum = db.Column(db.String(100))
+
 

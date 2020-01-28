@@ -1,20 +1,15 @@
 # main.py
 
 from flask import Blueprint, render_template, request, send_from_directory, flash, redirect
-import os
-from . import errorchecker
 from .nocache import nocache
-from . import create_asset
-from . import search
-from . import get_asset_details
-from . import update_package
-from .models import ADI_main
-from . import response
+from .models import ADI_main, MEDIA_LIBRARY
 from bson.json_util import dumps
 from .metadata_params import metadata_default_params
-from . import create_tar
+import os
+import hashlib
 import os.path
-from . import movie_config
+from . import errorchecker, create_asset, search, get_asset_details, update_package, response, create_tar, movie_config
+from . import delete, load_default_data
 params = metadata_default_params()
 path_to_script = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_DIRECTORY = movie_config.premium_upload_dir
@@ -25,6 +20,10 @@ main = Blueprint('main', __name__, static_url_path='', static_folder='../premium
 @main.route('/')
 def index():
     return render_template('index.html')
+
+@main.route('/load_defaults')
+def load_defaults():
+    return load_default_data.load_image_default()
 
 @main.route('/create_single_title_standard')
 def create_single_title_standard():
@@ -154,14 +153,7 @@ def post_adi_post():
 @main.route("/files")
 def list_files():
     """Endpoint to list files on the server."""
-    files = []
-    for filename in os.listdir(UPLOAD_DIRECTORY):
-        path = os.path.join(UPLOAD_DIRECTORY, filename)
-        if os.path.isfile(path):
-            files.append(filename)
-    json_data = dumps(files)
-    return response.asset_retrieve(json_data)
-
+    return search.search_all_files()
 
 @main.route("/tar_files")
 def list_tar_files():
@@ -200,6 +192,14 @@ def get_tar_file_post():
     filename = request.form.get('filename')
     return send_from_directory(VRP_PACKAGE_DIR, filename, as_attachment=True)
 
+def checksum_creator(filename):
+    hash_md5 = hashlib.md5()
+    with open(filename, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+
+    return hash_md5.hexdigest()
+
 
 @main.route("/post_files_post", methods=['GET', 'POST'])
 def post_files_post():
@@ -216,6 +216,8 @@ def post_files_post():
             return redirect(request.url)
         if file:
             file.save(os.path.join(UPLOAD_DIRECTORY, file.filename))
+            checksum = checksum_creator(os.path.join(UPLOAD_DIRECTORY, file.filename))
+            create_tar.add_supporting_files_to_db(file.filename, checksum)
             return list_files()
     return render_template('upload_files.html')
 
@@ -237,8 +239,33 @@ def delete_file():
 @main.route("/delete_file", methods=['POST'])
 def delete_file_post():
     filename = request.form.get('filename')
-    os.remove(os.path.join(UPLOAD_DIRECTORY, filename))
+    try:
+        os.remove(os.path.join(UPLOAD_DIRECTORY, filename))
+        delete.delete_supp_file(filename)
+    except:
+        return errorchecker.no_supporting_file(filename)
     return list_files()
+
+
+@main.route("/delete_asset")
+def delete_asset():
+    return render_template('delete_asset.html')
+
+@main.route("/delete_asset", methods=['POST'])
+def delete_asset_post():
+    assetId = request.form.get('assetId')
+    try:
+        package = ADI_main.query.filter_by(assetId=assetId).first()
+        if package.adi_type == 'est_episode':
+            delete.delete_asset_est_episode(assetId)
+        elif package.adi_type == 'est_season' or package.adi_type == 'est_show':
+            delete.delete_asset_est_group(assetId)
+        else:
+            delete.delete_asset_standard(assetId)
+
+        return response.asset_delete_success(assetId)
+    except:
+        return errorchecker.asset_not_found_id(assetId)
 
 @main.route("/get_ingest_history")
 def get_ingest_history():

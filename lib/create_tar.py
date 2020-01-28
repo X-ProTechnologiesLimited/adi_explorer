@@ -1,10 +1,11 @@
-from . import main
+from . import main, db
 import subprocess
 from flask import request
 import requests
 from . import movie_config
-from .models import ADI_main
+from .models import ADI_main, MEDIA_LIBRARY
 from . import errorchecker
+from sqlalchemy.exc import IntegrityError
 
 UPLOAD_DIRECTORY = movie_config.premium_upload_dir
 VRP_PACKAGE_DIR = movie_config.premium_vrp_dir
@@ -53,3 +54,13 @@ def make_tarfile():
         subprocess.call(['tar', '-C', UPLOAD_DIRECTORY, '-cf', tar_filename, image[0], image[1], image[2], image[3],
                          trailer_file, media_file, 'ADI.xml'])
         return main.send_tar_file(output_filename)
+
+
+def add_supporting_files_to_db(filename, checksum):
+    new_filename = MEDIA_LIBRARY(filename=filename, checksum=checksum)
+    db.session.add(new_filename)
+    try:
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        return errorchecker.file_already_uploaded(filename)

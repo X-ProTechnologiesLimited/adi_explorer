@@ -26,6 +26,16 @@ def internal_server_error():
     return error_response_creator(message)
 
 
+@errorchecker.errorhandler(501)
+def file_already_uploaded(filename):
+    message = {
+        'status' : 501,
+        'message' : 'This supporting file: ' + filename + ' is already added to the library.',
+        'view' : 'To view the supporting files, please use option VRP management > Show VRP Library'
+    }
+    return error_response_creator(message)
+
+
 
 @errorchecker.errorhandler(501)
 def internal_server_error_show(show_type):
@@ -105,6 +115,23 @@ def no_assets_in_db():
 
 
 @errorchecker.errorhandler(404)
+def no_files_in_library():
+    message = {
+            'status': 404,
+            'message': 'No Supporting Files are found in Library'
+        }
+    return error_response_creator(message)
+
+@errorchecker.errorhandler(404)
+def no_supporting_file(filename):
+    message = {
+            'status': 404,
+            'message': 'Filename: ' + filename + ' is not available in Library to delete'
+        }
+    return error_response_creator(message)
+
+
+@errorchecker.errorhandler(404)
 def undefined_update_field(update_field):
     message = {
             'status': 404,
@@ -127,6 +154,15 @@ def environment_not_defined(environment):
     message = {
             'status': 502,
             'message': 'Test Environment ' + environment + ' Not Defined or not valid'
+        }
+    return error_response_creator(message)
+
+@errorchecker.errorhandler(502)
+def missing_file_libary(filename):
+    message = {
+            'status': 502,
+            'message': 'Filename ' + filename + ' seems to be missing in the library',
+            'add_file': 'To add files to the library, use the VRP Management > Upload option first'
         }
     return error_response_creator(message)
 
