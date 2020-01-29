@@ -2,13 +2,15 @@
 
 {% block content %}
 <div class="column is-4 is-offset-4">
-    <h3 class="title">Create Premium VOD Tar</h3>
+    <h3 class="title">Create VRP Tar</h3>
+    <d></d>
+    <h4>Before creating VRP TAR Files, please ensure that the the library has all the supporting files saved</h4>
     <div class="box">
         <form method="POST" action="/create_tar">
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="text" name="assetId" placeholder="AssetId" autofocus="">
-                    <d>If not specified, Tar package will be created with the default ADI.xml file</d>
+                    <input class="input is-large" type="text" name="assetId" placeholder="AssetId" autofocus="" required>
+                    <d>**</d>
                 </div>
             </div>
             <div class="field">
@@ -17,33 +19,9 @@
                     <d>**</d>
                 </div>
             </div>
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" list="tar_type" name="tar_type" placeholder="General/DPL" autofocus="" required>
-                    <datalist id="tar_type">
-                      <option value="General">
-                      <option value="DPL">
-                    </option>
-                    </datalist>
-                    <d>**</d>
-                </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" list="video_type" name="video_type" placeholder="Video Format(HD/HDR/SDR)" autofocus="" required>
-                    <datalist id="video_type">
-                      <option value="HD">
-                      <option value="SDR">
-                      <option value="HDR">
-                    </option>
-                    </datalist>
-                    <d>**</d>
-                </div>
-            </div>
-
             <p></p>
 
-            <button class="button is-block is-info is-medium is-fullwidth">Create Premium Tarball</button>
+            <button class="button is-block is-info is-medium is-fullwidth">Create VRP TAR File</button>
         </form>
     </div>
 </div>

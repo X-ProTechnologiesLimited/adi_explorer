@@ -7,4 +7,13 @@ docker build -f Dockerfile --tag=adi_app .
 docker run --rm -it --name adi_explorer --name adi_explorer -d -p $FLASK_RUN_PORT:$FLASK_RUN_PORT -it adi_app /bin/bash
 echo "Now loading default image data..."
 sleep 5
-curl 'http://localhost:5000/load_defaults'
+if [ "$DATABASE_NEW" = 1 ]
+then
+  echo "Loading Default Media Data..."
+  curl "http://localhost:$FLASK_RUN_PORT/load_defaults"
+  sleep 5
+  echo "Default Media data loaded successfully.."
+else
+  echo "Existing Database Loaded Successfully..."
+fi
+

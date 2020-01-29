@@ -31,9 +31,9 @@ then
     echo "Created new database for application..."
     echo "Created new database for application..." >> $PROJECT_DIR/logs/$filename
     python -m flask run --host=0.0.0.0 >> $PROJECT_DIR/logs/$filename 2>&1 &
-    echo "Now loading default image data..."
+    echo "Loading Default Media Data..."
     sleep 5
-    curl 'http://localhost:5000/load_defaults'
+    curl "http://$FLASK_HOST_NAME:$FLASK_RUN_PORT/load_defaults"
      
 elif [ "$DATABASE_NEW" = 0 ]
 then

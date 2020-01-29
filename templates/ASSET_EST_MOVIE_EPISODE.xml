@@ -65,10 +65,11 @@
       <content:CGMS_A>3</content:CGMS_A>
     </content:CopyControlInfo>
   </Movie>
+  {% for media in media_items -%}
   <Thumbnail creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/THVT{{val.assetid}}">
-    <content:SourceUrl>{{val.image_path}}FinestHours_182x98.jpg</content:SourceUrl>
+    <content:SourceUrl>{{val.image_path}}{{media.image1}}</content:SourceUrl>
     <content:ContentFileSize>100</content:ContentFileSize>
-    <content:ContentCheckSum>e9e23717c0b20f6af34ffbbf6b83add2</content:ContentCheckSum>
+    <content:ContentCheckSum>{{media.image1_checksum}}</content:ContentCheckSum>
   </Thumbnail>
   <ContentGroup creationDateTime="2014-11-24T10:34:34Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/CGBE{{val.assetid}}">
     <core:Ext>
@@ -84,38 +85,39 @@
   </ContentGroup>
  <Ext>
     <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PPCO{{val.assetid}}">
-      <content:SourceUrl>{{val.image_path}}FinestHours_182x243.jpg</content:SourceUrl>
-      <content:ContentFileSize>100</content:ContentFileSize>
-      <content:ContentCheckSum>43a1883f263a9bbae1b5944f24645430</content:ContentCheckSum>
+      <content:SourceUrl>{{val.image_path}}{{media.image2}}</content:SourceUrl>
+    <content:ContentFileSize>100</content:ContentFileSize>
+    <content:ContentCheckSum>{{media.image2_checksum}}</content:ContentCheckSum>
       <content:X_Resolution>183</content:X_Resolution>
       <content:Y_Resolution>243</content:Y_Resolution>
       <ext:Usage>urn:nnds:Metro:metadata:MediaTypeCS:2007:2.6</ext:Usage>
     </ext:PressPackImage>
     <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PPKK{{val.assetid}}">
-      <content:SourceUrl>{{val.image_path}}FinestHours_456x257.jpg</content:SourceUrl>
-      <content:ContentFileSize>100</content:ContentFileSize>
-      <content:ContentCheckSum>3396a3ff9fc6e09ae94068011556d0e5</content:ContentCheckSum>
+      <content:SourceUrl>{{val.image_path}}{{media.image3}}</content:SourceUrl>
+    <content:ContentFileSize>100</content:ContentFileSize>
+    <content:ContentCheckSum>{{media.image3_checksum}}</content:ContentCheckSum>
       <content:X_Resolution>456</content:X_Resolution>
       <content:Y_Resolution>257</content:Y_Resolution>
       <ext:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:stb:16-9</ext:Usage>
     </ext:PressPackImage>
     <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PPTH{{val.assetid}}">
-      <content:SourceUrl>{{val.image_path}}FinestHours_182x98.jpg</content:SourceUrl>
-      <content:ContentFileSize>100</content:ContentFileSize>
-      <content:ContentCheckSum>e9e23717c0b20f6af34ffbbf6b83add2</content:ContentCheckSum>
+      <content:SourceUrl>{{val.image_path}}{{media.image1}}</content:SourceUrl>
+    <content:ContentFileSize>100</content:ContentFileSize>
+    <content:ContentCheckSum>{{media.image1_checksum}}</content:ContentCheckSum>
       <content:X_Resolution>182</content:X_Resolution>
       <content:Y_Resolution>98</content:Y_Resolution>
       <ext:Usage>STBTHUMB</ext:Usage>
     </ext:PressPackImage>
     <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PPDD{{val.assetid}}">
-      <content:SourceUrl>{{val.image_path}}FinestHours_262x349.jpg</content:SourceUrl>
-      <content:ContentFileSize>100</content:ContentFileSize>
-      <content:ContentCheckSum>300343d46b52bbe7b191d9055d12b364</content:ContentCheckSum>
+      <content:SourceUrl>{{val.image_path}}{{media.image4}}</content:SourceUrl>
+    <content:ContentFileSize>100</content:ContentFileSize>
+    <content:ContentCheckSum>{{media.image4_checksum}}</content:ContentCheckSum>
       <content:X_Resolution>262</content:X_Resolution>
       <content:Y_Resolution>349</content:Y_Resolution>
       <ext:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:stb:3-4</ext:Usage>
     </ext:PressPackImage>
   </Ext>
+  {% endfor -%}
   <Offer creationDateTime="2016-10-27T13:10:01Z" endDateTime="{{val.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="{{val.offerStartDateTime}}" uriId="{{val.providerid}}/OAVT{{val.assetid}}">
     <core:Ext>
       <ext:OfferAvailability endDateTime="{{val.offerEndDateTime}}" offerType="SVOD" startDateTime="{{val.offerStartDateTime}}"/>

@@ -23,7 +23,7 @@ def index():
 
 @main.route('/load_defaults')
 def load_defaults():
-    return load_default_data.load_image_default()
+    return load_default_data.load_default_media()
 
 @main.route('/create_single_title_standard')
 def create_single_title_standard():
@@ -153,7 +153,18 @@ def post_adi_post():
 @main.route("/files")
 def list_files():
     """Endpoint to list files on the server."""
-    return search.search_all_files()
+    files = []
+    for filename in os.listdir(UPLOAD_DIRECTORY):
+        path = os.path.join(UPLOAD_DIRECTORY, filename)
+        if os.path.isfile(path):
+            files.append(filename)
+    json_data = dumps(files)
+    return response.asset_retrieve(json_data)
+
+@main.route("/get_file_list_checksum")
+def list_files_checksum():
+    """Endpoint to list files on the server."""
+    return search.search_all_files_checksum()
 
 @main.route("/tar_files")
 def list_tar_files():
@@ -282,13 +293,7 @@ def make_tarfile():
 
 @main.route("/create_tar", methods=['POST'])
 def make_tarfile_post():
-    tar_type = request.form.get('tar_type')
-    if tar_type == 'General':
-        return create_tar.make_tarfile()
-    elif tar_type == 'DPL':
-        return errorchecker.not_implemented_yet()
-    else:
-        return errorchecker.input_missing('General/DPL')
+    return create_tar.make_tarfile()
 
 
 @main.route('/quit')

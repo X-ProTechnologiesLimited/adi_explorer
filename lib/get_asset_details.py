@@ -59,6 +59,24 @@ def download_title(assetId):
             'image_path': adicreate.image_path,
         })
 
+        media_items = []
+        media_items.append({
+            'trailer_url': package_media.trailer_url,
+            'trailer_checksum': package_media.trailer_checksum,
+            'image1': package_media.image_url_1,
+            'image2': package_media.image_url_2,
+            'image3': package_media.image_url_3,
+            'image4': package_media.image_url_4,
+            'image5': package_media.image_url_5,
+            'image6': package_media.image_url_6,
+            'image1_checksum': package_media.image_checksum_1,
+            'image2_checksum': package_media.image_checksum_2,
+            'image3_checksum': package_media.image_checksum_3,
+            'image4_checksum': package_media.image_checksum_4,
+            'image5_checksum': package_media.image_checksum_5,
+            'image6_checksum': package_media.image_checksum_6,
+        })
+
         vodextensions = []
         vodextensions.append({
             'vod_deal_sub': 'M/N',
@@ -99,29 +117,35 @@ def download_title(assetId):
 
         if 'EPISODE' not in package_main.adi_type and 'CATCHUP' not in package_main.adi_type:
             if 'DPL' not in package_main.adi_type and package_meta.subtitle_flag == 'true':
-                template = render_template(sitemap.sitemap, values=values, vodextensions=vodextensions, terms=terms, subtitle=subtitle)
+                template = render_template(sitemap.sitemap, values=values, vodextensions=vodextensions, terms=terms,
+                                           subtitle=subtitle, media_items=media_items)
             elif 'DPL' not in package_main.adi_type and package_meta.subtitle_flag == 'false':
-                template = render_template(sitemap.sitemap, values=values, vodextensions=vodextensions, terms=terms)
+                template = render_template(sitemap.sitemap, values=values, vodextensions=vodextensions, terms=terms,
+                                           media_items=media_items)
             else:
-                template = render_template(sitemap.sitemap, values=values, vodextensions=vodextensions, terms=terms, dpl_items=dpl_items,
-                                       dpl_base=dpl_base)
+                template = render_template(sitemap.sitemap, values=values, vodextensions=vodextensions, terms=terms,
+                                           dpl_items=dpl_items, dpl_base=dpl_base, media_items=media_items)
         elif 'EPISODE' not in package_main.adi_type and 'CATCHUP' in package_main.adi_type:
             if 'DPL' not in package_main.adi_type:
-                template = render_template(sitemap.sitemap, values=values, terms=terms, cutv=cutv)
+                template = render_template(sitemap.sitemap, values=values, terms=terms, cutv=cutv,
+                                           media_items=media_items)
             else:
-                template = render_template(sitemap.sitemap, values=values, terms=terms, dpl_items=dpl_items, dpl_base=dpl_base, cutv=cutv)
+                template = render_template(sitemap.sitemap, values=values, terms=terms, dpl_items=dpl_items,
+                                           dpl_base=dpl_base, cutv=cutv, media_items=media_items)
         elif 'EPISODE' in package_main.adi_type and 'CATCHUP' not in package_main.adi_type:
             if 'DPL' not in package_main.adi_type:
-                template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms)
+                template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms,
+                                           media_items=media_items)
             else:
-                template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms, dpl_items=dpl_items,
-                                       dpl_base=dpl_base)
+                template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms,
+                                           dpl_items=dpl_items, dpl_base=dpl_base, media_items=media_items)
         elif 'EPISODE' in package_main.adi_type and 'CATCHUP' in package_main.adi_type:
             if 'DPL' not in package_main.adi_type:
-                template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms, cutv=cutv)
+                template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms,
+                                           cutv=cutv, media_items=media_items)
             else:
-                template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms, cutv=cutv, dpl_items=dpl_items,
-                                       dpl_base=dpl_base)
+                template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms, cutv=cutv,
+                                           dpl_items=dpl_items, dpl_base=dpl_base, media_items=media_items)
 
         response = make_response(template)
         response.headers['Content-Type'] = 'application/xml'
@@ -174,7 +198,19 @@ def download_est_episode(assetId):
         'image_path': image_path,
         })
 
-    template = render_template(sitemap.sitemap, values=values)
+    media_items = []
+    media_items.append({
+        'image1': package_media.image_url_1,
+        'image2': package_media.image_url_2,
+        'image3': package_media.image_url_3,
+        'image4': package_media.image_url_4,
+        'image1_checksum': package_media.image_checksum_1,
+        'image2_checksum': package_media.image_checksum_2,
+        'image3_checksum': package_media.image_checksum_3,
+        'image4_checksum': package_media.image_checksum_4,
+    })
+
+    template = render_template(sitemap.sitemap, values=values, media_items=media_items)
     response = make_response(template)
     response.headers['Content-Type'] = 'application/xml'
 
@@ -230,6 +266,7 @@ def download_est_show(assetId):
     package_meta = ADI_metadata.query.filter_by(assetId=assetId).first()
     package_offer = ADI_offer.query.filter_by(assetId=assetId).first()
     package_group = ADI_EST_Show.query.filter_by(assetId=assetId).first()
+    package_media = ADI_media.query.filter_by(assetId=assetId).first()
     sitemap.sitemap_entry_boxset(package_main.adi_type, package_group.show_type)
     values = []
     if package_group.show_type == 'Movie BS':
@@ -254,6 +291,18 @@ def download_est_show(assetId):
         'image_path': image_path,
         })
 
+    media_items = []
+    media_items.append({
+        'image1': package_media.image_url_1,
+        'image2': package_media.image_url_2,
+        'image3': package_media.image_url_3,
+        'image4': package_media.image_url_4,
+        'image1_checksum': package_media.image_checksum_1,
+        'image2_checksum': package_media.image_checksum_2,
+        'image3_checksum': package_media.image_checksum_3,
+        'image4_checksum': package_media.image_checksum_4,
+    })
+
     seasonlist = []
     for package in ADI_EST_Show.query.filter(ADI_EST_Show.parent_group_id == assetId).all():
         season_main = ADI_main.query.filter_by(assetId=package.assetId).first()
@@ -265,7 +314,7 @@ def download_est_show(assetId):
         })
 
 
-    template = render_template(sitemap.sitemap, values=values, seasonlist=seasonlist)
+    template = render_template(sitemap.sitemap, values=values, seasonlist=seasonlist, media_items=media_items)
     response = make_response(template)
     response.headers['Content-Type'] = 'application/xml'
 

@@ -1,17 +1,15 @@
 from flask import request
 import datetime
 import time
-from . import db
 from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, ADI_EST_Show
-from . import errorchecker
-from . import offerdate
+from . import db, errorchecker, offerdate, response, movie_config
 from .sitemap_create import sitemap_mapper
-from . import response
-from . import movie_config
 from .est_show_params import est_show_default_params
 from .metadata_params import metadata_default_params
+from .image_params import image_default_params
 est_params = est_show_default_params()
 params = metadata_default_params()
+image_set = image_default_params()
 sitemap = sitemap_mapper()
 
 def create_single_title():
@@ -40,6 +38,8 @@ def create_single_title():
     params.movie_details_entry(provider_id, asset_type)
     params.video_type_entry(provider_id)
     params.offer_type_entry(asset_type)
+    params.trailer_entry()
+    image_set.image_entry(asset_type)
     sitemap.sitemap_entry(asset_type)
 
     if (service_key == "") and ('CATCHUP' in asset_type):
@@ -65,7 +65,14 @@ def create_single_title():
                                       licenseEndTime=licenseEndTime, service_key=service_key, epgTime=offerStartTime)
 
         new_package_media = ADI_media(assetId=asset_timestamp + '01', movie_url=params.movie_url,
-                                      movie_checksum=params.movie_checksum)
+                                      movie_checksum=params.movie_checksum,
+                                      trailer_url=params.trailer_file, trailer_checksum=params.trailer_checksum,
+                                      image_url_1=image_set.image_1, image_checksum_1=image_set.image_1_checksum,
+                                      image_url_2=image_set.image_2, image_checksum_2=image_set.image_2_checksum,
+                                      image_url_3=image_set.image_3, image_checksum_3=image_set.image_3_checksum,
+                                      image_url_4=image_set.image_4, image_checksum_4=image_set.image_4_checksum,
+                                      image_url_5=image_set.image_5, image_checksum_5=image_set.image_5_checksum,
+                                      image_url_6=image_set.image_6, image_checksum_6=image_set.image_6_checksum)
 
 
 
@@ -102,6 +109,7 @@ def create_est_show_adi():
                              request.form.get('subtitle_flag'), "")
     params.movie_details_entry(show_provider_id, 'EST')
     params.offer_type_entry('est_show')
+    image_set.image_entry('est_show')
 
     show_new_package_main = ADI_main(assetId=asset_timestamp + '00', original_timestamp=asset_timestamp,
                                     adi_type='est_show', provider_version=params.provider_version,
@@ -117,6 +125,12 @@ def create_est_show_adi():
     show_new_package_group = ADI_EST_Show(assetId=asset_timestamp + '00', title=title, no_of_seasons=str(num_of_seasons),
                                          season_number="", no_of_episodes="", episode_number="",
                                           show_type=show_type, parent_group_id="")
+
+    show_new_package_media = ADI_media(assetId=asset_timestamp + '00', image_url_1=image_set.image_1,
+                                       image_checksum_1=image_set.image_1_checksum, image_url_2=image_set.image_2,
+                                       image_checksum_2=image_set.image_2_checksum, image_url_3=image_set.image_3,
+                                       image_checksum_3=image_set.image_3_checksum, image_url_4=image_set.image_4,
+                                       image_checksum_4=image_set.image_4_checksum)
 
 
     int_timestamp = int(asset_timestamp)
@@ -161,7 +175,20 @@ def create_est_show_adi():
                                                  licenseEndTime=licenseEndTime)
 
             episode_new_package_media = ADI_media(assetId=episode_asset_id + '22', movie_url=params.movie_url,
-                                                  movie_checksum=params.movie_checksum)
+                                                  movie_checksum=params.movie_checksum,
+                                                  image_url_1=image_set.image_1,
+                                                  image_checksum_1=image_set.image_1_checksum,
+                                                  image_url_2=image_set.image_2,
+                                                  image_checksum_2=image_set.image_2_checksum,
+                                                  image_url_3=image_set.image_3,
+                                                  image_checksum_3=image_set.image_3_checksum,
+                                                  image_url_4=image_set.image_4,
+                                                  image_checksum_4=image_set.image_4_checksum,
+                                                  image_url_5=image_set.image_5,
+                                                  image_checksum_5=image_set.image_5_checksum,
+                                                  image_url_6=image_set.image_6,
+                                                  image_checksum_6=image_set.image_6_checksum
+                                                  )
 
             try:
                 db.session.add(episode_new_package_main)
@@ -183,6 +210,7 @@ def create_est_show_adi():
                         db.session.add(show_new_package_meta)
                         db.session.add(show_new_package_offer)
                         db.session.add(show_new_package_group)
+                        db.session.add(show_new_package_media)
                         db.session.commit()
 
                     except:

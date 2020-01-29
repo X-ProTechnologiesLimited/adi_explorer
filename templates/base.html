@@ -166,12 +166,13 @@
   </div>
   <a href="{{ url_for('main.post_adi') }}">Ingest ADI</a>
   <div class="dropdown">
-    <button class="dropbtn">VRP Management
+    <button class="dropbtn">Media Management
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">
-       <a href="{{ url_for('main.post_files_post') }}">Upload Files to VRP Library</a>
-       <a href="{{ url_for('main.list_files') }}">Show VRP Library</a>
+       <a href="{{ url_for('main.post_files_post') }}">Upload Files to Media Library</a>
+       <a href="{{ url_for('main.list_files') }}">Show Media Library</a>
+       <a href="{{ url_for('main.list_files_checksum') }}">View Media Checksum</a>
        <a href="{{ url_for('main.make_tarfile') }}">Create VRP Package</a>
        <a href="{{ url_for('main.list_tar_files') }}">Show Created VRP Packages</a>
        <a href="{{ url_for('main.get_tar_file') }}">Download VRP Packages</a>

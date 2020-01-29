@@ -72,56 +72,58 @@
       <content:Duration>{{val.duration}}</content:Duration>
       <content:IsHDContent>{{val.video_type}}</content:IsHDContent>
    </adi:Movie>
+   {% for media in media_items -%}
    <adi:Thumbnail uriId="{{val.providerid}}/THUM{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
                   creationDateTime="2019-12-04T16:01:57Z"
                   startDateTime="2019-12-01T08:40:00Z"
                   endDateTime="{{val.licensetime}}">
-      <content:SourceUrl>{{val.image_path}}DPL_THUM.jpg</content:SourceUrl>
+      <content:SourceUrl>{{val.image_path}}{{media.image1}}</content:SourceUrl>
       <content:ContentFileSize>7681</content:ContentFileSize>
-      <content:ContentCheckSum>d358bb394e2e7a11912305e29f16c3dd</content:ContentCheckSum>
+      <content:ContentCheckSum>{{media.image1_checksum}}</content:ContentCheckSum>
    </adi:Thumbnail>
    <adi:Ext>
       <ext:CategoryImage uriId="{{val.providerid}}/CATI{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
                          creationDateTime="2019-12-04T16:01:57Z"
                          startDateTime="2019-12-01T08:40:00Z"
                          endDateTime="{{val.licensetime}}">
-         <content:SourceUrl>{{val.image_path}}DPL_CATI.jpg</content:SourceUrl>
+         <content:SourceUrl>{{val.image_path}}{{media.image2}}</content:SourceUrl>
          <content:ContentFileSize>3856</content:ContentFileSize>
-         <content:ContentCheckSum>8f8c5d272ad69ae5a4664fcd28e8f7d8</content:ContentCheckSum>
+         <content:ContentCheckSum>{{media.image2_checksum}}</content:ContentCheckSum>
       </ext:CategoryImage>
       <ext:PressPackImage uriId="{{val.providerid}}/PRAW{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
                           startDateTime="2019-12-01T08:40:00Z"
                           endDateTime="{{val.licensetime}}">
-         <content:SourceUrl>{{val.image_path}}DPL_PRAW.jpg</content:SourceUrl>
+         <content:SourceUrl>{{val.image_path}}{{media.image3}}</content:SourceUrl>
          <content:ContentFileSize>91464</content:ContentFileSize>
-         <content:ContentCheckSum>1e81300aaa6bb7e1637119ba6f9cb336</content:ContentCheckSum>
+         <content:ContentCheckSum>{{media.image3_checksum}}</content:ContentCheckSum>
          <content:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:android:16-9</content:Usage>
       </ext:PressPackImage>
       <ext:PressPackImage uriId="{{val.providerid}}/PRIW{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
                           startDateTime="2019-12-01T08:40:00Z"
                           endDateTime="{{val.licensetime}}">
-         <content:SourceUrl>{{val.image_path}}DPL_PRIW.jpg</content:SourceUrl>
+         <content:SourceUrl>{{val.image_path}}{{media.image4}}</content:SourceUrl>
          <content:ContentFileSize>32284</content:ContentFileSize>
-         <content:ContentCheckSum>083a1b2cb2ffeee83bc28f78c90c8d7a</content:ContentCheckSum>
+         <content:ContentCheckSum>{{media.image4_checksum}}</content:ContentCheckSum>
          <content:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:ios:16-9</content:Usage>
       </ext:PressPackImage>
       <ext:PressPackImage uriId="{{val.providerid}}/PRSW{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
                           startDateTime="2019-12-01T08:40:00Z"
                           endDateTime="{{val.licensetime}}">
-         <content:SourceUrl>{{val.image_path}}DPL_PRSW.jpg</content:SourceUrl>
+         <content:SourceUrl>{{val.image_path}}{{media.image5}}</content:SourceUrl>
          <content:ContentFileSize>31659</content:ContentFileSize>
-         <content:ContentCheckSum>307e7a7482a7c11bb4dbc15c0958cd34</content:ContentCheckSum>
+         <content:ContentCheckSum>{{media.image5_checksum}}</content:ContentCheckSum>
          <content:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:stb:16-9</content:Usage>
       </ext:PressPackImage>
       <ext:PressPackImage uriId="{{val.providerid}}/PRMW{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
                           startDateTime="2019-12-01T08:40:00Z"
                           endDateTime="{{val.licensetime}}">
-         <content:SourceUrl>{{val.image_path}}DPL_PRMW.jpg</content:SourceUrl>
+         <content:SourceUrl>{{val.image_path}}{{media.image6}}</content:SourceUrl>
          <content:ContentFileSize>252995</content:ContentFileSize>
-         <content:ContentCheckSum>e686dbbfd1e11ad36d851e6c79c00517</content:ContentCheckSum>
+         <content:ContentCheckSum>{{media.image6_checksum}}</content:ContentCheckSum>
          <content:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:master:16-9</content:Usage>
       </ext:PressPackImage>
    </adi:Ext>
+   {% endfor -%}
    <adi:Offer uriId="{{val.providerid}}/OFFR{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
               creationDateTime="2019-12-04T16:01:57Z"
               startDateTime="{{val.offerStartDateTime}}"

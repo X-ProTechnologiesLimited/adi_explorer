@@ -3,7 +3,7 @@ import subprocess
 from flask import request
 import requests
 from . import movie_config
-from .models import ADI_main, MEDIA_LIBRARY
+from .models import ADI_main, MEDIA_LIBRARY, ADI_media
 from . import errorchecker
 from sqlalchemy.exc import IntegrityError
 
@@ -15,45 +15,31 @@ trailer_file = movie_config.trailer_file
 def make_tarfile():
     output_filename = request.form.get('filename')
     assetId = request.form.get('assetId')
-    video_type = request.form.get('video_type')
-    tar_filename = VRP_PACKAGE_DIR+'/'+output_filename
-    if assetId != "":
-        my_filename = movie_config.premium_upload_dir + '/ADI.xml'
-        package = ADI_main.query.filter_by(assetId=assetId).first()
-        if 'VRP' not in package.adi_type:
-            return errorchecker.use_different_method(package.adi_type)
+    package_media = ADI_media.query.filter_by(assetId=assetId).first()
+    package = ADI_main.query.filter_by(assetId=assetId).first()
+    tar_filename = VRP_PACKAGE_DIR + '/' + output_filename
+    if 'VRP' not in package.adi_type:
+        return errorchecker.use_different_method(package.adi_type)
 
-        get_adi_url = 'http://localhost:5000/get_adi/' + assetId
-        response_adi = requests.get(url=get_adi_url)
-        with open(my_filename, 'w') as f:
-            f.write(response_adi.text)
+    my_filename = movie_config.premium_upload_dir + '/ADI.xml'
+    get_adi_url = 'http://localhost:5000/get_adi/' + assetId
+    response_adi = requests.get(url=get_adi_url)
+    with open(my_filename, 'w') as f:
+        f.write(response_adi.text)
 
-        if (video_type == 'HD') and (('hd.' in package.provider_id) or ('_hd' in package.provider_id)):
-            media_file = movie_config.hd_movie_file
-        elif (video_type == 'SDR') and ('4k' in package.provider_id):
-            media_file = movie_config.sdr_movie_file
-        elif (video_type == 'HDR') and ('hdr' in package.provider_id):
-            media_file = movie_config.hdr_movie_file
-        else:
-            return errorchecker.internal_server_error_show(video_type)
-
-        subprocess.call(['tar', '-C', UPLOAD_DIRECTORY, '-cf', tar_filename, image[0], image[1], image[2], image[3],
-                         trailer_file, media_file, 'ADI.xml'])
-        return main.send_tar_file(output_filename)
-
+    if 'VRP DPL' in package.adi_type:
+        media_map = [package_media.movie_url, package_media.trailer_url, package_media.image_url_1,
+                     package_media.image_url_2, package_media.image_url_3, package_media.image_url_4,
+                     package_media.image_url_5, package_media.image_url_6]
+        subprocess.call(['tar', '-C', UPLOAD_DIRECTORY, '-cf', tar_filename, media_map[0], media_map[1], media_map[2],
+                         media_map[3], media_map[4], media_map[5], media_map[6], media_map[7], 'ADI.xml'])
     else:
-        if video_type == 'HD':
-            media_file = movie_config.hd_movie_file
-        elif video_type == 'SDR':
-            media_file = movie_config.sdr_movie_file
-        elif video_type == 'HDR':
-            media_file = movie_config.hdr_movie_file
-        else:
-            return errorchecker.internal_server_error_show(video_type)
+        media_map = [package_media.movie_url, package_media.trailer_url, package_media.image_url_1,
+                     package_media.image_url_2, package_media.image_url_3, package_media.image_url_4]
+        subprocess.call(['tar', '-C', UPLOAD_DIRECTORY, '-cf', tar_filename, media_map[0], media_map[1], media_map[2],
+                         media_map[3], media_map[4], media_map[5], 'ADI.xml'])
 
-        subprocess.call(['tar', '-C', UPLOAD_DIRECTORY, '-cf', tar_filename, image[0], image[1], image[2], image[3],
-                         trailer_file, media_file, 'ADI.xml'])
-        return main.send_tar_file(output_filename)
+    return main.send_tar_file(output_filename)
 
 
 def add_supporting_files_to_db(filename, checksum):

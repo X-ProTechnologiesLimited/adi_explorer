@@ -116,7 +116,7 @@ def search_ingest_history(assetId):
     return response.asset_retrieve(json_data)
 
 
-def search_all_files():
+def search_all_files_checksum():
     filedetails = {}
     filedetails['files'] = []
     for file in MEDIA_LIBRARY.query.all():

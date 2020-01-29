@@ -112,7 +112,7 @@ class metadata_default_params(object):
     def trailer_entry(self):
         self.trailer_file = movie_config.trailer_file
         try:
-            self.movie_checksum = self.get_checksum(self.trailer_file)
+            self.trailer_checksum = self.get_checksum(self.trailer_file)
         except AttributeError:
             return errorchecker.missing_file_libary(self.trailer_file)
 
