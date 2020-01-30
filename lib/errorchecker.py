@@ -174,3 +174,20 @@ def no_ingest_history(assetId):
             'message': 'No Ingest History Found for this asset' + assetId
         }
     return error_response_creator(message)
+
+@errorchecker.errorhandler(404)
+def omdb_data_not_found(title):
+    message = {
+            'status': 404,
+            'message': 'No OMDB Data found for this title: ' + title
+        }
+    return error_response_creator(message)
+
+
+@errorchecker.errorhandler(502)
+def upload_unsuccessful():
+    message = {
+            'status': 502,
+            'message': 'Upload Not Successful. Authentication error!'
+        }
+    return error_response_creator(message)

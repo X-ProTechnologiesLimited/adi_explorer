@@ -9,7 +9,7 @@ import os
 import hashlib
 import os.path
 from . import errorchecker, create_asset, search, get_asset_details, update_package, response, create_tar, movie_config
-from . import delete, load_default_data
+from . import delete, load_default_data, copy_to_tank, get_omdb_data
 params = metadata_default_params()
 path_to_script = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_DIRECTORY = movie_config.premium_upload_dir
@@ -294,6 +294,24 @@ def make_tarfile():
 @main.route("/create_tar", methods=['POST'])
 def make_tarfile_post():
     return create_tar.make_tarfile()
+
+
+@main.route("/upload_to_tank")
+def upload_to_tank():
+    return render_template('upload_to_tank.html')
+
+@main.route("/upload_to_tank", methods=['POST'])
+def upload_to_tank_post():
+    return copy_to_tank.scp_to_tank()
+
+@main.route("/consult_omdb")
+def consult_omdb():
+    return render_template('consult_omdb.html')
+
+@main.route("/consult_omdb", methods=['POST'])
+def consult_omdb_post():
+    omdb_title = request.form.get('title')
+    return get_omdb_data.get_omdb_data(omdb_title)
 
 
 @main.route('/quit')

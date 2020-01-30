@@ -53,3 +53,11 @@ def asset_creation_success(assetId, title):
             'download': 'To download the asset ADI, use the View > Download ADI Menu'
         }
     return response_creator(message)
+
+
+def file_upload_successful(filename, environment):
+    message = {
+            'status': 200,
+            'message': 'Filename: ' + filename + ' uploaded successfully to ' + environment + ' location of tank'
+        }
+    return response_creator(message)

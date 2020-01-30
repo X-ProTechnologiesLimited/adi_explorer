@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Consult OMDB</h3>
+    <div class="box">
+        <form method="POST" action="/consult_omdb">
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="title" placeholder="OMDB Title" autofocus="" required>
+                </div>
+            </div>
+
+            <p></p>
+
+            <button class="button is-block is-info is-medium is-fullwidth">Get OMDB Real Data</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

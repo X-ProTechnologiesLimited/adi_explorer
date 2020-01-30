@@ -13,7 +13,7 @@ class adi_package_logic(object):
             self.image_path = ""
             self.movie_path = ""
         else:
-            self.image_path = movie_config.image_path
+            self.image_path = 'tank/' + movie_config.image_path
             self.movie_path = movie_config.video_path
 
     def duration_calc(self, runtime):

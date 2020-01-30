@@ -9,7 +9,6 @@ from sqlalchemy.exc import IntegrityError
 
 UPLOAD_DIRECTORY = movie_config.premium_upload_dir
 VRP_PACKAGE_DIR = movie_config.premium_vrp_dir
-image = movie_config.standard_image_group
 trailer_file = movie_config.trailer_file
 
 def make_tarfile():

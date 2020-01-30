@@ -28,6 +28,7 @@ class metadata_default_params(object):
         self.dpl_template = None
         self.trailer_file = None
         self.trailer_checksum = None
+        self.tank_path = None
 
     def param_logic_entry(self, synopsis, title, provider_version, production_year, ca_btc, par_rating, audio_type,
                           frame_rate, subtitle_flag, asset_duration):
@@ -194,5 +195,32 @@ class metadata_default_params(object):
             self.environment_url = movie_config.stage_cms
         elif environment == 'STAGE:VMS':
             self.environment_url = movie_config.stage_vms
+        else:
+            return errorchecker.environment_not_defined(environment)
+
+
+    def tank_entry(self, environment, file_type, path):
+        if environment == 'TS1':
+            if file_type == 'Image':
+                self.tank_path = '/ifs/PDLTankTest/Test1/Wholesale/' + movie_config.image_path
+            else:
+                self.tank_path = '/ifs/PDLTankTest/Test1/' + movie_config.video_path
+        elif environment == 'TS2':
+            if file_type == 'Image':
+                self.tank_path = '/ifs/PDLTankTest/Test2/Wholesale/' + movie_config.image_path
+            else:
+                self.tank_path = '/ifs/PDLTankTest/Test2/' + movie_config.video_path
+        elif environment == 'TS3':
+            if file_type == 'Image':
+                self.tank_path = '/ifs/PDLTankTest/Test3/Wholesale/' + movie_config.image_path
+            else:
+                self.tank_path = '/ifs/PDLTankTest/Test3/' + movie_config.video_path
+        elif environment == 'STAGE':
+            if file_type == 'Image':
+                self.tank_path = '/ifs/PDLTankTest/Wholesale/' + movie_config.image_path
+            else:
+                self.tank_path = '/ifs/PDLTankTest/' + movie_config.video_path
+        elif environment == "":
+            self.tank_path = path
         else:
             return errorchecker.environment_not_defined(environment)
