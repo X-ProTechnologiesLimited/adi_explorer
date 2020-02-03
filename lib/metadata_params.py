@@ -1,6 +1,6 @@
 from . import movie_config
 from . import errorchecker
-from .models import MEDIA_LIBRARY
+from .models import MEDIA_LIBRARY, MEDIA_DEFAULT
 class metadata_default_params(object):
 
     def __init__(self):
@@ -90,19 +90,19 @@ class metadata_default_params(object):
             self.multiformat_id = 'BSKYPR' + asset_timestamp
 
     def movie_details_entry(self, provider_id, asset_type):
+        url_default = MEDIA_DEFAULT.query.first()
         if 'hdr' in provider_id and 'DPL' not in asset_type:
-            self.movie_url = movie_config.hdr_movie_file
+            self.movie_url = url_default.hdr_movie_file
         elif '4k' in provider_id and 'DPL' not in asset_type:
-            self.movie_url = movie_config.sdr_movie_file
-            # self.movie_checksum = movie_config.sdr_movie_checksum
+            self.movie_url = url_default.sdr_movie_file
         elif 'est' in provider_id and 'DPL' not in asset_type:
-            self.movie_url = movie_config.est_movie_file
+            self.movie_url = url_default.est_movie_file
         elif (('hd.' in provider_id) or ('_hd' in provider_id)) and 'DPL' not in asset_type:
-            self.movie_url = movie_config.hd_movie_file
+            self.movie_url = url_default.hd_movie_file
         elif 'DPL' in asset_type:
-            self.movie_url = movie_config.dpl_movie_url
+            self.movie_url = url_default.dpl_movie_file
         else:
-            self.movie_url = movie_config.title_movie
+            self.movie_url = url_default.title_movie_file
 
         try:
             self.movie_checksum = self.get_checksum(self.movie_url)
@@ -111,7 +111,8 @@ class metadata_default_params(object):
 
 
     def trailer_entry(self):
-        self.trailer_file = movie_config.trailer_file
+        trailer_default = MEDIA_DEFAULT.query.first()
+        self.trailer_file = trailer_default.trailer_file
         try:
             self.trailer_checksum = self.get_checksum(self.trailer_file)
         except AttributeError:
@@ -200,26 +201,29 @@ class metadata_default_params(object):
 
 
     def tank_entry(self, environment, file_type, path):
+        path_default = MEDIA_DEFAULT.query.first()
+        image_path = path_default.default_image_path
+        video_path = path_default.default_video_path
         if environment == 'TS1':
             if file_type == 'Image':
-                self.tank_path = '/ifs/PDLTankTest/Test1/Wholesale/' + movie_config.image_path
+                self.tank_path = '/ifs/PDLTankTest/Test1/Wholesale/' + image_path
             else:
-                self.tank_path = '/ifs/PDLTankTest/Test1/' + movie_config.video_path
+                self.tank_path = '/ifs/PDLTankTest/Test1/' + video_path
         elif environment == 'TS2':
             if file_type == 'Image':
-                self.tank_path = '/ifs/PDLTankTest/Test2/Wholesale/' + movie_config.image_path
+                self.tank_path = '/ifs/PDLTankTest/Test2/Wholesale/' + image_path
             else:
-                self.tank_path = '/ifs/PDLTankTest/Test2/' + movie_config.video_path
+                self.tank_path = '/ifs/PDLTankTest/Test2/' + video_path
         elif environment == 'TS3':
             if file_type == 'Image':
-                self.tank_path = '/ifs/PDLTankTest/Test3/Wholesale/' + movie_config.image_path
+                self.tank_path = '/ifs/PDLTankTest/Test3/Wholesale/' + image_path
             else:
-                self.tank_path = '/ifs/PDLTankTest/Test3/' + movie_config.video_path
+                self.tank_path = '/ifs/PDLTankTest/Test3/' + video_path
         elif environment == 'STAGE':
             if file_type == 'Image':
-                self.tank_path = '/ifs/PDLTankTest/Wholesale/' + movie_config.image_path
+                self.tank_path = '/ifs/PDLTankTest/Wholesale/' + image_path
             else:
-                self.tank_path = '/ifs/PDLTankTest/' + movie_config.video_path
+                self.tank_path = '/ifs/PDLTankTest/' + video_path
         elif environment == "":
             self.tank_path = path
         else:

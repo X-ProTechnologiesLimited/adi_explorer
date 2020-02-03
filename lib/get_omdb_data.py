@@ -14,6 +14,7 @@ def get_omdb_data(omdb_title):
         omdb_map['packages']['Title'] = response_omdb_json['Title']
         omdb_map['packages']['Synopsis'] = response_omdb_json['Plot']
         omdb_map['packages']['Image_URL'] = response_omdb_json['Poster']
+        omdb_map['packages']['Production / Running Year'] = response_omdb_json['Year']
 
         json_data = dumps(omdb_map)
         return response.asset_retrieve(json_data)

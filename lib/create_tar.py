@@ -3,13 +3,12 @@ import subprocess
 from flask import request
 import requests
 from . import movie_config
-from .models import ADI_main, MEDIA_LIBRARY, ADI_media
+from .models import ADI_main, MEDIA_LIBRARY, ADI_media, MEDIA_DEFAULT
 from . import errorchecker
 from sqlalchemy.exc import IntegrityError
 
 UPLOAD_DIRECTORY = movie_config.premium_upload_dir
 VRP_PACKAGE_DIR = movie_config.premium_vrp_dir
-trailer_file = movie_config.trailer_file
 
 def make_tarfile():
     output_filename = request.form.get('filename')

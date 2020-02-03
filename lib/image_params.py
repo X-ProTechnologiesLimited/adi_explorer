@@ -1,6 +1,6 @@
 from . import movie_config
 from . import errorchecker
-from .models import MEDIA_LIBRARY
+from .models import MEDIA_LIBRARY, MEDIA_DEFAULT
 class image_default_params(object):
 
     def __init__(self):
@@ -22,8 +22,9 @@ class image_default_params(object):
         return file.checksum
 
     def image_entry(self, asset_type):
+        image_path_default = MEDIA_DEFAULT.query.first()
         if 'DPL' in asset_type:
-            file_pref = movie_config.dpl_image_file_prefix
+            file_pref = image_path_default.dpl_image_file_prefix
             self.image_1 = file_pref + 'THUM.jpg'
             self.image_2 = file_pref + 'CATI.jpg'
             self.image_3 = file_pref + 'PRAW.jpg'
@@ -37,7 +38,7 @@ class image_default_params(object):
             self.image_5_checksum = self.get_checksum(self.image_5)
             self.image_6_checksum = self.get_checksum(self.image_6)
         else:
-            file_pref = movie_config.standard_image_file_prefix
+            file_pref = image_path_default.standard_image_file_prefix
             self.image_1 = file_pref + '182x98.jpg'
             self.image_2 = file_pref + '182x243.jpg'
             self.image_3 = file_pref + '262x349.jpg'

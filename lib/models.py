@@ -45,6 +45,8 @@ class ADI_offer(db.Model):
 class ADI_media(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
     assetId = db.Column(db.String(100), unique=True)
+    video_path = db.Column(db.String(500))
+    image_path = db.Column(db.String(500))
     movie_url = db.Column(db.String(500))
     movie_checksum = db.Column(db.String(100))
     trailer_url = db.Column(db.String(500))
@@ -84,5 +86,19 @@ class MEDIA_LIBRARY(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
     filename = db.Column(db.String(100), unique=True)
     checksum = db.Column(db.String(100))
+
+class MEDIA_DEFAULT(db.Model):
+    id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
+    default_video_path = db.Column(db.String(500))
+    default_image_path = db.Column(db.String(500))
+    hdr_movie_file = db.Column(db.String(500))
+    sdr_movie_file = db.Column(db.String(500))
+    hd_movie_file = db.Column(db.String(500))
+    est_movie_file = db.Column(db.String(500))
+    title_movie_file = db.Column(db.String(500))
+    dpl_movie_file = db.Column(db.String(500))
+    trailer_file = db.Column(db.String(500))
+    standard_image_file_prefix = db.Column(db.String(100))
+    dpl_image_file_prefix = db.Column(db.String(100))
 
 

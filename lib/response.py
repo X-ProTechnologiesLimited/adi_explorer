@@ -61,3 +61,10 @@ def file_upload_successful(filename, environment):
             'message': 'Filename: ' + filename + ' uploaded successfully to ' + environment + ' location of tank'
         }
     return response_creator(message)
+
+def default_config_load_success(config_name, value):
+    message = {
+            'status': 200,
+            'message': 'Default Config: ' + config_name + ' updated successfully to: ' + value
+        }
+    return response_creator(message)

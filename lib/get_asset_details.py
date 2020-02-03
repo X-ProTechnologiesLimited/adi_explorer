@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, make_response, request
-from .models import ADI_main, ADI_media, ADI_metadata, ADI_offer, ADI_EST_Show
+from .models import ADI_main, ADI_media, ADI_metadata, ADI_offer, ADI_EST_Show, ADI_INGEST_HISTORY, MEDIA_DEFAULT
 from . import movie_config
 from .sitemap_create import sitemap_mapper
 from bson.json_util import dumps
@@ -12,7 +12,6 @@ from . import errorchecker
 import requests
 import os
 from . import db
-from .models import ADI_main, ADI_INGEST_HISTORY
 path_to_script = os.path.dirname(os.path.abspath(__file__))
 params = metadata_default_params()
 sitemap = sitemap_mapper()
@@ -29,7 +28,7 @@ def download_title(assetId):
         package_media = ADI_media.query.filter_by(assetId=assetId).first()
         sitemap.sitemap_entry(package_main.adi_type)
         adicreate.duration_calc(package_meta.duration)
-        adicreate.path_builder(package_main.adi_type)
+        adicreate.path_builder(package_main.adi_type, assetId)
         adicreate.dpl_midroll_calc(package_main.adi_type, package_meta.total_asset_parts)
         adicreate.term_type_generate(package_main.adi_type)
 
@@ -354,6 +353,24 @@ def get_asset_video(assetId):
 
     json_data = dumps(adi_metadata)
     return response.asset_retrieve(json_data)
+
+
+def get_default_config():
+    default_config = {}
+    default_config['config'] = {}
+    config_data = MEDIA_DEFAULT.query.first()
+    default_config['config']['Video Path'] = config_data.default_video_path
+    default_config['config']['Image Path'] = config_data.default_image_path
+    default_config['config']['HD Video'] = config_data.hd_movie_file
+    default_config['config']['SD Video'] = config_data.title_movie_file
+    default_config['config']['4K Video'] = config_data.sdr_movie_file
+    default_config['config']['HDR Video'] = config_data.hdr_movie_file
+    default_config['config']['DPL Video'] = config_data.dpl_movie_file
+    default_config['config']['Trailer'] = config_data.trailer_file
+
+    json_data = dumps(default_config)
+    return response.asset_retrieve(json_data)
+
 
 
 def post_adi_endpoint():

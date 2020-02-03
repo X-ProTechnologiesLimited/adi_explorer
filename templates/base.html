@@ -180,13 +180,15 @@
     </div>
   </div>
   <div class="dropdown">
-    <button class="dropbtn">Delete
+    <button class="dropbtn">Admin
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">
        <a href="{{ url_for('main.delete_file') }}">Delete Supporting Files</a>
        <a href="{{ url_for('main.delete_tar_file') }}">Delete Tar Files</a>
        <a href="{{ url_for('main.delete_asset') }}">Delete Asset</a>
+       <a href="{{ url_for('main.view_default_config') }}">View Default Media and Path</a>
+       <a href="{{ url_for('main.update_default_config') }}">Update Default Media and Path</a>
     </div>
   </div>
   <a href="{{ url_for('main.consult_omdb') }}">Consult OMDB</a>

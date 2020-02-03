@@ -1,7 +1,7 @@
 from flask import request
 import datetime
 import time
-from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, ADI_EST_Show
+from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, ADI_EST_Show, MEDIA_DEFAULT
 from . import db, errorchecker, offerdate, response, movie_config
 from .sitemap_create import sitemap_mapper
 from .est_show_params import est_show_default_params
@@ -41,6 +41,7 @@ def create_single_title():
     params.trailer_entry()
     image_set.image_entry(asset_type)
     sitemap.sitemap_entry(asset_type)
+    path_default = MEDIA_DEFAULT.query.first()
 
     if (service_key == "") and ('CATCHUP' in asset_type):
         return errorchecker.input_missing('service_key')
@@ -64,15 +65,16 @@ def create_single_title():
                                       offerStartTime=offerStartTime, offerEndTime=offerEndTime,
                                       licenseEndTime=licenseEndTime, service_key=service_key, epgTime=offerStartTime)
 
-        new_package_media = ADI_media(assetId=asset_timestamp + '01', movie_url=params.movie_url,
-                                      movie_checksum=params.movie_checksum,
-                                      trailer_url=params.trailer_file, trailer_checksum=params.trailer_checksum,
-                                      image_url_1=image_set.image_1, image_checksum_1=image_set.image_1_checksum,
-                                      image_url_2=image_set.image_2, image_checksum_2=image_set.image_2_checksum,
-                                      image_url_3=image_set.image_3, image_checksum_3=image_set.image_3_checksum,
-                                      image_url_4=image_set.image_4, image_checksum_4=image_set.image_4_checksum,
-                                      image_url_5=image_set.image_5, image_checksum_5=image_set.image_5_checksum,
-                                      image_url_6=image_set.image_6, image_checksum_6=image_set.image_6_checksum)
+        new_package_media = ADI_media(assetId=asset_timestamp + '01', video_path=path_default.default_video_path,
+                                      image_path=path_default.default_image_path, movie_url=params.movie_url,
+                                      movie_checksum=params.movie_checksum, trailer_url=params.trailer_file,
+                                      trailer_checksum=params.trailer_checksum, image_url_1=image_set.image_1,
+                                      image_checksum_1=image_set.image_1_checksum, image_url_2=image_set.image_2,
+                                      image_checksum_2=image_set.image_2_checksum, image_url_3=image_set.image_3,
+                                      image_checksum_3=image_set.image_3_checksum, image_url_4=image_set.image_4,
+                                      image_checksum_4=image_set.image_4_checksum, image_url_5=image_set.image_5,
+                                      image_checksum_5=image_set.image_5_checksum, image_url_6=image_set.image_6,
+                                      image_checksum_6=image_set.image_6_checksum)
 
 
 
@@ -154,6 +156,7 @@ def create_est_show_adi():
                                                 episode_number="", show_type=show_type, parent_group_id=asset_timestamp + '00')
 
         for episode in range(1, no_of_episodes+1):
+            path_default = MEDIA_DEFAULT.query.first()
             episode_asset_id = str(int_timestamp + (season*100) + episode)
             est_params.est_show_type_entry(show_type, season_title)
             episode_title = est_params.est_episode_title + str(episode)
@@ -174,21 +177,17 @@ def create_est_show_adi():
                                                  offerStartTime=offerStartTime, offerEndTime=offerEndTime,
                                                  licenseEndTime=licenseEndTime)
 
-            episode_new_package_media = ADI_media(assetId=episode_asset_id + '22', movie_url=params.movie_url,
-                                                  movie_checksum=params.movie_checksum,
-                                                  image_url_1=image_set.image_1,
-                                                  image_checksum_1=image_set.image_1_checksum,
-                                                  image_url_2=image_set.image_2,
-                                                  image_checksum_2=image_set.image_2_checksum,
-                                                  image_url_3=image_set.image_3,
-                                                  image_checksum_3=image_set.image_3_checksum,
-                                                  image_url_4=image_set.image_4,
-                                                  image_checksum_4=image_set.image_4_checksum,
-                                                  image_url_5=image_set.image_5,
-                                                  image_checksum_5=image_set.image_5_checksum,
-                                                  image_url_6=image_set.image_6,
-                                                  image_checksum_6=image_set.image_6_checksum
-                                                  )
+            episode_new_package_media = ADI_media(assetId=episode_asset_id + '22',
+                                                  video_path=path_default.default_video_path,
+                                                  image_path=path_default.default_image_path,
+                                                  movie_url=params.movie_url, movie_checksum=params.movie_checksum,
+                                                  trailer_url=params.trailer_file, trailer_checksum=params.trailer_checksum,
+                                                  image_url_1=image_set.image_1, image_checksum_1=image_set.image_1_checksum,
+                                                  image_url_2=image_set.image_2, image_checksum_2=image_set.image_2_checksum,
+                                                  image_url_3=image_set.image_3, image_checksum_3=image_set.image_3_checksum,
+                                                  image_url_4=image_set.image_4, image_checksum_4=image_set.image_4_checksum,
+                                                  image_url_5=image_set.image_5, image_checksum_5=image_set.image_5_checksum,
+                                                  image_url_6=image_set.image_6, image_checksum_6=image_set.image_6_checksum)
 
             try:
                 db.session.add(episode_new_package_main)

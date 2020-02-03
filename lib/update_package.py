@@ -1,6 +1,6 @@
 from flask import request
 from . import db
-from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media
+from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, MEDIA_DEFAULT, MEDIA_LIBRARY
 from . import errorchecker
 from . import response
 
@@ -64,3 +64,62 @@ def update_asset_video():
         return response.asset_update_success(assetId, 'movie')
     except:
         return errorchecker.asset_not_found_id(assetId)
+
+
+def update_default_fields():
+    update_field = request.form.get('config_name')
+    field_value = request.form.get('value')
+    video_checksum = request.form.get('checksum')
+    if update_field == 'Image Path':
+        default_config = MEDIA_DEFAULT.query.update(dict(default_image_path=field_value))
+    elif update_field == 'Video Path':
+        default_config = MEDIA_DEFAULT.query.update(dict(default_video_path=field_value))
+    elif update_field == 'Standard Image Prefix':
+        default_config = MEDIA_DEFAULT.query.update(dict(standard_image_file_prefix=field_value))
+    elif update_field == 'DPL Image Prefix':
+        default_config = MEDIA_DEFAULT.query.update(dict(dpl_image_file_prefix=field_value))
+    elif update_field == 'HD Video File':
+        default_config = MEDIA_DEFAULT.query.update(dict(hd_movie_file=field_value))
+        media = MEDIA_LIBRARY.query.filter_by(filename=field_value).first()
+        if not media:
+            new_media = MEDIA_LIBRARY(filename=field_value, checksum=video_checksum)
+            db.session.add(new_media)
+    elif update_field == 'SD Video File':
+        default_config = MEDIA_DEFAULT.query.update(dict(title_movie_file=field_value))
+        media = MEDIA_LIBRARY.query.filter_by(filename=field_value).first()
+        if not media:
+            new_media = MEDIA_LIBRARY(filename=field_value, checksum=video_checksum)
+            db.session.add(new_media)
+    elif update_field == '4k Video File':
+        default_config = MEDIA_DEFAULT.query.update(dict(sdr_movie_file=field_value))
+        media = MEDIA_LIBRARY.query.filter_by(filename=field_value).first()
+        if not media:
+            new_media = MEDIA_LIBRARY(filename=field_value, checksum=video_checksum)
+            db.session.add(new_media)
+    elif update_field == 'EST Video File':
+        default_config = MEDIA_DEFAULT.query.update(dict(est_movie_file=field_value))
+        media = MEDIA_LIBRARY.query.filter_by(filename=field_value).first()
+        if not media:
+            new_media = MEDIA_LIBRARY(filename=field_value, checksum=video_checksum)
+            db.session.add(new_media)
+    elif update_field == 'DPL Video File':
+        default_config = MEDIA_DEFAULT.query.update(dict(dpl_movie_file=field_value))
+        media = MEDIA_LIBRARY.query.filter_by(filename=field_value).first()
+        if not media:
+            new_media = MEDIA_LIBRARY(filename=field_value, checksum=video_checksum)
+            db.session.add(new_media)
+    elif update_field == 'Trailer Video File':
+        default_config = MEDIA_DEFAULT.query.update(dict(trailer=field_value))
+        media = MEDIA_LIBRARY.query.filter_by(filename=field_value).first()
+        if not media:
+            new_media = MEDIA_LIBRARY(filename=field_value, checksum=video_checksum)
+            db.session.add(new_media)
+    else:
+        return errorchecker.undefined_update_field(update_field)
+
+    try:
+        db.session.commit()
+        return response.default_config_load_success(update_field, field_value)
+    except:
+        return errorchecker.internal_server_error()
+

@@ -4,19 +4,6 @@
 default_standard_package = ['EST SINGLE TITLE', 'SVOD', 'RENTAL', 'CATCHUP VOD', 'CATCHUP EPISODE', 'SVOD EPISODE', 'DPL SVOD', 'DPL CATCHUP', 'DPL SVOD EPISODE', 'DPL CATCHUP EPISODE']
 default_vrp_package = ['VRP SVOD', 'VRP PREMIUM VOD', 'VRP_RENTAL', 'VRP CATCHUP VOD', 'VRP CATCHUP EPISODE', 'VRP SVOD EPISODE', 'VRP DPL SVOD', 'VRP DPL CATCHUP', 'VRP DPL SVOD EPISODE', 'VRP DPL CATCHUP EPISODE']
 
-# Movie File Parameters
-video_path = 'Providers/BSS/Content/Distribution/TestFiles/adi_t/'
-image_path = 'Images/adi_t/'
-hdr_movie_file = 'HDR_MOVIE.ts'
-sdr_movie_file = '4K_SDR_MOVIE.ts'
-hd_movie_file = 'HD_MOVIE.ts'
-est_movie_file = 'HD_MOVIE.ts'
-title_movie = 'SD_2_min.ts'
-dpl_movie_url = 'DPL_VIDEO_FILE.ts'
-trailer_file = 'FinestHours_Trailer.ts'
-standard_image_file_prefix = 'FinestHours_'
-dpl_image_file_prefix = 'DPL_'
-
 # Default Metadata Parameters
 default_synopsis = 'This is the synopsis of title named: '
 default_provider_version = '1'

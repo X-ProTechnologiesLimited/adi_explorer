@@ -11,7 +11,7 @@ def search_by_title():
     title_uncoded = urllib.parse.unquote_plus(title)
     adi_data = {}
     adi_data['packages'] = []
-    search = "{}%".format(title_uncoded)
+    search = "%{}%".format(title_uncoded)
     for package in ADI_metadata.query.filter(or_(ADI_metadata.title.like(search)), (ADI_metadata.title_filter == 'true')).all():
         package_main = ADI_main.query.filter_by(assetId=package.assetId).first()
         package_offer = ADI_offer.query.filter_by(assetId=package.assetId).first()
@@ -66,8 +66,9 @@ def search_est_assets():
     title_uncoded = urllib.parse.unquote_plus(title)
     adi_data = {}
     adi_data['packages'] = []
-    search = "{}%".format(title_uncoded)
-    for package in ADI_EST_Show.query.filter(ADI_EST_Show.title.like(search)).all():
+    search = "%{}%".format(title_uncoded)
+    for package in ADI_EST_Show.query.filter(ADI_EST_Show.title.like(search)).\
+            order_by(ADI_EST_Show.no_of_seasons.desc()).order_by(ADI_EST_Show.no_of_episodes.desc()).all():
         package_offer = ADI_offer.query.filter_by(assetId=package.assetId).first()
         package_main = ADI_main.query.filter_by(assetId=package.assetId).first()
         package_group = ADI_EST_Show.query.filter_by(assetId=package.assetId).first()

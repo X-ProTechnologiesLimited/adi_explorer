@@ -1,4 +1,4 @@
-from . import movie_config
+from .models import ADI_media
 class adi_package_logic(object):
 
     def __init__(self):
@@ -8,13 +8,14 @@ class adi_package_logic(object):
         self.dpl_mid_rolls = None
         self.term_type = None
 
-    def path_builder(self, asset_type):
+    def path_builder(self, asset_type, assetId):
+        package_media = ADI_media.query.filter_by(assetId=assetId).first()
         if 'VRP' in asset_type:
             self.image_path = ""
             self.movie_path = ""
         else:
-            self.image_path = 'tank/' + movie_config.image_path
-            self.movie_path = movie_config.video_path
+            self.image_path = 'tank/' + package_media.image_path
+            self.movie_path = package_media.video_path
 
     def duration_calc(self, runtime):
         self.asset_duration = 'PT' + runtime.split(':')[0] + 'H' + runtime.split(':')[1] + 'M' + runtime.split(':')[2] + 'S'

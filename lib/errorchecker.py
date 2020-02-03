@@ -21,7 +21,7 @@ def error_response_creator(message):
 def internal_server_error():
     message = {
         'status' : 501,
-        'message' : 'Did not create ADI successfully'
+        'message' : 'Internal Server Error. Cannot update database'
     }
     return error_response_creator(message)
 

@@ -313,6 +313,19 @@ def consult_omdb_post():
     omdb_title = request.form.get('title')
     return get_omdb_data.get_omdb_data(omdb_title)
 
+@main.route("/view_default_config")
+def view_default_config():
+    return get_asset_details.get_default_config()
+
+
+@main.route("/update_default_config")
+def update_default_config():
+    return render_template('update_default_paths.html')
+
+@main.route("/update_default_config", methods=['POST'])
+def update_default_config_post():
+    return update_package.update_default_fields()
+
 
 @main.route('/quit')
 def quit():
