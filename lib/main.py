@@ -15,7 +15,8 @@ path_to_script = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_DIRECTORY = movie_config.premium_upload_dir
 VRP_PACKAGE_DIR = movie_config.premium_vrp_dir
 
-main = Blueprint('main', __name__, static_url_path='', static_folder='../premium_files/', template_folder='../templates')
+
+main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
@@ -201,7 +202,10 @@ def get_tar_file():
 def get_tar_file_post():
     """Download a file."""
     filename = request.form.get('filename')
-    return send_from_directory(VRP_PACKAGE_DIR, filename, as_attachment=True)
+    try:
+        return send_from_directory(VRP_PACKAGE_DIR, filename, as_attachment=True)
+    except:
+        return errorchecker.no_supporting_file(filename)
 
 def checksum_creator(filename):
     hash_md5 = hashlib.md5()
@@ -240,7 +244,10 @@ def delete_tar_file():
 @main.route("/delete_tar", methods=['POST'])
 def delete_tar_file_post():
     filename = request.form.get('filename')
-    os.remove(os.path.join(VRP_PACKAGE_DIR, filename))
+    try:
+        os.remove(os.path.join(VRP_PACKAGE_DIR, filename))
+    except FileNotFoundError:
+        return errorchecker.no_supporting_file(filename)
     return list_tar_files()
 
 @main.route("/delete_file")
@@ -253,7 +260,7 @@ def delete_file_post():
     try:
         os.remove(os.path.join(UPLOAD_DIRECTORY, filename))
         delete.delete_supp_file(filename)
-    except:
+    except FileNotFoundError:
         return errorchecker.no_supporting_file(filename)
     return list_files()
 

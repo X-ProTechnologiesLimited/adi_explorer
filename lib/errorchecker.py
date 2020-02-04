@@ -128,7 +128,7 @@ def no_files_in_library():
 def no_supporting_file(filename):
     message = {
             'status': 404,
-            'message': 'Filename: ' + filename + ' is not available in Library to delete'
+            'message': 'Filename: ' + filename + ' is not available in Library'
         }
     return error_response_creator(message)
 

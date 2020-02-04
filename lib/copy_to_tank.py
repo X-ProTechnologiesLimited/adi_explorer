@@ -5,6 +5,7 @@ from . import movie_config, response, errorchecker
 from .metadata_params import metadata_default_params
 from flask import request
 UPLOAD_DIRECTORY = movie_config.premium_upload_dir
+VRP_DIRECTORY = movie_config.premium_vrp_dir
 tank_params = metadata_default_params()
 tank_hostname = movie_config.tank_host
 
@@ -27,7 +28,11 @@ def scp_to_tank():
 
     try:
         with SCPClient(ssh.get_transport()) as scp:
-            scp.put(UPLOAD_DIRECTORY + '/' + filename, recursive=True, remote_path=tank_params.tank_path)
-            return response.file_upload_successful(filename,environment)
+            if file_type == 'VRP TAR':
+                scp.put(VRP_DIRECTORY + '/' + filename, recursive=True, remote_path=tank_params.tank_path)
+                return response.file_upload_successful(filename, environment)
+            else:
+                scp.put(UPLOAD_DIRECTORY + '/' + filename, recursive=True, remote_path=tank_params.tank_path)
+                return response.file_upload_successful(filename,environment)
     except:
         return errorchecker.upload_unsuccessful()

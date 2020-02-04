@@ -96,6 +96,12 @@ def update_default_fields():
         if not media:
             new_media = MEDIA_LIBRARY(filename=field_value, checksum=video_checksum)
             db.session.add(new_media)
+    elif update_field == 'HDR Video File':
+        default_config = MEDIA_DEFAULT.query.update(dict(hdr_movie_file=field_value))
+        media = MEDIA_LIBRARY.query.filter_by(filename=field_value).first()
+        if not media:
+            new_media = MEDIA_LIBRARY(filename=field_value, checksum=video_checksum)
+            db.session.add(new_media)
     elif update_field == 'EST Video File':
         default_config = MEDIA_DEFAULT.query.update(dict(est_movie_file=field_value))
         media = MEDIA_LIBRARY.query.filter_by(filename=field_value).first()
