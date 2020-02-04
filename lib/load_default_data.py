@@ -19,7 +19,7 @@ def load_default_media():
     dpl_video_file = MEDIA_LIBRARY(filename='DPL_VIDEO_FILE.ts', checksum='2e78cb32788e099db6a3118a074bc9a9')
     trailer_file = MEDIA_LIBRARY(filename='FinestHours_Trailer.ts', checksum='f4ee486d734bb812498b31624354f248')
 
-    default_config = MEDIA_DEFAULT(default_video_path='Providers/BSS/Content/Distribution/TestFiles/RTP/',
+    default_config = MEDIA_DEFAULT(default_video_path='Providers/BSS/Content/Distribution/TestFiles/',
                                    default_image_path='Images/adi_t/', hdr_movie_file='HDR_MOVIE.ts',
                                    sdr_movie_file='4K_SDR_MOVIE.ts', hd_movie_file='HD_MOVIE.ts',
                                    est_movie_file='HD_MOVIE.ts', title_movie_file='SD_2_min.ts',

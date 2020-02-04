@@ -16,4 +16,5 @@ then
 else
   echo "Existing Database Loaded Successfully..."
 fi
-
+# Deleting any untagged image loaded.
+docker image rm `docker images | grep 'none' | awk -F ' ' '{print $3}'`
