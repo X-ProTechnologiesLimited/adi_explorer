@@ -324,6 +324,7 @@ def get_asset_data(assetId):
     adi_metadata = {}
     adi_metadata['packages'] = {}
     package = ADI_metadata.query.filter_by(assetId=assetId).first()
+    package_media = ADI_media.query.filter_by(assetId=assetId).first()
     if not package:
         return errorchecker.asset_not_found_id(assetId)
 
@@ -334,25 +335,27 @@ def get_asset_data(assetId):
     adi_metadata['packages']['Parental Rating'] = package.par_rating
     adi_metadata['packages']['CA/BTC Rating'] = package.btc_rating
     adi_metadata['packages']['Subtitle'] = package.subtitle_flag
-
-    json_data = dumps(adi_metadata)
-    return response.asset_retrieve(json_data)
-
-def get_asset_video(assetId):
-    adi_metadata = {}
-    adi_metadata['packages'] = {}
-    package = ADI_metadata.query.filter_by(assetId=assetId).first()
-    package_media = ADI_media.query.filter_by(assetId=assetId).first()
-    if not package:
-        return errorchecker.asset_not_found_id(assetId)
-
-    adi_metadata['packages']['assetId'] = package.assetId
-    adi_metadata['packages']['title'] = package.title
     adi_metadata['packages']['Movie File'] = package_media.movie_url
     adi_metadata['packages']['Movie Checksum'] = package_media.movie_checksum
 
     json_data = dumps(adi_metadata)
     return response.asset_retrieve(json_data)
+
+# def get_asset_video(assetId):
+#     adi_metadata = {}
+#     adi_metadata['packages'] = {}
+#     package = ADI_metadata.query.filter_by(assetId=assetId).first()
+#     package_media = ADI_media.query.filter_by(assetId=assetId).first()
+#     if not package:
+#         return errorchecker.asset_not_found_id(assetId)
+#
+#     adi_metadata['packages']['assetId'] = package.assetId
+#     adi_metadata['packages']['title'] = package.title
+#     adi_metadata['packages']['Movie File'] = package_media.movie_url
+#     adi_metadata['packages']['Movie Checksum'] = package_media.movie_checksum
+#
+#     json_data = dumps(adi_metadata)
+#     return response.asset_retrieve(json_data)
 
 
 def get_default_config():

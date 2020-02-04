@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="column is-4 is-offset-4">
-    <h3 class="title">Search Packages</h3>
+<div class="container">
+    <h3 class="title">View ADI</h3>
     <div class="box">
         <form method="POST" action="/get_adi">
             <div class="field">
@@ -10,10 +10,8 @@
                     <input class="input is-large" type="text" name="AssetId" placeholder="AssetId" autofocus="" required>
                 </div>
             </div>
-
-            <p></p>
-
-            <button class="button is-block is-info is-medium is-fullwidth">Search</button>
+            <br>
+            <button class="button is-block is-info is-medium is-fullwidth">View ADI</button>
         </form>
     </div>
 </div>

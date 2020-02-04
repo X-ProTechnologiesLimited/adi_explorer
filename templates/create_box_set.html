@@ -3,7 +3,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="column is-4 is-offset-4">
+<div class="container">
     <h2 class="title">Create EST Show</h2>
     <div class="box">
         <form method="POST" action="/create_est_show">
@@ -84,6 +84,7 @@
                     <d>** Offer Availability in Days from Now. Eg 30 for 1 month from now.</d>
                 </div>
             </div>
+            <br>
             <button class="button is-block is-info is-medium is-fullwidth">Generate Show Package</button>
         </form>
     </div>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="column is-4 is-offset-4">
+<div class="container">
     <h3 class="title">Get Metadata</h3>
     <div class="box">
         <form method="POST" action="/get_asset_metadata">
@@ -10,9 +10,7 @@
                     <input class="input is-large" type="text" name="AssetId" placeholder="AssetId" autofocus="" required>
                 </div>
             </div>
-
-            <p></p>
-
+            <br>
             <button class="button is-block is-info is-medium is-fullwidth">Get Asset Metadata</button>
         </form>
     </div>

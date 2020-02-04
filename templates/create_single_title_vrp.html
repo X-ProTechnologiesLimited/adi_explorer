@@ -3,7 +3,7 @@
 {% extends "base.html" %}
 <p>** Mandatory Fields. Optional fields populates default values as per 'config.properties' file. </p>
 {% block content %}
-<div class="column is-4 is-offset-4">
+<div class="container">
     <h2 class="title">Create VRP ADI</h2>
     <div class="box">
         <form method="POST" action="/create_single_title_vrp">
@@ -156,7 +156,8 @@
                     <d>** Only required if Asset Type is Catchup</d>
                 </div>
             </div>
-            <button class="button is-block is-info is-medium is-fullwidth">Generate ADI XML</button>
+            <br>
+            <button class="button is-block is-info is-medium is-fullwidth">Generate VRP ADI</button>
         </form>
     </div>
 </div>

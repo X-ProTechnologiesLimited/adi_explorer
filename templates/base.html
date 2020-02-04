@@ -6,96 +6,280 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ADI Package Manager</title>
-    <link rel="stylesheet" type=text/css href="stylesheet.css">
 </head>
-<img src="/files/sky_logo_bib.jpg" alt="Sky Logo" width="110"height="46.5" align="right">
 <style>
-  body {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color:lightGray;
+
+* {
+  margin: 50;
+  padding: 50;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-.navbar {
-  overflow: hidden;
-  background-color: #338BFF;
+body {
+  background: #F0F0F0;
+  font-size: 15px;
+  color: #666;
+  font-family: 'Roboto', sans-serif;
+}
+.content {
+  height: 20px;
+}
+a { text-decoration: none; }
+
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 80%;
 }
 
-.navbar a {
-  float: left;
-  font-size: 16px;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
+.nav-fostrap {
+  display: block;
+  margin-bottom: 15px 0;
+  background: #03A9F4;
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  -ms-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  -o-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  border-radius: 3px;
 }
 
-.dropdown {
-  float: left;
-  overflow: hidden;
-}
-
-.dropdown .dropbtn {
-  font-size: 16px;
-  border: none;
-  outline: none;
-  color: white;
-  padding: 14px 16px;
-  background-color: inherit;
-  font-family: inherit;
+.nav-fostrap ul {
+  list-style-type: none;
   margin: 0;
+  padding: 0;
+  display: block;
 }
 
-.navbar a:hover, .dropdown:hover .dropbtn {
-  background-color: red;
+.nav-fostrap li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  position: relative;
+  font-size: 14;
+  color: #def1f0;
 }
 
-.dropdown-content {
-  display: none;
+.nav-fostrap li a {
+  padding: 15px 20px;
+  font-size: 14;
+  color: #def1f0;
+  display: inline-block;
+  outline: 0;
+  font-weight: 400;
+}
+
+.nav-fostrap li:hover ul.dropdown { display: block; }
+
+.nav-fostrap li ul.dropdown {
   position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
+  display: none;
+  width: 200px;
+  background: #2980B9;
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  -ms-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  -o-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  padding-top: 0;
 }
 
-.dropdown-content a {
-  float: none;
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
+.nav-fostrap li ul.dropdown li {
   display: block;
-  text-align: left;
+  list-style-type: none;
 }
 
-.dropdown-content a:hover {
-  background-color: #ddd;
-}
-
-.dropdown:hover .dropdown-content {
+.nav-fostrap li ul.dropdown li a {
+  padding: 15px 20px;
+  font-size: 15px;
+  color: #fff;
   display: block;
+  font-weight: 400;
 }
 
-.center {
-  padding: 200px 0;
-  border: 3px solid green;
-  text-align: center;
+.nav-fostrap li ul.dropdown li:last-child a { border-bottom: none; }
+
+.nav-fostrap li:hover a {
+  background: #2980B9;
+  color: #fff !important;
 }
 
-.input, .textarea, .select select {
-  background-color: white;
-  border-color: #dbdbdb;
-  border-radius: 8px;
-  color: #363636;
+.nav-fostrap li:first-child:hover a { border-radius: 3px 0 0 3px; }
+
+.nav-fostrap li ul.dropdown li:hover a { background: rgba(0,0,0, .1); }
+
+.nav-fostrap li ul.dropdown li:first-child:hover a { border-radius: 0; }
+
+.nav-fostrap li:hover .arrow-down { border-top: 5px solid #fff; }
+
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #def1f0;
+  position: relative;
+  top: 15px;
+  right: -5px;
+  content: '';
+}
+.title-mobile {
+  display: none;
+}
+ @media only screen and (max-width:900px) {
+
+.nav-fostrap {
+  background: #fff;
+  width: 200px;
+  height: 100%;
+  display: block;
+  position: fixed;
+  left: -200px;
+  top: 0px;
+  -webkit-transition: left 0.25s ease;
+  -moz-transition: left 0.25s ease;
+  -ms-transition: left 0.25s ease;
+  -o-transition: left 0.25s ease;
+  transition: left 0.25s ease;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+}
+.title-mobile {
+  position: fixed;
+  display: block;
+    top: 10px;
+    font-size: 20px;
+    left: 100px;
+    right: 100px;
+    text-align: center;
+    color: #FFF;
+}
+.nav-fostrap.visible {
+  left: 0px;
+  -webkit-transition: left 0.25s ease;
+  -moz-transition: left 0.25s ease;
+  -ms-transition: left 0.25s ease;
+  -o-transition: left 0.25s ease;
+  transition: left 0.25s ease;
 }
 
-.is-large.input, .is-large.textarea {
-  font-size: 1.5rem;
+.nav-bg-fostrap {
+  display: inline-block;
+  vertical-align: middle;
+  width: 100%;
+  height: 50px;
+  margin: 0;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: #03A9F4;
+  padding: 12px 0 0 10px;
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  -ms-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  -o-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+.navbar-fostrap {
+  display: inline-block;
+  vertical-align: middle;
+  height: 50px;
+  cursor: pointer;
+  margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 12px;
+}
+
+.navbar-fostrap span {
+  height: 2px;
+  background: #fff;
+  margin: 5px;
+  display: block;
+  width: 20px;
+}
+
+.navbar-fostrap span:nth-child(2) { width: 20px; }
+
+.navbar-fostrap span:nth-child(3) { width: 20px; }
+
+.nav-fostrap ul { padding-top: 50px; }
+
+.nav-fostrap li { display: block; }
+
+.nav-fostrap li a {
+  display: block;
+  color: #505050;
+  font-weight: 600;
+}
+
+.nav-fostrap li:first-child:hover a { border-radius: 0; }
+
+.nav-fostrap li ul.dropdown { position: relative; }
+
+.nav-fostrap li ul.dropdown li a {
+  background: #2980B9 !important;
+  border-bottom: none;
+  color: #fff !important;
+}
+
+.nav-fostrap li:hover a {
+  background: #03A9F4;
+  color: #fff !important;
+}
+
+.nav-fostrap li ul.dropdown li:hover a {
+  background: rgba(0,0,0,.1); !important;
+  color: #fff !important;
+}
+
+.nav-fostrap li ul.dropdown li a { padding: 10px 10px 10px 30px; }
+
+.nav-fostrap li:hover .arrow-down { border-top: 5px solid #fff; }
+
+.arrow-down {
+  border-top: 5px solid #505050;
+  position: absolute;
+  top: 20px;
+  right: 10px;
+}
+
+.cover-bg {
+  background: rgba(0,0,0,0.5);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+}
+ @media only screen and (max-width:1199px) {
+
+.container { width: 96%; }
+}
+
+.fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
 }
 
 .button {
   background-color: white;
   border-color: #dbdbdb;
-  border-width: 1px;
+  border-width: 0.5px;
   color: #363636;
   cursor: pointer;
   justify-content: center;
@@ -112,86 +296,88 @@
 }
 
 .button.is-info {
-  background-color: #338BFF;
+  background-color: #17ADF3;
   border-color: transparent;
   color: #fff;
 }
 
 .button.is-medium {
-  font-size: 1.25rem;
+  font-size: 0.85rem;
 }
 
 .button.is-fullwidth {
   display: flex;
-  width: 20%;
+  width: 14.5%;
 }
 
 
 </style>
 <body>
-<div class="navbar">
-  <a href="{{ url_for('main.index') }}">Home</a>
-    <div class="dropdown">
-    <button class="dropbtn">View
-      <i class="fa fa-caret-down"></i>
-    </button>
-    <div class="dropdown-content">
-      <a href="{{ url_for('main.search_adi_all') }}">View All Titles</a>
-      <a href="{{ url_for('main.get_asset_metadata') }}">View Asset Metadata</a>
-      <a href="{{ url_for('main.get_asset_video') }}">View Asset Video</a>
-      <a href="{{ url_for('main.get_ingest_history') }}">View Ingest History</a>
-      <a href="{{ url_for('main.search_adi') }}">Filter by Asset Title</a>
-      <a href="{{ url_for('main.search_est') }}">Filter EST Show by Title</a>
-      <a href="{{ url_for('main.get_adi') }}">Download ADI</a>
+<div id="main">
+  <div class="container">
+    <div  style="margin-top:20px;margin-bottom:30px;text-align:center;">
+      <img src="/files/sky_logo_bib.jpg" style="width: 750px;margin-bottom:2px">
     </div>
+    <nav>
+      <div class="nav-fostrap">
+        <ul>
+          <li><a href="{{ url_for('main.index') }}">Home</a></li>
+          <li><a href="javascript:void(0)" >Create package<span class="arrow-down"></span></a>
+            <ul class="dropdown">
+              <li><a href="{{ url_for('main.create_single_title_standard') }}">Standard Title</a></li>
+              <li><a href="{{ url_for('main.create_single_title_vrp') }}">VRP Single Title</a></li>
+              <li><a href="{{ url_for('main.create_est_show') }}">EST Box Set</a></li>
+              <a href="{{ url_for('main.make_tarfile') }}">Create VRP Package</a>
+            </ul>
+          </li>
+          <li><a href="javascript:void(0)">View<span class="arrow-down"></span></a>
+            <ul class="dropdown">
+              <li><a href="{{ url_for('main.search_adi_all') }}">View All Titles</a></li>
+              <li><a href="{{ url_for('main.search_adi') }}">Search Assets</a></li>
+              <li><a href="{{ url_for('main.get_asset_metadata') }}">View Asset Metadata</a></li>
+              <li><a href="{{ url_for('main.get_adi') }}">View and Download ADI</a></li>
+              <li><a href="{{ url_for('main.list_tar_files') }}">Show Created VRP Packages</a></li>
+              <li><a href="{{ url_for('main.get_tar_file') }}">Download VRP Packages</a></li>
+            </ul>
+          </li>
+          <li><a href="javascript:void(0)" >Update Package<span class="arrow-down"></span></a>
+            <ul class="dropdown">
+              <li><a href="{{ url_for('main.update_single_title') }}">Update Metadata</a></li>
+              <li><a href="{{ url_for('main.update_video') }}">Update Video</a></li>
+            </ul>
+          </li>
+          <li><a href="javascript:void(0)" >Ingest<span class="arrow-down"></span></a>
+            <ul class="dropdown">
+              <li><a href="{{ url_for('main.post_adi') }}">Post ADI</a></li>
+              <li><a href="{{ url_for('main.get_ingest_history') }}">View Ingest History</a></li>
+            </ul>
+          </li>
+          <li><a href="javascript:void(0)" >Media Library<span class="arrow-down"></span></a>
+            <ul class="dropdown">
+              <li><a href="{{ url_for('main.list_files') }}">Show Media-Files in Tool Library</a></li>
+              <li><a href="{{ url_for('main.list_files_checksum') }}">Show Media Checksum</a></li>
+              <li><a href="{{ url_for('main.post_files_post') }}">Upload Media to Tool Library</a></li>
+              <li><a href="{{ url_for('main.upload_to_tank') }}">Upload to Tank</a></li>
+            </ul>
+          </li>
+          <li><a href="javascript:void(0)" >Admin<span class="arrow-down"></span></a>
+            <ul class="dropdown">
+              <li><a href="{{ url_for('main.delete_asset') }}">Delete</a></li>
+              <li><a href="{{ url_for('main.view_default_config') }}">View Default Media/Path</a></li>
+              <li><a href="{{ url_for('main.update_default_config') }}">Update Default Media/Path</a></li>
+            </ul>
+          </li>
+          <li><a href="{{ url_for('main.consult_omdb') }}">OMDB</a></li>
+        </ul>
+      </div>
+      <div class="nav-bg-fostrap">
+        <div class="navbar-fostrap"> <span></span> <span></span> <span></span> </div>
+        <a href="{{ url_for('main.index') }}" class="title-mobile">Home</a>
+      </div>
+    </nav>
+    <div class='content'>
     </div>
-    <div class="dropdown">
-    <button class="dropbtn">Create ADI
-      <i class="fa fa-caret-down"></i>
-    </button>
-    <div class="dropdown-content">
-      <a href="{{ url_for('main.create_single_title_standard') }}">Standard Title</a>
-      <a href="{{ url_for('main.create_single_title_vrp') }}">VRP Title</a>
-      <a href="{{ url_for('main.create_est_show') }}">EST Box-Set</a>
-    </div>
-    </div>
-    <div class="dropdown">
-    <button class="dropbtn">Update Existing ADI
-      <i class="fa fa-caret-down"></i>
-    </button>
-    <div class="dropdown-content">
-       <a href="{{ url_for('main.update_single_title') }}">Update Single Title Metadata</a>
-       <a href="{{ url_for('main.update_video') }}">Update Package Video</a>
-    </div>
-  </div>
-  <a href="{{ url_for('main.post_adi') }}">Ingest ADI</a>
-  <div class="dropdown">
-    <button class="dropbtn">Media Management
-      <i class="fa fa-caret-down"></i>
-    </button>
-    <div class="dropdown-content">
-       <a href="{{ url_for('main.post_files_post') }}">Upload Media to Library</a>
-       <a href="{{ url_for('main.upload_to_tank') }}">Upload Media to Tank</a>
-       <a href="{{ url_for('main.list_files') }}">Show Media Library</a>
-       <a href="{{ url_for('main.list_files_checksum') }}">View Media Checksum</a>
-       <a href="{{ url_for('main.make_tarfile') }}">Create VRP Package</a>
-       <a href="{{ url_for('main.list_tar_files') }}">Show Created VRP Packages</a>
-       <a href="{{ url_for('main.get_tar_file') }}">Download VRP Packages</a>
-    </div>
-  </div>
-  <div class="dropdown">
-    <button class="dropbtn">Admin
-      <i class="fa fa-caret-down"></i>
-    </button>
-    <div class="dropdown-content">
-       <a href="{{ url_for('main.delete_file') }}">Delete Supporting Files</a>
-       <a href="{{ url_for('main.delete_tar_file') }}">Delete Tar Files</a>
-       <a href="{{ url_for('main.delete_asset') }}">Delete Asset</a>
-       <a href="{{ url_for('main.view_default_config') }}">View Default Media and Path</a>
-       <a href="{{ url_for('main.update_default_config') }}">Update Default Media and Path</a>
-    </div>
-  </div>
-  <a href="{{ url_for('main.consult_omdb') }}">Consult OMDB</a>
+</div>
 </div>
 
 {% block content %}

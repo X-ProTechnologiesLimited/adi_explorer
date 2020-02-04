@@ -3,7 +3,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="column is-4 is-offset-4">
+<div class="container">
     <h3 class="title">Update Video</h3>
     <div class="box">
         <form method="POST" action="/update_video">
@@ -12,11 +12,13 @@
                     <input class="input is-large" type="text" name="AssetId" placeholder="Asset_ID" autofocus="" required>
                 </div>
             </div>
+            <br>
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="movie_url" placeholder="Movie File URL" autofocus="" required>
                 </div>
             </div>
+            <br>
 
                 <div class="field">
                 <div class="control">
@@ -24,9 +26,7 @@
                 </div>
             </div>
             </div>
-
-            <p></p>
-
+            <br>
             <button class="button is-block is-info is-medium is-fullwidth">Update Video</button>
         </form>
     </div>

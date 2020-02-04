@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="column is-4 is-offset-4">
+
+<div class="container">
+    <h2>This option only deletes assets and files from the tool. It does not delete the assets from Environment</h2>
+    <p></p>
     <h3 class="title">Delete Asset</h3>
     <div class="box">
         <form method="POST" action="/delete_asset">
@@ -11,8 +14,40 @@
                     <d>**</d>
                 </div>
             </div>
-            <p></p>
-            <button class="button is-block is-info is-medium is-fullwidth">Delete Asset</button>
+            <br>
+            <button class="button is-block is-info is-medium is-fullwidth">Delete</button>
+        </form>
+    </div>
+    <br>
+    <p></p>
+    <br>
+    <h3 class="title">Delete Local Media Files</h3>
+    <div class="box">
+        <form method="POST" action="/delete_file">
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="filename" placeholder="Supporting File to Delete" autofocus="" required>
+                    <d>**</d>
+                </div>
+            </div>
+            <br>
+            <button class="button is-block is-info is-medium is-fullwidth">Delete</button>
+        </form>
+    </div>
+    <br>
+    <p></p>
+    <br>
+     <h3 class="title">Delete VRP Packages</h3>
+    <div class="box">
+        <form method="POST" action="/delete_tar">
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="filename" placeholder="Tar File to Delete" autofocus="" required>
+                    <d>**</d>
+                </div>
+            </div>
+            <br>
+            <button class="button is-block is-info is-medium is-fullwidth">Delete</button>
         </form>
     </div>
 </div>

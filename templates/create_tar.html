@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="column is-4 is-offset-4">
+<div class="container">
     <h3 class="title">Create VRP Tar</h3>
     <d></d>
-    <h4>Before creating VRP TAR Files, please ensure that the the library has all the supporting files saved</h4>
+    <h4>First Make sure that the VRP ADI is created from Create Package > VRP Single Title option.</h4>
+    <h4>Also please ensure that the the library has all the supporting media files saved. You can add media files to the tool from Media Libary > Upload Media to Tool Library option.</h4>
     <div class="box">
         <form method="POST" action="/create_tar">
             <div class="field">

@@ -13,7 +13,9 @@ def response_creator(message):
     with open(html_outfile, 'w') as outf:
         outf.write('{% extends "base.html" %}')
         outf.write('{% block content %}')
+        outf.write('<div class="container">')
         outf.write(output)
+        outf.write('</div>')
         outf.write('{% endblock %}')
 
     return render_template('search_response.html')
@@ -24,7 +26,9 @@ def asset_retrieve(json_data):
     with open(html_outfile, 'w') as outf:
         outf.write('{% extends "base.html" %}')
         outf.write('{% block content %}')
+        outf.write('<div class="container">')
         outf.write(output)
+        outf.write('</div>')
         outf.write('{% endblock %}')
 
     return render_template('search_response.html')

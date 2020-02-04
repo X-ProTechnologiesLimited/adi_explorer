@@ -3,7 +3,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="column is-4 is-offset-4">
+<div class="container">
     <h3 class="title">Update ADI</h3>
     <div class="box">
         <form method="POST" action="/update_single_title">
@@ -12,6 +12,7 @@
                     <input class="input is-large" type="text" name="AssetId" placeholder="Asset_ID" autofocus="" required>
                 </div>
             </div>
+            <br>
             <div class="field">
                 <div class="control">
                     <input class="input is-large" list="atype" name="asset_field" placeholder="Update Field" autofocus="" required>
@@ -31,15 +32,14 @@
                     </option>
                     </datalist>
                 </div>
+                <br>
                 <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="value" placeholder="Field_Value" autofocus="" required>
                 </div>
             </div>
             </div>
-
-            <p></p>
-
+            <br>
             <button class="button is-block is-info is-medium is-fullwidth">Update Single Title</button>
         </form>
     </div>
