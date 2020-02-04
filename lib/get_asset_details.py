@@ -157,14 +157,13 @@ def download_title(assetId):
 
 
 def download_est_episode(assetId):
-    movie_path = movie_config.video_path
-    image_path = movie_config.image_path
     package_main = ADI_main.query.filter_by(assetId=assetId).first()
     package_meta = ADI_metadata.query.filter_by(assetId=assetId).first()
     package_offer = ADI_offer.query.filter_by(assetId=assetId).first()
     package_media = ADI_media.query.filter_by(assetId=assetId).first()
     package_group = ADI_EST_Show.query.filter_by(assetId=assetId).first()
     sitemap.sitemap_entry_boxset(package_main.adi_type, package_group.show_type)
+    adicreate.path_builder(package_main.adi_type, assetId)
     values = []
 
     show_group = ADI_EST_Show.query.filter_by(assetId=package_group.parent_group_id).first()
@@ -193,8 +192,8 @@ def download_est_episode(assetId):
         'asset_syn': package_meta.synopsis,
         'movie_url': package_media.movie_url,
         'movie_checksum': package_media.movie_checksum,
-        'movie_path': movie_path,
-        'image_path': image_path,
+        'movie_path': adicreate.movie_path,
+        'image_path': adicreate.image_path,
         })
 
     media_items = []
@@ -260,13 +259,13 @@ def download_est_season(assetId):
     return response
 
 def download_est_show(assetId):
-    image_path = movie_config.image_path
     package_main = ADI_main.query.filter_by(assetId=assetId).first()
     package_meta = ADI_metadata.query.filter_by(assetId=assetId).first()
     package_offer = ADI_offer.query.filter_by(assetId=assetId).first()
     package_group = ADI_EST_Show.query.filter_by(assetId=assetId).first()
     package_media = ADI_media.query.filter_by(assetId=assetId).first()
     sitemap.sitemap_entry_boxset(package_main.adi_type, package_group.show_type)
+    adicreate.path_builder(package_main.adi_type, assetId)
     values = []
     if package_group.show_type == 'Movie BS':
         deal_sub = 'M/B'
@@ -287,7 +286,7 @@ def download_est_show(assetId):
         'asset_syn': package_meta.synopsis,
         'offerStartDateTime': package_offer.offerStartTime,
         'offerEndDateTime': package_offer.offerEndTime,
-        'image_path': image_path,
+        'image_path': adicreate.image_path,
         })
 
     media_items = []

@@ -1,10 +1,11 @@
 # __init__.py
 
 from flask import Flask
+from . import movie_config
 from flask_sqlalchemy import SQLAlchemy
 import os
-TEMPLATE_DIR = os.path.abspath('../templates')
-STATIC_DIR = os.path.abspath('../static')
+TEMPLATE_DIR = os.path.abspath(movie_config.template_dir)
+STATIC_DIR = os.path.abspath(movie_config.static_dir)
 
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy()
@@ -14,6 +15,7 @@ def create_app():
 
     app.config['SECRET_KEY'] = '9OLWxND4o83j4K4iuopO'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS '] = False
     app.config['DEBUG'] = True
 
     db.init_app(app)

@@ -138,7 +138,7 @@ def create_est_show_adi():
     int_timestamp = int(asset_timestamp)
     for season in range(1, num_of_seasons+1):
         season_asset_id = str(int_timestamp + season)
-        season_title = title + ': Season_' + str(season)
+        season_title = title + ':S:' + str(season)
         season_synopsis = season_title + ' Synopsis'
         season_new_package_main = ADI_main(assetId=season_asset_id + '11', original_timestamp=season_asset_id,
                                     adi_type='est_season', provider_version=params.provider_version,

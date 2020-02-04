@@ -12,11 +12,11 @@ class est_show_default_params(object):
         if show_type == 'Movie BS':
             self.est_show_provider = movie_config.movie_show_provider
             self.est_episode_provider = movie_config.movie_episode_provider
-            self.est_episode_title = title + ': Movie: '
+            self.est_episode_title = title + ':Mov:'
         else:
             self.est_show_provider = movie_config.tv_show_provider
             self.est_episode_provider = movie_config.tv_episode_provider
-            self.est_episode_title = title + ': Episode: '
+            self.est_episode_title = title + ':Ep:'
 
     def est_series_count(self, no_of_seasons, no_of_episodes):
         if no_of_seasons == "":
