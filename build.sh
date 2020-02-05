@@ -25,7 +25,6 @@ docker run --rm -it --name adi_explorer --name adi_explorer -d -p $FLASK_RUN_POR
 printf "Now loading default image data...\n"
 sleep 5
 if [[ $1 == "--new-db" ]];then
-then
   printf "Loading Default Media Data...\n"
   curl -s "http://localhost:$FLASK_RUN_PORT/load_defaults"
   sleep 5
