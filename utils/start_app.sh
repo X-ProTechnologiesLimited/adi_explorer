@@ -23,8 +23,7 @@ echo "Starting the ADI Manager App..."
 echo "Starting the ADI Manager App..." >> $PROJECT_DIR/logs/$filename
 echo
 source $PROJECT_DIR/utils/app_run.config && export $(cut -d= -f1 $PROJECT_DIR/utils/app_run.config)
-if [ "$DATABASE_NEW" = 1 ]
-then
+if [[ "$1" == '--new-db' ]];then
     source $PROJECT_DIR/utils/app_run.config && export $(cut -d= -f1 $PROJECT_DIR/utils/app_run.config)
     rm -rf $PROJECT_DIR/lib/db.sqlite
     python $PROJECT_DIR/initialise_db.py
@@ -35,15 +34,17 @@ then
     sleep 5
     curl "http://$FLASK_HOST_NAME:$FLASK_RUN_PORT/load_defaults"
      
-elif [ "$DATABASE_NEW" = 0 ]
-then
+elif [[ "$1" == '' ]];then
     source $PROJECT_DIR/utils/app_run.config && export $(cut -d= -f1 $PROJECT_DIR/utils/app_run.config)
     echo "Using the existing database..."
     echo "Using the existing database..." >> $PROJECT_DIR/logs/$filename
     python -m flask run --host=0.0.0.0>> $PROJECT_DIR/logs/$filename 2>&1 &
 
 else
-    echo "Error: No Database Creation option specified.."
+    echo "Error: Incorrect Database Creation option specified.."
+    printf "Please use correct flags for database creation...\n"
+    printf "start_app.sh --new-db : [This will create a new database before starting the app]\n"
+    printf "start_app.sh <no input> : [This will use existing/old database before starting the app]\n"
     exit
 fi
 

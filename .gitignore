@@ -1,5 +1,6 @@
 *.sqlite
 *.log
+*.sql
 *.pyc
 search_response.html
 .idea
