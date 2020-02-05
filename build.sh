@@ -26,7 +26,7 @@ docker run --rm -it --name adi_explorer --name adi_explorer -d -p $FLASK_RUN_POR
 
 ## Deleting any untagged loaded image to keep Docker clean
 docker image rm `docker images | grep 'none' | awk -F ' ' '{print $3}'`
-:printf "Removed unnecessary images\n"
+printf "Removed unnecessary images\n"
 
 # Remove Dockerfile
 rm -rf Dockerfile
