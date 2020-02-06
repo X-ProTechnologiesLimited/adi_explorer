@@ -14,7 +14,8 @@ USER root
 RUN apk add --update python3
 RUN apk add --no-cache bash
 RUN apk add sqlite
-RUN apk add --no-cache curl pkgconfig python3-dev openssl-dev libffi-dev musl-dev make gcc
+RUN apk add --no-cache curl pkgconfig python3-dev openssl-dev libffi-dev musl-dev build-base py-pip jpeg-dev zlib-dev make gcc
+ENV LIBRARY_PATH=/lib:/usr/lib
 RUN pip3 install --upgrade pip setuptools
 RUN pip3 install -r requirements.txt
 RUN if [ -d "lib/__pycache__/" ] ; then rm -rf lib/__pycache__ ; fi
