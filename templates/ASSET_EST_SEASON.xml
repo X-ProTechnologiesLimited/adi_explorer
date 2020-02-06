@@ -32,8 +32,8 @@
                         <title:StudioDisplay>DUMMY</title:StudioDisplay>
                 </title:LocalizableTitle>
                 <title:Rating ratingSystem="BSkyBsi">{{val.par_rating}}</title:Rating>
-                <title:Rating ratingSystem="BSkyBca">{{val.par_rating}}</title:Rating>
-                <title:Rating ratingSystem="BSkyBtc">{{val.btc_rating}}</title:Rating>
+                <title:Rating ratingSystem="BSkyBca">{{val.btc_rating}}</title:Rating>
+                <title:Rating ratingSystem="BSkyBtc">U</title:Rating>
                 <title:DisplayRunTime>0:00:00</title:DisplayRunTime>
                 <title:Year>1989</title:Year>
                 <title:Genre>{{val.genre}}</title:Genre>

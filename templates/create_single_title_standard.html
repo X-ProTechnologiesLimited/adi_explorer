@@ -28,7 +28,7 @@
                     <d>**</d>
                 </div>
             </div>
-            <div class="field">
+  <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="LicenseWindow" placeholder="LicenseWindow" autofocus="" required>
                     <d>** License Expiry in Days from Now. Eg 30 for 1 month from now.</d>
@@ -70,7 +70,7 @@
             </div>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" list="subtitle_flag" name="subtitle_flag" placeholder="Subtitled" autofocus="">
+                    <input class="input is-large" list="subtitle_flag" name="subtitle_flag" placeholder="Subtitled" autocomplete="off" autofocus="">
                     <datalist id="subtitle_flag">
                       <option value="true">
                       <option value="false">
@@ -79,22 +79,26 @@
                 </div>
              <div class="field">
                 <div class="control">
-                    <input class="input is-large" list="btc_rating" name="ca_btc" placeholder="CA/BTC Rating" autofocus="">
-                    <datalist id="btc_rating">
-                      <option value="U">
-                      <option value="PG">
-                      <option value="SU">
-                      <option value="G">
+                    <input class="input is-large" list="ca_rating" name="ca_btc" placeholder="CA Rating" autocomplete="off" autofocus="">
+                    <datalist id="ca_rating">
+                      <option value="0">
+                      <option value="1">
+                      <option value="2">
+                      <option value="3">
+                      <option value="4">
+                      <option value="5">
+                      <option value="31">
                     </option>
                     </datalist>
                 </div>
             </div>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" list="par_rating" name="par_rating" placeholder="Parental Rating" autofocus="">
+                    <input class="input is-large" list="par_rating" name="par_rating" placeholder="Parental Rating(SI)" autocomplete="off" autofocus="">
                     <datalist id="par_rating">
                       <option value="1">
                       <option value="2">
+                      <option value="3">
                       <option value="4">
                       <option value="5">
                     </option>
@@ -103,7 +107,7 @@
             </div>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" list="audio_type" name="audio_type" placeholder="Audio Type" autofocus="">
+                    <input class="input is-large" list="audio_type" name="audio_type" placeholder="Audio Type" autocomplete="off" autofocus="">
                     <datalist id="audio_type">
                       <option value="Dolby 5.1">
                       <option value="Dolby Digital">
@@ -114,7 +118,7 @@
             </div>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" list="frame_rate" name="frame_rate" placeholder="Video Frame Rate" autofocus="">
+                    <input class="input is-large" list="frame_rate" name="frame_rate" placeholder="Video Frame Rate" autocomplete="off" autofocus="">
                     <datalist id="frame_rate">
                       <option value="25">
                       <option value="50">

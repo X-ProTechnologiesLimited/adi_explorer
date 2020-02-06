@@ -42,7 +42,7 @@
          <title:TitleLong>DUMMY</title:TitleLong>
          <title:SummaryShort>{{val.asset_syn}}</title:SummaryShort>
       </title:LocalizableTitle>
-      <title:Rating ratingSystem="BSkyBca">{{val.par_rating}}</title:Rating>
+      <title:Rating ratingSystem="BSkyBca">{{val.btc_rating}}</title:Rating>
       <title:Rating ratingSystem="BSkyBsi">{{val.par_rating}}</title:Rating>
       <title:DisplayRunTime>{{val.runtime}}</title:DisplayRunTime>
       <title:Genre>3:4</title:Genre>

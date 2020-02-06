@@ -42,9 +42,9 @@
       <title:Director firstName="Rob" fullName="Rob Hughes" lastName="Hughes" sortableName="*"/>
       <title:StudioDisplay>Walt Disney Pictures</title:StudioDisplay>
    </title:LocalizableTitle>
-    <title:Rating ratingSystem="BSkyBca">31</title:Rating>
+    <title:Rating ratingSystem="BSkyBca">{{val.btc_rating}}</title:Rating>
     <title:Rating ratingSystem="BSkyBsi">{{val.par_rating}}</title:Rating>
-    <title:Rating ratingSystem="BSkyBtc">{{val.btc_rating}}</title:Rating>
+    <title:Rating ratingSystem="BSkyBtc">U</title:Rating>
     <title:Advisory>private:LANG</title:Advisory>
     <title:Advisory>private:SEX</title:Advisory>
         <title:DisplayRunTime>{{val.runtime}}</title:DisplayRunTime>

@@ -340,21 +340,6 @@ def get_asset_data(assetId):
     json_data = dumps(adi_metadata)
     return response.asset_retrieve(json_data)
 
-# def get_asset_video(assetId):
-#     adi_metadata = {}
-#     adi_metadata['packages'] = {}
-#     package = ADI_metadata.query.filter_by(assetId=assetId).first()
-#     package_media = ADI_media.query.filter_by(assetId=assetId).first()
-#     if not package:
-#         return errorchecker.asset_not_found_id(assetId)
-#
-#     adi_metadata['packages']['assetId'] = package.assetId
-#     adi_metadata['packages']['title'] = package.title
-#     adi_metadata['packages']['Movie File'] = package_media.movie_url
-#     adi_metadata['packages']['Movie Checksum'] = package_media.movie_checksum
-#
-#     json_data = dumps(adi_metadata)
-#     return response.asset_retrieve(json_data)
 
 
 def get_default_config():
@@ -369,6 +354,8 @@ def get_default_config():
     default_config['config']['HDR Video'] = config_data.hdr_movie_file
     default_config['config']['DPL Video'] = config_data.dpl_movie_file
     default_config['config']['Trailer'] = config_data.trailer_file
+    default_config['config']['Standard Image'] = config_data.standard_image_file_prefix
+    default_config['config']['DPL Image'] = config_data.dpl_image_file_prefix
 
     json_data = dumps(default_config)
     return response.asset_retrieve(json_data)
