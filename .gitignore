@@ -12,3 +12,4 @@ adi.xml
 /supp_files/*.xml
 /created_package/*
 app_run.config
+/OMDB_Images/*

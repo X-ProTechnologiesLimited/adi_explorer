@@ -17,6 +17,7 @@ fi
 mkdir -p $PROJECT_DIR/logs
 mkdir -p $PROJECT_DIR/supp_files
 mkdir -p $PROJECT_DIR/created_package
+mkdir -p $PROJECT_DIR/OMDB_Images
 
 
 echo "Starting the ADI Manager App..."

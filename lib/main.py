@@ -9,7 +9,7 @@ import os
 import hashlib
 import os.path
 from . import errorchecker, create_asset, search, get_asset_details, update_package, response, create_tar, movie_config
-from . import delete, load_default_data, copy_to_tank, get_omdb_data
+from . import delete, load_default_data, copy_to_tank, get_omdb_data, create_omdb_image
 params = metadata_default_params()
 path_to_script = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_DIRECTORY = movie_config.premium_upload_dir
@@ -161,6 +161,18 @@ def list_files():
             files.append(filename)
     json_data = dumps(files)
     return response.asset_retrieve(json_data)
+
+@main.route("/delete_image_group", methods=['POST'])
+def delete_image_group():
+    """Endpoint to list files on the server."""
+    title = request.form.get('image_prefix')
+    text_files = [f for f in os.listdir(UPLOAD_DIRECTORY) if f.startswith(title)]
+    for item in text_files:
+        os.remove(os.path.join(UPLOAD_DIRECTORY, item))
+        delete.delete_supp_file(item)
+
+    return list_files()
+
 
 @main.route("/get_file_list_checksum")
 def list_files_checksum():
@@ -317,8 +329,13 @@ def consult_omdb():
 
 @main.route("/consult_omdb", methods=['POST'])
 def consult_omdb_post():
-    omdb_title = request.form.get('title')
-    return get_omdb_data.get_omdb_data(omdb_title)
+    title = request.form.get('title')
+    return get_omdb_data.get_omdb_data(title)
+
+@main.route("/create_omdb_image", methods=['POST'])
+def omdb_image_create():
+    title = request.form.get('title')
+    return create_omdb_image.omdb_image_create(title)
 
 @main.route("/view_default_config")
 def view_default_config():

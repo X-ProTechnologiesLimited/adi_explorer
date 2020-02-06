@@ -29,10 +29,12 @@
               startDateTime="2019-12-01T08:40:00Z"
               endDateTime="{{val.licensetime}}">
       {% for episode in episodes -%}
+       <core:Ext>
           <ext:LocalizableTitleExt xml:lang="eng">
         <ext:EpisodeName>{{episode.svod_episode_name}}</ext:EpisodeName>
       </ext:LocalizableTitleExt>
       <ext:SeriesInfo seasonNumber="{{episode.svod_season_number}}" episodeNumber="{{episode.svod_episode_number}}" totalEpisodes="{{episode.svod_total_episodes}}"/>
+      </core:Ext>
       {% endfor -%}
       <title:LocalizableTitle>
          <title:TitleBrief>DUMMY</title:TitleBrief>
