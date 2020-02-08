@@ -42,10 +42,6 @@ def create_single_title_vrp():
 def create_single_title_vrp_post():
     return create_asset.create_single_title()
 
-@main.route('/create_series_episode')
-def create_series_episode():
-    return errorchecker.not_implemented_yet()
-
 @main.route('/create_est_show')
 def create_est_show():
     return render_template('create_box_set.html')
@@ -53,6 +49,14 @@ def create_est_show():
 @main.route('/create_est_show', methods=['POST'])
 def create_est_show_post():
     return create_asset.create_est_show_adi()
+
+@main.route('/create_est_single_title')
+def create_est_single_title():
+    return render_template('create_est_title.html')
+
+@main.route('/create_est_single_title', methods=['POST'])
+def create_est_single_title_post():
+    return create_asset.create_est_title_adi()
 
 @main.route('/search')
 def search_adi():

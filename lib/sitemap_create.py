@@ -6,14 +6,10 @@ class sitemap_mapper(object):
         self.sitemap = None
 
     def sitemap_entry(self, asset_type):
-        if ('DPL' not in asset_type) and ('EST' not in asset_type):
+        if 'DPL' not in asset_type:
             self.sitemap = 'ASSET_STANDARD_TITLE.xml'
-        elif ('DPL' in asset_type) and ('EST' not in asset_type):
+        elif 'DPL' in asset_type:
             self.sitemap = 'ASSET_DPL_TITLE.xml'
-        elif asset_type == 'EST SINGLE TITLE':
-            self.sitemap = 'ASSET_EST_SINGLE_TITLE.xml'
-        elif (asset_type == 'est_show') or (asset_type == 'est_season') or (asset_type == 'est_episode'):
-            self.sitemap = True
         else:
             self.sitemap = False
 

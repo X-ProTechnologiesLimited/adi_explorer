@@ -24,6 +24,7 @@ tv_show_provider = 'est__tvboxset_hd'
 tv_episode_provider = 'est__tvbsepisode_hd'
 movie_show_provider = 'est__movieboxset_hd'
 movie_episode_provider = 'est__moviebstitle_hd'
+est_title_provider = 'est__sbo_hd'
 default_no_of_seasons = '1'
 default_no_of_episodes = '2'
 

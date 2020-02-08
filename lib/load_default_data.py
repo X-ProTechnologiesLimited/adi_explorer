@@ -28,23 +28,9 @@ def load_default_media():
                                    dpl_image_file_prefix='DPL_')
 
 
-    db.session.add(dpl_image_1)
-    db.session.add(dpl_image_2)
-    db.session.add(dpl_image_3)
-    db.session.add(dpl_image_4)
-    db.session.add(dpl_image_5)
-    db.session.add(dpl_image_6)
-    db.session.add(standard_image_1)
-    db.session.add(standard_image_2)
-    db.session.add(standard_image_3)
-    db.session.add(standard_image_4)
-    db.session.add(sdr_movie)
-    db.session.add(hd_movie)
-    db.session.add(hdr_movie)
-    db.session.add(sd_movie)
-    db.session.add(dpl_video_file)
-    db.session.add(trailer_file)
-    db.session.add(default_config)
+    db.session.add_all([dpl_image_1, dpl_image_2, dpl_image_3, dpl_image_4, dpl_image_5, dpl_image_6, standard_image_1,
+                       standard_image_2, standard_image_3, standard_image_4, sdr_movie, hd_movie, hdr_movie, sd_movie,
+                       dpl_video_file, trailer_file, default_config])
 
     db.session.commit()
 

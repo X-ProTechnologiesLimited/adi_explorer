@@ -1,5 +1,5 @@
-from . import movie_config
-from . import errorchecker
+from . import movie_config, errorchecker
+from flask import request
 from .models import MEDIA_LIBRARY, MEDIA_DEFAULT
 class metadata_default_params(object):
 
@@ -30,51 +30,51 @@ class metadata_default_params(object):
         self.trailer_checksum = None
         self.tank_path = None
 
-    def param_logic_entry(self, synopsis, title, provider_version, production_year, ca_btc, par_rating, audio_type,
-                          frame_rate, subtitle_flag, asset_duration):
-        if synopsis != "":
-            self.synopsis = synopsis
+    def param_logic_entry(self, asset_type):
+        if request.form.get('synopsis') != "":
+            self.synopsis = request.form.get('synopsis')
         else:
-            self.synopsis = movie_config.default_synopsis + title
+            self.synopsis = movie_config.default_synopsis + request.form.get('title')
 
-        if provider_version != "":
-            self.provider_version = provider_version
+        if request.form.get('provider_version') != "":
+            self.provider_version = request.form.get('provider_version')
         else:
             self.provider_version = movie_config.default_provider_version
 
-        if production_year != "":
-            self.production_year = production_year
+        if request.form.get('production_year') != "":
+            self.production_year = request.form.get('production_year')
         else:
             self.production_year = movie_config.default_production_year
 
-        if ca_btc != "":
-            self.ca_btc = ca_btc
+        if request.form.get('ca_btc') != "":
+            self.ca_btc = request.form.get('ca_btc')
         else:
             self.ca_btc = movie_config.default_ca_btc
 
-        if par_rating != "":
-            self.par_rating = par_rating
+        if request.form.get('par_rating') != "":
+            self.par_rating = request.form.get('par_rating')
         else:
             self.par_rating = movie_config.default_par_rating
 
-        if audio_type != "":
-            self.audio_type = audio_type
+        if request.form.get('audio_type') != "":
+            self.audio_type = request.form.get('audio_type')
         else:
             self.audio_type = movie_config.default_audio_type
 
-        if frame_rate != "":
-            self.frame_rate = frame_rate
+        if request.form.get('frame_rate') != "":
+            self.frame_rate = request.form.get('frame_rate')
         else:
             self.frame_rate = movie_config.default_frame_rate
 
-        if subtitle_flag != "":
-            self.subtitle_flag = subtitle_flag
+        if request.form.get('subtitle_flag') != "":
+            self.subtitle_flag = request.form.get('subtitle_flag')
         else:
             self.subtitle_flag = movie_config.default_subtitle_flag
 
-        if asset_duration != "":
-            self.runtime = asset_duration
-            self.duration = 'PT'+asset_duration.split(':')[0]+'H'+asset_duration.split(':')[1]+'M'+asset_duration.split(':')[2]+'S'
+        if request.form.get('duration') != "" and 'est' not in asset_type:
+            self.runtime = request.form.get('duration')
+            self.duration = 'PT'+(request.form.get('duration')).split(':')[0]+'H'+\
+                            (request.form.get('duration')).split(':')[1]+'M'+(request.form.get('duration')).split(':')[2]+'S'
         else:
             self.runtime = movie_config.default_asset_runtime
             self.duration = movie_config.default_asset_duration
@@ -125,7 +125,7 @@ class metadata_default_params(object):
             self.video_type = 'false'
 
     def offer_type_entry(self, asset_type):
-        if 'RENTAL' in asset_type or 'PREMIUM' in asset_type:
+        if 'RENTAL' in asset_type or 'PREMIUM' in asset_type or 'EST' in asset_type:
             self.offer_type = 'IPPR'
         elif 'est' in asset_type:
             self.offer_type = 'IPPR'

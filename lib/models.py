@@ -34,13 +34,18 @@ class ADI_metadata(db.Model):
 
 class ADI_offer(db.Model):
     id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy
-    assetId = db.Column(db.String(100), unique=True)
+    assetId = db.Column(db.String(100))
     licenseEndTime = db.Column(db.String(100))
     offer_type = db.Column(db.String(100))
     offerStartTime = db.Column(db.String(100))
     offerEndTime = db.Column(db.String(100))
     epgTime = db.Column(db.String(100))
     service_key = db.Column(db.String(10))
+    est_order_type = db.Column(db.String(100))
+    est_pur_option = db.Column(db.String(100))
+    poption_start_date = db.Column(db.String(100))
+    poption_end_date = db.Column(db.String(100))
+
 
 class ADI_media(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy

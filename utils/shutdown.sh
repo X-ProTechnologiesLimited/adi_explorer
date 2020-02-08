@@ -6,6 +6,7 @@ gzip -S "_$log_timestamp.gz" ../logs/*.log
 if [[ $(docker ps | grep adi_explorer | awk -F ' ' '{print $1}') ]]; then
 	        docker cp `docker ps | grep adi_explorer | awk -F ' ' '{print $1}'`:/app/lib/db.sqlite ../lib/
 	        docker cp `docker ps | grep adi_explorer | awk -F ' ' '{print $1}'`:/app/logs/ ../
+	        docker cp `docker ps | grep adi_explorer | awk -F ' ' '{print $1}'`:/app/supp_files/ ../
 		        printf "\nData file and Logs from container copied successfully\n"
 		else
 			        printf "\nApplication is not running in Container, so nothing to copy\n"

@@ -1,33 +1,29 @@
 <!-- templates/create_package.html -->
 
 {% extends "base.html" %}
-<p>** Mandatory Fields. Optional fields populates default values as per 'config.properties' file. </p>
+
 {% block content %}
 <div class="container">
-    <h2 class="title">Create Standard ADI</h2>
+    <h2 class="title">Create EST Single Title</h2>
     <div class="box">
-        <form method="POST" action="/create_single_title_standard">
-
+        <form method="POST" action="/create_est_single_title">
+            <p>** Mandatory Fields. Optional fields populates default values as per 'config.properties' file. </p>
+            <p>Order Types: PO=PreOrder; CS=ComingSoon; REG=Regular. </p>
             <h4>Licensing Section</h4>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" list="asset_type" name="asset_type" placeholder="Type of Asset"  autofocus="" autocomplete="off" required>
-                    <datalist id="asset_type">
-                      <option value="SVOD">
-                      <option value="RENTAL">
-                      <option value="CATCHUP VOD">
-                      <option value="CATCHUP EPISODE">
-                      <option value="SVOD EPISODE">
-                      <option value="DPL SVOD">
-                      <option value="DPL CATCHUP">
-                      <option value="DPL SVOD EPISODE">
-                      <option value="DPL CATCHUP EPISODE">
+                    <input class="input is-large" list="order_type" name="order_type" placeholder="PO/CS/REG" autocomplete="off" autofocus="" required>
+                    <datalist id="order_type">
+                      <option value="PO">
+                      <option value="PO+CS">
+                      <option value="REG">
+                      <option value="PO+CS+REG">
                     </option>
                     </datalist>
                     <d>**</d>
                 </div>
             </div>
-  <div class="field">
+            <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="LicenseWindow" placeholder="LicenseWindow" autofocus="" required>
                     <d>** License Expiry in Days from Now. Eg 30 for 1 month from now.</d>
@@ -36,30 +32,18 @@
             <h4>Metadata Section</h4>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="text" name="title" placeholder="Asset Title" autofocus="" required>
+                    <input class="input is-large" type="text" name="title" placeholder="Title" autofocus="" required>
                     <d>**</d>
                 </div>
             </div>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="text" name="synopsis" placeholder="Asset Synopsis" autofocus="">
+                    <input class="input is-large" type="text" name="synopsis" placeholder="Synopsis" autofocus="">
                 </div>
             </div>
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="text" name="provider_id" placeholder="Provider" autofocus="" required>
-                    <d>**</d>
-                </div>
-            </div>
-            <div class="field">
+             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="provider_version" placeholder="Provider Version" autofocus="">
-                </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="text" name="multiformat_id" placeholder="Multiformat ID" autofocus="">
-                    <d> Default value: Taken from Asset Id</d>
                 </div>
             </div>
             <div class="field">
@@ -131,32 +115,25 @@
                     <d>Format X:XX:XX</d>
                 </div>
             </div>
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="text" name="dpl_asset_parts" placeholder="DPL Asset Part" autofocus="">
-                </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="text" name="svod_season_number" placeholder="SVOD Season Number" autofocus="">
-                    <d></d>
-                    <input class="input is-large" type="text" name="svod_episode_number" placeholder="SVOD Episode Number" autofocus="">
-                    <d></d>
-                    <input class="input is-large" type="text" name="svod_total_episodes" placeholder="Total Episodes" autofocus="">
-                    <d>** Only required if Asset Type is Episode</d>
-                </div>
-            </div>
             <h4>Offer Section</h4>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="text" name="offer_window" placeholder="Offer Window" autofocus="" required>
-                    <d>** Offer Availability in Days from Now. Eg 30 for 1 month from now.</d>
+                    <input class="input is-large" type="text" name="po_offer_window" placeholder="PO Offer Window" autofocus="">
+                    <input class="input is-large" type="text" name="cs_offer_window" placeholder="CS Offer Window" autofocus="">
+                    <input class="input is-large" type="text" name="reg_offer_window" placeholder="REG Offer Window" autofocus="">
+                    <p>** Offer Availability in Days from Now. Eg 30 for 1 month from now. Incase of multiple offers, the hiatus would be created automatically</p>
                 </div>
             </div>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="text" name="service_key" placeholder="CUTV Service Key" autofocus="">
-                    <d>** Only required if Asset Type is Catchup</d>
+                    <input class="input is-large" list="po_type" name="po_type" placeholder="Purchase Option" autocomplete="off" autofocus="" required>
+                    <datalist id="po_type">
+                      <option value="Digital Only">
+                      <option value="Digital+DVD">
+                      <option value="Digital+DVD+BluR">
+                    </option>
+                    </datalist>
+                    <d>**</d>
                 </div>
             </div>
             <br>

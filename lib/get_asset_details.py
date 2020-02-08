@@ -291,14 +291,14 @@ def download_est_show(assetId):
 
     media_items = []
     media_items.append({
-        'image1': package_media.image_url_1,
-        'image2': package_media.image_url_2,
-        'image3': package_media.image_url_3,
-        'image4': package_media.image_url_4,
-        'image1_checksum': package_media.image_checksum_1,
-        'image2_checksum': package_media.image_checksum_2,
-        'image3_checksum': package_media.image_checksum_3,
-        'image4_checksum': package_media.image_checksum_4,
+         'image1': package_media.image_url_1,
+         'image2': package_media.image_url_2,
+         'image3': package_media.image_url_3,
+         'image4': package_media.image_url_4,
+         'image1_checksum': package_media.image_checksum_1,
+         'image2_checksum': package_media.image_checksum_2,
+         'image3_checksum': package_media.image_checksum_3,
+         'image4_checksum': package_media.image_checksum_4,
     })
 
     seasonlist = []
