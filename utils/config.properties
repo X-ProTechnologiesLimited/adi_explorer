@@ -27,6 +27,10 @@ movie_episode_provider = 'est__moviebstitle_hd'
 est_title_provider = 'est__sbo_hd'
 default_no_of_seasons = '1'
 default_no_of_episodes = '2'
+uk_std_price = '7.95'
+uk_vip_price = '6.95'
+il_std_price = '8.95'
+il_vip_price = '7.95'
 
 # ADI POST Endpoint Parameters
 ts1_cms = 'http://localhost:14231/gateway/submit?'

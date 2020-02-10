@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, make_response, request
-from .models import ADI_main, ADI_media, ADI_metadata, ADI_offer, ADI_EST_Show, ADI_INGEST_HISTORY, MEDIA_DEFAULT
+from .models import ADI_main, ADI_media, ADI_metadata, ADI_offer, ADI_EST_Show, ADI_INGEST_HISTORY, MEDIA_DEFAULT, EST_PO
 from . import movie_config
 from .sitemap_create import sitemap_mapper
 from bson.json_util import dumps
@@ -317,6 +317,96 @@ def download_est_show(assetId):
     response.headers['Content-Type'] = 'application/xml'
 
     return response
+
+
+def download_est_single_title(assetId):
+    try:
+        package_main = ADI_main.query.filter_by(assetId=assetId).first()
+        package_meta = ADI_metadata.query.filter_by(assetId=assetId).first()
+        package_offer = ADI_offer.query.filter_by(assetId=assetId).first()
+        package_media = ADI_media.query.filter_by(assetId=assetId).first()
+        sitemap.sitemap_entry_est_title(package_main.adi_type)
+        adicreate.duration_calc(package_meta.duration)
+        adicreate.path_builder(package_main.adi_type, assetId)
+        adicreate.term_type_generate(package_main.adi_type)
+
+        values = []
+        values.append({
+            'title': package_meta.title,
+            'providerid': package_main.provider_id,
+            'assetid': package_main.original_timestamp,
+            'provider_version': package_main.provider_version,
+            'licensetime': package_offer.licenseEndTime,
+            'par_rating': package_meta.par_rating,
+            'audio_type': package_meta.audio_type,
+            'frame_rate': package_meta.frame_rate,
+            'btc_rating': package_meta.btc_rating,
+            'runtime': package_meta.duration,
+            'duration': adicreate.asset_duration,
+            'movie_url': package_media.movie_url,
+            'movie_checksum': package_media.movie_checksum,
+            'video_type': package_meta.video_type,
+            'offer_type': package_offer.offer_type,
+            'asset_syn': package_meta.synopsis,
+            'production_year': package_meta.production_year,
+            'movie_path': adicreate.movie_path,
+            'image_path': adicreate.image_path,
+        })
+
+
+        media_items = []
+        media_items.append({
+            'trailer_url': package_media.trailer_url,
+            'trailer_checksum': package_media.trailer_checksum,
+            'image1': package_media.image_url_1,
+            'image2': package_media.image_url_2,
+            'image3': package_media.image_url_3,
+            'image4': package_media.image_url_4,
+            'image5': package_media.image_url_5,
+            'image6': package_media.image_url_6,
+            'image1_checksum': package_media.image_checksum_1,
+            'image2_checksum': package_media.image_checksum_2,
+            'image3_checksum': package_media.image_checksum_3,
+            'image4_checksum': package_media.image_checksum_4,
+            'image5_checksum': package_media.image_checksum_5,
+            'image6_checksum': package_media.image_checksum_6,
+        })
+
+        purchase_options = []
+        for package in EST_PO.query.filter(EST_PO.assetId == assetId).all():
+            po = EST_PO.query.filter_by(poption_Id=package.poption_Id).first()
+            purchase_options.append({
+                'option_id': po.poption_Id,
+                'media_type': po.poption_media_type,
+                'media_filter': po.poption_media_filter,
+                'po_end': package_offer.offerEndTime,
+                'uk_std_price': po.uk_std_price,
+                'uk_vip_price': po.uk_vip_price,
+                'il_std_price': po.il_std_price,
+                'il_vip_price': po.il_vip_price,
+
+            })
+
+        est_offers = []
+        for offers in ADI_offer.query.filter(ADI_offer.assetId == assetId).all():
+            offeritem = ADI_offer.query.filter_by(est_offerId=offers.est_offerId).first()
+            est_offers.append({
+                'offer_id': offeritem.est_offerId,
+                'offerEndDateTime': offeritem.offerEndTime,
+                'offerStartDateTime': offeritem.offerStartTime,
+                'offer_type': offeritem.offer_type,
+                'order_type': offeritem.est_order_type,
+            })
+
+
+        template = render_template(sitemap.sitemap, values=values, media_items=media_items, est_offers=est_offers,
+                                   purchase_options=purchase_options)
+        response = make_response(template)
+        response.headers['Content-Type'] = 'application/xml'
+        return response
+
+    except:
+        return errorchecker.internal_server_error()
 
 
 def get_asset_data(assetId):

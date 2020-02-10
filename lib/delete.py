@@ -1,4 +1,4 @@
-from .models import MEDIA_LIBRARY, ADI_main, ADI_EST_Show, ADI_metadata, ADI_media, ADI_offer
+from .models import MEDIA_LIBRARY, ADI_main, ADI_EST_Show, ADI_metadata, ADI_media, ADI_offer, EST_PO
 from . import db
 def delete_supp_file(filename):
     MEDIA_LIBRARY.query.filter_by(filename=filename).delete()
@@ -11,6 +11,7 @@ def delete_asset_est_group(assetId):
     ADI_offer.query.filter_by(assetId=assetId).delete()
     ADI_metadata.query.filter_by(assetId=assetId).delete()
     ADI_EST_Show.query.filter_by(assetId=assetId).delete()
+    EST_PO.query.filter_by(assetId=assetId).delete()
     db.session.commit()
 
 def delete_asset_standard(assetId):
@@ -19,6 +20,7 @@ def delete_asset_standard(assetId):
     ADI_offer.query.filter_by(assetId=assetId).delete()
     ADI_metadata.query.filter_by(assetId=assetId).delete()
     ADI_EST_Show.query.filter_by(assetId=assetId).delete()
+    EST_PO.query.filter_by(assetId=assetId).delete()
     db.session.commit()
 
 

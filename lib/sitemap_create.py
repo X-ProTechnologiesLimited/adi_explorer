@@ -24,5 +24,13 @@ class sitemap_mapper(object):
                 self.sitemap = 'ASSET_EST_MOVIE_EPISODE.xml'
             else:
                 self.sitemap = 'ASSET_EST_EPISODE.xml'
+        elif asset_type == 'EST SINGLE TITLE':
+            self.sitemap = 'ASSET_EST_SINGLE_TITLE.xml'
+        else:
+            self.sitemap = False
+
+    def sitemap_entry_est_title(self, asset_type):
+        if asset_type == 'EST SINGLE TITLE':
+            self.sitemap = 'ASSET_EST_SINGLE_TITLE.xml'
         else:
             self.sitemap = False

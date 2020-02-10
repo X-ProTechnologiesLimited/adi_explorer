@@ -92,6 +92,8 @@ def get_back_adi(assetId):
             return get_asset_details.download_est_season(assetId)
         elif package.adi_type == 'est_show':
             return get_asset_details.download_est_show(assetId)
+        elif package.adi_type == 'EST SINGLE TITLE':
+            return get_asset_details.download_est_single_title(assetId)
         else:
             return get_asset_details.download_title(assetId)
     except:

@@ -1,175 +1,175 @@
-<?xml version='1.0' encoding='utf-8'?>
-<ADI3 xmlns="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1" xmlns:PO="URN:NNDS:CMS:ADI3:PURCHASEOPTIONS:01" xmlns:content="http://www.cablelabs.com/namespaces/metadata/xsd/content/1" xmlns:core="http://www.cablelabs.com/namespaces/metadata/xsd/core/1" xmlns:ext="URN:NNDS:CMS:ADI3:01" xmlns:offer="http://www.cablelabs.com/namespaces/metadata/xsd/offer/1" xmlns:schemaLocation="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1./MD-SP-VODContainer-I01.xsd" xmlns:terms="http://www.cablelabs.com/namespaces/metadata/xsd/terms/1" xmlns:title="http://www.cablelabs.com/namespaces/metadata/xsd/title/1">
+<?xml version="1.0" encoding="UTF-8"?><ADI3 xmlns="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1" xmlns:PO="URN:NNDS:CMS:ADI3:PURCHASEOPTIONS:01" xmlns:content="http://www.cablelabs.com/namespaces/metadata/xsd/content/1" xmlns:core="http://www.cablelabs.com/namespaces/metadata/xsd/core/1" xmlns:ext="URN:NNDS:CMS:ADI3:01" xmlns:offer="http://www.cablelabs.com/namespaces/metadata/xsd/offer/1" xmlns:schemaLocation="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1./MD-SP-VODContainer-I01.xsd" xmlns:terms="http://www.cablelabs.com/namespaces/metadata/xsd/terms/1" xmlns:title="http://www.cablelabs.com/namespaces/metadata/xsd/title/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 {% for val in values -%}
-<ContentGroup creationDateTime="2019-11-27T16:12:59Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2019-11-17T16:12:59Z" uriId="{{val.providerid}}/CGVT{{val.assetid}}01">
-<core:Ext>
-<ext:ContentGroupType>AV</ext:ContentGroupType>
-</core:Ext>
-<offer:TitleRef uriId="{{val.providerid}}/TITL{{val.assetid}}01"/>
-<offer:PreviewRef uriId="{{val.providerid}}/TRVT{{val.assetid}}01"/>
-<offer:ThumbnailRef uriId="{{val.providerid}}/THEP{{val.assetid}}01"/>
-<offer:ContentRef uriId="{{val.providerid}}/CGPP{{val.assetid}}02"/>
-<offer:MovieRef uriId="{{val.providerid}}/MAIN{{val.assetid}}01"/>
-</ContentGroup>
-<ContentGroup creationDateTime="2019-11-27T16:12:59Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2019-11-17T16:12:59Z" uriId="{{val.providerid}}/CGPP{{val.assetid}}02">
-<core:Ext>
-<ext:PressPackImageRef uriId="{{val.providerid}}/PPAT{{val.assetid}}01"/>
-<ext:PressPackImageRef uriId="{{val.providerid}}/PRSW{{val.assetid}}01"/>
-<ext:PressPackImageRef uriId="{{val.providerid}}/PRSB{{val.assetid}}01"/>
-</core:Ext>
-<offer:TitleRef uriId="{{val.providerid}}/TITL{{val.assetid}}01"/>
-</ContentGroup>
-<Title creationDateTime="2019-11-27T16:12:59Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2019-11-17T16:12:59Z" uriId="{{val.providerid}}/TITL{{val.assetid}}01">
-<core:Ext>
-<ext:LocalizableTitleExt xml:lang="eng">
-<ext:MarketingMessage>{{val.title}} Marketing Message</ext:MarketingMessage>
-</ext:LocalizableTitleExt>
-<ext:TitleExtensions Language="eng">
-<ext:ProgramKey>PV1520064</ext:ProgramKey>
-<ext:LinkedProgramKey>PV1520058</ext:LinkedProgramKey>
-<ext:DealSub>M/N</ext:DealSub>
-</ext:TitleExtensions>
-<ext:IsSigned>false</ext:IsSigned>
-<ext:IsSubtitle>{{val.subtitle_flag}}</ext:IsSubtitle>
-<ext:IsAudioDescribed>true</ext:IsAudioDescribed>
-<ext:Soundmouse>566444</ext:Soundmouse>
-<ext:StudioCode>66</ext:StudioCode>
-<ext:ExhibitionDateTime>2019-11-07T16:12:15Z</ext:ExhibitionDateTime>
-<ext:LinkedObject object="PRCT{{val.assetid}}01" type="parentContent"/>
- <ext:LinkedObject object="{{val.multiformatid}}" type="MultiFormat"/>
-</core:Ext>
-<title:LocalizableTitle xml:lang="eng">
-<title:TitleSortName>*</title:TitleSortName>
-<title:TitleBrief>PY278635198</title:TitleBrief>
-<title:TitleMedium>{{val.title}}</title:TitleMedium>
-<title:TitleLong>PY278635198</title:TitleLong>
-<title:SummaryShort>{{val.asset_syn}}</title:SummaryShort>
-<title:ActorDisplay> "Luke Wilson, Maya Rudolph, Dax Shepard, Justin Long, Terry Crews" </title:ActorDisplay>
-<title:Actor firstName="Luke" fullName="Luke Wilson" lastName="Wilson"/>
-<title:Actor firstName="Maya" fullName="Maya Rudolph" lastName="Rudolph"/>
-<title:Actor firstName="Dax" fullName="Dax Shepard" lastName="Shepard"/>
-<title:Actor firstName="Justin" fullName="Justin Long" lastName="Long"/>
-<title:Actor firstName="Terry" fullName="Terry Crews" lastName="Crews"/>
-<title:DirectorDisplay> "Pankaj Buchade" </title:DirectorDisplay>
-<title:Director firstName="Pankaj" fullName="Pankaj Buchade" lastName="Buchade"/>
-<title:StudioDisplay> "Columbia Pictures" </title:StudioDisplay>
-</title:LocalizableTitle>
-<title:Rating ratingSystem="BSkyBca">{{val.btc_rating}}</title:Rating>
-<title:Rating ratingSystem="BSkyBsi">{{val.par_rating}}</title:Rating>
-<title:Rating ratingSystem="BSkyBtc">U</title:Rating>
-<title:Advisory>private:LANG</title:Advisory>
-<title:Advisory>private:SEX</title:Advisory>
-<title:DisplayRunTime>{{val.runtime}}</title:DisplayRunTime>
-<title:Year>{{val.production_year}}</title:Year>
-<title:Genre>6:1</title:Genre>
-<title:ShowType>private:H</title:ShowType>
-</Title>
-<Movie creationDateTime="2019-11-27T16:12:59Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2019-11-17T16:12:59Z" uriId="{{val.providerid}}/MAIN{{val.assetid}}01">
-<core:Ext>
-<ext:MovieExtensions analogueOff="true" mediaId="M1035909" waterMarkingRequired="false"/>
-</core:Ext>
-<content:SourceUrl>{{val.movie_path}}{{val.movie_url}}</content:SourceUrl>
-<content:ContentFileSize>100</content:ContentFileSize>
-<content:ContentCheckSum>{{val.movie_checksum}}</content:ContentCheckSum>
-<content:AudioType>{{val.audio_type}}</content:AudioType>
-<content:ScreenFormat>Widescreen</content:ScreenFormat>
-<content:Resolution>1080i</content:Resolution>
-<content:FrameRate>25</content:FrameRate>
-<content:Duration>{{val.duration}}</content:Duration>
-<content:IsHDContent>true</content:IsHDContent>
-<content:Language>eng</content:Language>
-<content:CopyControlInfo>
-<content:IsCopyProtectionVerbose>true</content:IsCopyProtectionVerbose>
-<content:AnalogProtectionSystem>0</content:AnalogProtectionSystem>
-<content:EncryptionModeIndicator>0</content:EncryptionModeIndicator>
-<content:ConstrainedImageTrigger>0</content:ConstrainedImageTrigger>
-<content:CGMS_A>3</content:CGMS_A>
-</content:CopyControlInfo>
-</Movie>
-{% for media in media_items -%}
-<Preview creationDateTime="2019-11-27T16:12:59Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2019-11-17T16:12:59Z" uriId="{{val.providerid}}/TRVT{{val.assetid}}01">
-<core:Ext>
-<ext:PreviewExtensions mediaId="03175259">
-<ext:closedCaption>false</ext:closedCaption>
-<ext:promoTitle>Trailer</ext:promoTitle>
-</ext:PreviewExtensions>
-</core:Ext>
-<content:SourceUrl>{{val.movie_path}}{{media.trailer_url}}</content:SourceUrl>
-    <content:ContentFileSize>100</content:ContentFileSize>
-    <content:ContentCheckSum>{{media.trailer_checksum}}</content:ContentCheckSum>
-<content:AudioType>Dolby 5.1</content:AudioType>
-<content:Duration>PT00H02M00S</content:Duration>
-<content:IsHDContent>false</content:IsHDContent>
-<content:Language>eng</content:Language>
-<content:Rating ratingSystem="BSkyBsi">0</content:Rating>
-</Preview>
-<Thumbnail creationDateTime="2019-11-27T16:12:59Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2019-11-17T16:12:59Z" uriId="{{val.providerid}}/THEP{{val.assetid}}01">
+  <Title creationDateTime="2014-11-24T10:34:34Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/TITL{{val.assetid}}01">
+    <core:AlternateId identifierSystem="ConversationID">281309018</core:AlternateId>
+    <core:Ext>
+          <ext:LocalizableTitleExt xml:lang="eng">
+        <ext:MarketingMessage>{{val.title}} Marketing Message</ext:MarketingMessage>
+      </ext:LocalizableTitleExt>
+      <ext:IsSigned>false</ext:IsSigned>
+      <ext:IsSubtitle>true</ext:IsSubtitle>
+      <ext:IsAudioDescribed>true</ext:IsAudioDescribed>
+      <ext:Soundmouse>566444</ext:Soundmouse>
+      <ext:StudioCode>66</ext:StudioCode>
+      <ext:LinkedObject object="PRCT{{val.assetid}}01" type="parentContent"/>
+      <ext:LinkedObject object="MULT{{val.assetid}}01" type="MultiFormat"/>
+      <ext:TitleExtensions Language="eng">
+        <ext:ProgramKey>PV1520064</ext:ProgramKey>
+        <ext:LinkedProgramKey>PV1520058</ext:LinkedProgramKey>
+        <ext:DealSub>M/N</ext:DealSub>
+      </ext:TitleExtensions>
+    </core:Ext>
+    <title:LocalizableTitle xml:lang="eng">
+      <title:TitleSortName>*</title:TitleSortName>
+      <title:TitleBrief>DUMMY</title:TitleBrief>
+      <title:TitleMedium>{{val.title}}</title:TitleMedium>
+      <title:TitleLong>DUMMY</title:TitleLong>
+      <title:SummaryShort>{{val.asset_syn}}</title:SummaryShort>
+      <title:ActorDisplay>Luke Wilson, Maya Rudolph, Dax Shepard, Justin Long, Terry Crews</title:ActorDisplay>
+      <title:Actor firstName="Luke" fullName="Luke Wilson" lastName="Wilson" sortableName="*"/>
+      <title:Actor firstName="Maya" fullName="Maya Rudolph" lastName="Rudolph" sortableName="*"/>
+      <title:Actor firstName="Dax" fullName="Dax Shepard" lastName="Shepard" sortableName="*"/>
+      <title:Actor firstName="Justin" fullName="Justin Long" lastName="Long" sortableName="*"/>
+      <title:Actor firstName="Terry" fullName="Terry Crews" lastName="Crews" sortableName="*"/>
+      <title:DirectorDisplay>Pankaj Buchade</title:DirectorDisplay>
+      <title:Director firstName="Pankaj" fullName="Pankaj Buchade" lastName="Buchade" sortableName="*"/>
+      <title:StudioDisplay>Buena Vista</title:StudioDisplay>
+    </title:LocalizableTitle>
+    <title:Rating ratingSystem="BSkyBca">{{val.btc_rating}}</title:Rating>
+    <title:Rating ratingSystem="BSkyBsi">{{val.par_rating}}</title:Rating>
+    <title:Rating ratingSystem="BSkyBtc">SU</title:Rating>
+    <title:Advisory>private:LANG</title:Advisory>
+    <title:Advisory>private:SEX</title:Advisory>
+        <title:DisplayRunTime>{{val.runtime}}</title:DisplayRunTime>
+    <title:Year>{{val.production_year}}</title:Year>
+    <title:Genre>6:1</title:Genre>
+    <title:ShowType>private:H</title:ShowType>
+  </Title>
+  <Movie creationDateTime="2014-11-24T10:34:34Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/MAIN{{val.assetid}}01">
+    <core:Ext>
+      <ext:MovieExtensions analogueOff="true" mediaId="M1035909" waterMarkingRequired="false"/>
+    </core:Ext>
+        <content:SourceUrl>{{val.movie_path}}{{val.movie_url}}</content:SourceUrl>
+        <content:ContentFileSize>100</content:ContentFileSize>
+        <content:ContentCheckSum>{{val.movie_checksum}}</content:ContentCheckSum>
+    <content:AudioType>{{val.audio_type}}</content:AudioType>
+    <content:ScreenFormat>Widescreen</content:ScreenFormat>
+    <content:Resolution>1080i</content:Resolution>
+    <content:FrameRate>25</content:FrameRate>
+    <content:Duration>{{val.duration}}</content:Duration>
+    <content:IsHDContent>true</content:IsHDContent>
+    <content:Language>eng</content:Language>
+    <content:CopyControlInfo>
+      <content:IsCopyProtectionVerbose>true</content:IsCopyProtectionVerbose>
+      <content:AnalogProtectionSystem>0</content:AnalogProtectionSystem>
+      <content:EncryptionModeIndicator>0</content:EncryptionModeIndicator>
+      <content:ConstrainedImageTrigger>0</content:ConstrainedImageTrigger>
+      <content:CGMS_A>3</content:CGMS_A>
+    </content:CopyControlInfo>
+  </Movie>
+  {% for media in media_items -%}
+  <Preview creationDateTime="2014-11-24T10:34:34Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/TRVT{{val.assetid}}01">
+                <core:Ext>
+                        <ext:PreviewExtensions mediaId="03175259">
+                                <ext:closedCaption>false</ext:closedCaption>
+                                <ext:promoTitle>Trailer</ext:promoTitle>
+                        </ext:PreviewExtensions>
+                </core:Ext>
+                <content:SourceUrl>{{val.movie_path}}{{media.trailer_url}}</content:SourceUrl>
+                <content:ContentFileSize>100</content:ContentFileSize>
+                <content:ContentCheckSum>{{media.trailer_checksum}}</content:ContentCheckSum>
+                <content:AudioType>Dolby 5.1</content:AudioType>
+                <content:Duration>PT00H02M00S</content:Duration>
+                <content:IsHDContent>false</content:IsHDContent>
+                <content:Language>eng</content:Language>
+                <content:Rating ratingSystem="BSkyBsi">0</content:Rating>
+  </Preview>
+  <Thumbnail creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/THEP{{val.assetid}}01">
     <content:SourceUrl>{{val.image_path}}{{media.image1}}</content:SourceUrl>
     <content:ContentFileSize>100</content:ContentFileSize>
     <content:ContentCheckSum>{{media.image1_checksum}}</content:ContentCheckSum>
-</Thumbnail>
-<Ext>
-<ext:PurchaseOption creationDateTime="2019-11-27T16:12:59Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2019-11-17T16:12:59Z" uriId="{{val.providerid}}/PROP{{val.assetid}}01">
-<PO:mediaType>2</PO:mediaType>
-<PO:mediaTypeFilter>1</PO:mediaTypeFilter>
-<PO:optionMetadata>{"physicalReleaseDate":"20170826"}</PO:optionMetadata>
-<PO:defaultPriceBundleRef uriId="{{val.providerid}}/PRBU{{val.assetid}}01"/>
-<PO:purchaseOptionAvailability>
-<PO:startDateTime>{{val.offerStartDateTime}}</PO:startDateTime>
-<PO:endDateTime>{{val.offerEndDateTime}}</PO:endDateTime>
-</PO:purchaseOptionAvailability>
-</ext:PurchaseOption>
-<ext:PriceBundle creationDateTime="2019-11-27T16:12:59Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2019-11-17T16:12:59Z" uriId="{{val.providerid}}/PRBU{{val.assetid}}01">
-<PO:priceCategory currency="GBP" marketingSegment="Standard" price="2.23" territory="GBR"/>
-<PO:priceCategory currency="GBP" marketingSegment="VIP" price="12.34" territory="GBR"/>
-<PO:priceCategory currency="EUR" marketingSegment="Standard" price="6.45" territory="IRL"/>
-<PO:priceCategory currency="EUR" marketingSegment="VIP" price="9.56" territory="IRL"/>
-</ext:PriceBundle>
-<ext:PressPackImage creationDateTime="2019-11-27T16:12:59Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2019-11-17T16:12:59Z" uriId="{{val.providerid}}/PPAT{{val.assetid}}01">
-<content:SourceUrl>{{val.image_path}}{{media.image2}}</content:SourceUrl>
-    <content:ContentFileSize>100</content:ContentFileSize>
-    <content:ContentCheckSum>{{media.image2_checksum}}</content:ContentCheckSum>
-<content:X_Resolution>183</content:X_Resolution>
-<content:Y_Resolution>243</content:Y_Resolution>
-<ext:Usage>urn:nnds:Metro:metadata:MediaTypeCS:2007:2.6</ext:Usage>
-</ext:PressPackImage>
-<ext:PressPackImage creationDateTime="2019-11-27T16:12:59Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2019-11-17T16:12:59Z" uriId="{{val.providerid}}/PRSW{{val.assetid}}01">
-<content:SourceUrl>{{val.image_path}}{{media.image3}}</content:SourceUrl>
-    <content:ContentFileSize>100</content:ContentFileSize>
-    <content:ContentCheckSum>{{media.image3_checksum}}</content:ContentCheckSum>
-<content:X_Resolution>262</content:X_Resolution>
-<content:Y_Resolution>349</content:Y_Resolution>
-<ext:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:stb:3-4</ext:Usage>
-</ext:PressPackImage>
-<ext:PressPackImage creationDateTime="2019-11-27T16:12:59Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2019-11-17T16:12:59Z" uriId="{{val.providerid}}/PRSB{{val.assetid}}01">
-<content:SourceUrl>{{val.image_path}}{{media.image4}}</content:SourceUrl>
-    <content:ContentFileSize>100</content:ContentFileSize>
-    <content:ContentCheckSum>{{media.image4_checksum}}</content:ContentCheckSum>
-<content:X_Resolution>456</content:X_Resolution>
-<content:Y_Resolution>257</content:Y_Resolution>
-<ext:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:stb:16-9</ext:Usage>
-</ext:PressPackImage>
-</Ext>
-{% endfor -%}
-<Offer creationDateTime="2019-11-27T16:12:59Z" endDateTime="{{val.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="{{val.offerStartDateTime}}" uriId="{{val.providerid}}/OAVT{{val.assetid}}01">
-<core:Ext>
-<ext:OfferAvailability endDateTime="{{val.offerEndDateTime}}" offerType="IPPR" startDateTime="2019-11-27T16:12:59Z"/>
-<ext:PurchaseOptionRef uriId="{{val.providerid}}/PROP{{val.assetid}}01"/>
-</core:Ext>
-<offer:ProviderContentTier>{{val.providerid}}</offer:ProviderContentTier>
-<offer:BillingId>DUMMY</offer:BillingId>
-<offer:TermsRef uriId="{{val.providerid}}/TAVT{{val.assetid}}01"/>
-<offer:ContentGroupRef uriId="{{val.providerid}}/CGVT{{val.assetid}}01"/>
-</Offer>
-<Terms creationDateTime="2019-11-27T16:12:59Z" endDateTime="{{val.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="{{val.offerStartDateTime}}" uriId="{{val.providerid}}/TAVT{{val.assetid}}01">
-<core:Ext>
-<ext:TermType>EST</ext:TermType>
-<ext:platform>ES</ext:platform>
-<ext:TermExtensions>
-<ext:OrderType>Regular</ext:OrderType>
-</ext:TermExtensions>
-</core:Ext>
-<terms:SuggestedPrice>0</terms:SuggestedPrice>
-</Terms>
+  </Thumbnail>
+  <ContentGroup creationDateTime="2014-11-24T10:34:34Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/CGVT{{val.assetid}}01">
+    <core:Ext>
+      <ext:ContentGroupType>AV</ext:ContentGroupType>
+    <ext:PressPackImageRef uriId="{{val.providerid}}/PPAT{{val.assetid}}01"/>
+      <ext:PressPackImageRef uriId="{{val.providerid}}/PRSW{{val.assetid}}01"/>
+      <ext:PressPackImageRef uriId="{{val.providerid}}/PRSB{{val.assetid}}01"/>
+    </core:Ext>
+    <offer:TitleRef uriId="{{val.providerid}}/TITL{{val.assetid}}01"/>
+    <offer:MovieRef uriId="{{val.providerid}}/MAIN{{val.assetid}}01"/>
+    <offer:PreviewRef uriId="{{val.providerid}}/TRVT{{val.assetid}}01"/>
+        <offer:ThumbnailRef uriId="{{val.providerid}}/THEP{{val.assetid}}01"/>
+  </ContentGroup>
+ <Ext>
+    <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PPAT{{val.assetid}}01">
+      <content:SourceUrl>{{val.image_path}}{{media.image2}}</content:SourceUrl>
+      <content:ContentFileSize>100</content:ContentFileSize>
+      <content:ContentCheckSum>{{media.image2_checksum}}</content:ContentCheckSum>
+      <content:X_Resolution>183</content:X_Resolution>
+      <content:Y_Resolution>243</content:Y_Resolution>
+      <ext:Usage>urn:nnds:Metro:metadata:MediaTypeCS:2007:2.6</ext:Usage>
+    </ext:PressPackImage>
+    <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PRSW{{val.assetid}}01">
+      <content:SourceUrl>{{val.image_path}}{{media.image3}}</content:SourceUrl>
+      <content:ContentFileSize>100</content:ContentFileSize>
+      <content:ContentCheckSum>{{media.image3_checksum}}</content:ContentCheckSum>
+      <content:X_Resolution>262</content:X_Resolution>
+      <content:Y_Resolution>349</content:Y_Resolution>
+      <ext:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:stb:3-4</ext:Usage>
+    </ext:PressPackImage>
+    <ext:PressPackImage creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PRSB{{val.assetid}}01">
+      <content:SourceUrl>{{val.image_path}}{{media.image4}}</content:SourceUrl>
+      <content:ContentFileSize>100</content:ContentFileSize>
+      <content:ContentCheckSum>{{media.image4_checksum}}</content:ContentCheckSum>
+      <content:X_Resolution>456</content:X_Resolution>
+      <content:Y_Resolution>257</content:Y_Resolution>
+      <ext:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:stb:16-9</ext:Usage>
+    </ext:PressPackImage>
+     {% for option in purchase_options -%}
+    <ext:PurchaseOption creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PROP{{option.option_id}}">
+      <PO:mediaType>{{option.media_type}}</PO:mediaType>
+      <PO:mediaTypeFilter>{{option.media_filter}}</PO:mediaTypeFilter>
+      <PO:optionMetadata><![CDATA[{"physicalReleaseDate":"20170826"}]]></PO:optionMetadata>
+      <PO:defaultPriceBundleRef uriId="{{val.providerid}}/PRBU{{option.option_id}}"/>
+      <PO:purchaseOptionAvailability>
+        <PO:startDateTime>2014-11-24T00:00:00Z</PO:startDateTime>
+        <PO:endDateTime>{{option.po_end}}</PO:endDateTime>
+      </PO:purchaseOptionAvailability>
+    </ext:PurchaseOption>
+    <ext:PriceBundle creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PRBU{{option.option_id}}">
+      <PO:priceCategory currency="GBP" marketingSegment="Standard" price="{{option.uk_std_price}}" territory="GBR"/>
+      <PO:priceCategory currency="GBP" marketingSegment="VIP" price="{{option.uk_vip_price}}" territory="GBR"/>
+      <PO:priceCategory currency="GBP" marketingSegment="Standard" price="{{option.il_std_price}}" territory="IRL"/>
+      <PO:priceCategory currency="GBP" marketingSegment="VIP" price="{{option.il_vip_price}}" territory="IRL"/>
+    </ext:PriceBundle>
+    {% endfor -%}
+  </Ext>
+    {% endfor -%}
+    {% for offer in est_offers -%}
+  <Offer creationDateTime="2016-10-27T13:10:01Z" endDateTime="{{offer.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2018-01-01T00:00:01Z" uriId="{{val.providerid}}/OAVT{{offer.offer_id}}">
+    <core:Ext>
+      <ext:OfferAvailability endDateTime="{{offer.offerEndDateTime}}" offerType="{{offer.offer_type}}" startDateTime="{{offer.offerStartDateTime}}"/>
+          <ext:optionMetadata><![CDATA[{"physicalReleaseDate":"20170826"}]]></ext:optionMetadata>
+        {% for option in purchase_options -%}
+      <ext:PurchaseOptionRef uriId="{{val.providerid}}/PROP{{option.option_id}}"/>
+        {% endfor -%}
+    </core:Ext>
+    <offer:ProviderContentTier>{{val.providerid}}</offer:ProviderContentTier>
+    <offer:BillingId>DUMMY</offer:BillingId>
+    <offer:TermsRef uriId="{{val.providerid}}/TAVT{{offer.offer_id}}"/>
+    <offer:ContentGroupRef uriId="{{val.providerid}}/CGVT{{val.assetid}}01"/>
+  </Offer>
+  <Terms creationDateTime="2016-10-27T13:10:01Z" endDateTime="{{offer.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2018-01-01T00:00:01Z" uriId="{{val.providerid}}/TAVT{{offer.offer_id}}">
+    <core:Ext>
+      <ext:TermType>EST</ext:TermType>
+      <ext:platform>ES</ext:platform>
+      <ext:TermExtensions>
+        <ext:OrderType>{{offer.order_type}}</ext:OrderType>
+      </ext:TermExtensions>
+    </core:Ext>
+    <terms:SuggestedPrice>0</terms:SuggestedPrice>
+  </Terms>
+ {% endfor -%}
  {% endfor -%}
 </ADI3>

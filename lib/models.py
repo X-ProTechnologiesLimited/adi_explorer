@@ -41,10 +41,20 @@ class ADI_offer(db.Model):
     offerEndTime = db.Column(db.String(100))
     epgTime = db.Column(db.String(100))
     service_key = db.Column(db.String(10))
+    est_offerId = db.Column(db.String(100))
     est_order_type = db.Column(db.String(100))
-    est_pur_option = db.Column(db.String(100))
-    poption_start_date = db.Column(db.String(100))
-    poption_end_date = db.Column(db.String(100))
+
+
+class EST_PO(db.Model):
+    id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
+    assetId = db.Column(db.String(100))
+    poption_Id = db.Column(db.String(100), unique=True)
+    poption_media_type = db.Column(db.String(10))
+    poption_media_filter = db.Column(db.String(10))
+    uk_std_price = db.Column(db.String(10))
+    uk_vip_price = db.Column(db.String(10))
+    il_std_price = db.Column(db.String(10))
+    il_vip_price = db.Column(db.String(10))
 
 
 class ADI_media(db.Model):
