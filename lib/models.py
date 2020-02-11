@@ -101,6 +101,7 @@ class MEDIA_LIBRARY(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
     filename = db.Column(db.String(100), unique=True)
     checksum = db.Column(db.String(100))
+    image_group = db.Column(db.String(100))
 
 class MEDIA_DEFAULT(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy

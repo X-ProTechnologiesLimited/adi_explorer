@@ -10,7 +10,8 @@ different type of assets
 4. Go to the folder adi_explorer. `cd adi_explorer` from git bash command line
 5. Run the command `pip3 install -r requirements.txt`
 6. Go to the utils directory. `cd utils`
-7. Run the script `./start_app.sh`
+7. Run the script `./start_app.sh --new-db` to create a new database instance OR `./start_app.sh --old-db`
+to use an existing database from pre-run.
 
 ## Running in Container
 The project is also enabled to run in Docker Container. It contains the Dockerfile
@@ -38,24 +39,21 @@ of the Media files (video files) based on Test Environment Tank file locations
 Download the optional Sqlite DB Browser `https://sqlitebrowser.org/dl/` to browse the database file for the tool:
 `<adi_explorer_project_root>/lib/db.sqlite`
 
-Tunnelling for the tool for Ingest Purpose
-ssh -v -N -L 14231:<vam_host>:14231 kba08@192.168.42.6
-putty open tunnel with source port 14231
-
 ## Current Scope for the tool
-1. Create Single Title ADIs
+1. Create Single Title ADIs and VRP Packages
 2. Create EST Episodes, Shows and Seasons
 3. Update Metadata for Single Title ADIs and EST Assets
 4. Update Video for Single Title ADIs and Episodes
 5. View and Filter list of created ADIs and EST Shows
 6. Download created ADIs for Title, Episode and Shows
 7. Ingest ADI into test environments directly from tool
+8. Upload new media files and calculate checksum
+9. Upload Media and Tar files into Tank
 
 ## Enhancements Planned
-1. DPL
-2. Update additional metadata
-3. Additional Offer Types for EST(PreOrder and Coming Soon)
-4. Additional Purchase Options
+1. Update additional metadata
+2. Update Images
+3. Cloning Assets
 
 ## Tunnelling for the tool for Ingest Purpose
 Since the VAM is not reachable from Local WorkStations, we need to open a socks tunnel to VAM nodes

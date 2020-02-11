@@ -7,8 +7,8 @@
     <h2 class="title">Create EST Single Title</h2>
     <div class="box">
         <form method="POST" action="/create_est_single_title">
-            <p>** Mandatory Fields. Optional fields populates default values as per 'config.properties' file. </p>
-            <p>Order Types: PO=PreOrder; CS=ComingSoon; REG=Regular. </p>
+            <d>** Mandatory Fields. Optional fields populates default values as per 'config.properties' file. </d>
+            <br>
             <h4>Licensing Section</h4>
             <div class="field">
                 <div class="control">
@@ -20,7 +20,7 @@
                       <option value="PO+CS+REG">
                     </option>
                     </datalist>
-                    <d>**</d>
+                    <d>**  Order Types: PO=PreOrder; CS=ComingSoon; REG=Regular. </d>
                 </div>
             </div>
             <div class="field">
@@ -115,6 +115,27 @@
                     <d>Format X:XX:XX</d>
                 </div>
             </div>
+            <h4>Media Section</h4>
+                <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="video_option" name="video_file" placeholder="Video File" autocomplete="off" autofocus="">
+                    <datalist id="video_option">
+                      {% for file in library %}
+                      <option value="{{file.filename}}"</option>
+                    {% endfor %}
+                    </datalist>
+                </div>
+                </div>
+                <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="image_group" name="image_group" placeholder="Image Group" autocomplete="off" autofocus="">
+                    <datalist id="image_group">
+                      {% for item in image_group_name %}
+                      <option value="{{item.image_group}}"</option>
+                    {% endfor %}
+                    </datalist>
+                </div>
+                </div>
             <h4>Offer Section</h4>
             <div class="field">
                 <div class="control">

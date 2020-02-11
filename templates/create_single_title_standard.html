@@ -146,6 +146,27 @@
                     <d>** Only required if Asset Type is Episode</d>
                 </div>
             </div>
+            <h4>Media Section</h4>
+                <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="video_option" name="video_file" placeholder="Video File" autocomplete="off" autofocus="">
+                    <datalist id="video_option">
+                      {% for file in library %}
+                      <option value="{{file.filename}}"</option>
+                    {% endfor %}
+                    </datalist>
+                </div>
+                </div>
+                <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="image_group" name="image_group" placeholder="Image Group" autocomplete="off" autofocus="">
+                    <datalist id="image_group">
+                      {% for item in image_group_name %}
+                      <option value="{{item.image_group}}"</option>
+                    {% endfor %}
+                    </datalist>
+                </div>
+                </div>
             <h4>Offer Section</h4>
             <div class="field">
                 <div class="control">

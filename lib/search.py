@@ -123,7 +123,8 @@ def search_all_files_checksum():
     for file in MEDIA_LIBRARY.query.all():
         filedetails['files'].append({
             'filename': file.filename,
-            'checksum': file.checksum
+            'checksum': file.checksum,
+            'image_group': file.image_group,
         })
 
     filedetails['total'] = MEDIA_LIBRARY.query.count()

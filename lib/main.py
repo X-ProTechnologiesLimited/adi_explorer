@@ -5,6 +5,7 @@ from .nocache import nocache
 from .models import ADI_main, MEDIA_LIBRARY
 from bson.json_util import dumps
 from .metadata_params import metadata_default_params
+from . import db
 import os
 import hashlib
 import os.path
@@ -28,7 +29,11 @@ def load_defaults():
 
 @main.route('/create_single_title_standard')
 def create_single_title_standard():
-    return render_template('create_single_title_standard.html')
+    video_filename = 'ts'
+    search = "%{}%".format(video_filename)
+    library = MEDIA_LIBRARY.query.filter(MEDIA_LIBRARY.filename.like(search))
+    image_group_name = db.session.query(MEDIA_LIBRARY.image_group).distinct().filter(MEDIA_LIBRARY.image_group != 'None')
+    return render_template('create_single_title_standard.html', library=library, image_group_name=image_group_name)
 
 @main.route('/create_single_title_standard', methods=['POST'])
 def create_single_title_standard_post():
@@ -36,7 +41,11 @@ def create_single_title_standard_post():
 
 @main.route('/create_single_title_vrp')
 def create_single_title_vrp():
-    return render_template('create_single_title_vrp.html')
+    video_filename = 'ts'
+    search = "%{}%".format(video_filename)
+    library = MEDIA_LIBRARY.query.filter(MEDIA_LIBRARY.filename.like(search))
+    image_group_name = db.session.query(MEDIA_LIBRARY.image_group).distinct().filter(MEDIA_LIBRARY.image_group != 'None')
+    return render_template('create_single_title_vrp.html', library=library, image_group_name=image_group_name)
 
 @main.route('/create_single_title_vrp', methods=['POST'])
 def create_single_title_vrp_post():
@@ -52,7 +61,11 @@ def create_est_show_post():
 
 @main.route('/create_est_single_title')
 def create_est_single_title():
-    return render_template('create_est_title.html')
+    video_filename = 'ts'
+    search = "%{}%".format(video_filename)
+    library = MEDIA_LIBRARY.query.filter(MEDIA_LIBRARY.filename.like(search))
+    image_group_name = db.session.query(MEDIA_LIBRARY.image_group).distinct().filter(MEDIA_LIBRARY.image_group != 'None')
+    return render_template('create_est_title.html', library=library, image_group_name=image_group_name)
 
 @main.route('/create_est_single_title', methods=['POST'])
 def create_est_single_title_post():
@@ -249,8 +262,9 @@ def post_files_post():
             return redirect(request.url)
         if file:
             file.save(os.path.join(UPLOAD_DIRECTORY, file.filename))
+            image_group = request.form.get('image_group')
             checksum = checksum_creator(os.path.join(UPLOAD_DIRECTORY, file.filename))
-            create_tar.add_supporting_files_to_db(file.filename, checksum)
+            create_tar.add_supporting_files_to_db(file.filename, checksum, image_group)
             return list_files()
     return render_template('upload_files.html')
 
@@ -285,7 +299,8 @@ def delete_file_post():
 
 @main.route("/delete_asset")
 def delete_asset():
-    return render_template('delete_asset.html')
+    image_group_name = db.session.query(MEDIA_LIBRARY.image_group).distinct().filter(MEDIA_LIBRARY.image_group != 'None')
+    return render_template('delete_asset.html', image_group_name=image_group_name)
 
 @main.route("/delete_asset", methods=['POST'])
 def delete_asset_post():

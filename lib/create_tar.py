@@ -40,8 +40,8 @@ def make_tarfile():
     return main.send_tar_file(output_filename)
 
 
-def add_supporting_files_to_db(filename, checksum):
-    new_filename = MEDIA_LIBRARY(filename=filename, checksum=checksum)
+def add_supporting_files_to_db(filename, checksum, group):
+    new_filename = MEDIA_LIBRARY(filename=filename, checksum=checksum, image_group=group)
     db.session.add(new_filename)
     try:
         db.session.commit()

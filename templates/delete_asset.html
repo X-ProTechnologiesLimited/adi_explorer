@@ -58,10 +58,14 @@
         <form method="POST" action="/delete_image_group">
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="text" name="image_prefix" placeholder="Image Group Prefix" autofocus="" required>
-                    <d>**</d>
+                    <input class="input is-large" list="image_group" name="image_prefix" placeholder="Image Group" autocomplete="off" autofocus="">
+                    <datalist id="image_group">
+                      {% for item in image_group_name %}
+                      <option value="{{item.image_group}}"</option>
+                    {% endfor %}
+                    </datalist>
                 </div>
-            </div>
+                </div>
             <br>
             <button class="button is-block is-info is-medium is-fullwidth">Delete</button>
         </form>

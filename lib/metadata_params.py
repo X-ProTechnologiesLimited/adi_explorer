@@ -91,18 +91,21 @@ class metadata_default_params(object):
 
     def movie_details_entry(self, provider_id, asset_type):
         url_default = MEDIA_DEFAULT.query.first()
-        if 'hdr' in provider_id and 'DPL' not in asset_type:
-            self.movie_url = url_default.hdr_movie_file
-        elif '4k' in provider_id and 'DPL' not in asset_type:
-            self.movie_url = url_default.sdr_movie_file
-        elif 'est' in provider_id and 'DPL' not in asset_type:
-            self.movie_url = url_default.est_movie_file
-        elif (('hd.' in provider_id) or ('_hd' in provider_id)) and 'DPL' not in asset_type:
-            self.movie_url = url_default.hd_movie_file
-        elif 'DPL' in asset_type:
-            self.movie_url = url_default.dpl_movie_file
+        if request.form.get('video_file') == "":
+            if 'hdr' in provider_id and 'DPL' not in asset_type:
+                self.movie_url = url_default.hdr_movie_file
+            elif '4k' in provider_id and 'DPL' not in asset_type:
+                self.movie_url = url_default.sdr_movie_file
+            elif 'est' in provider_id and 'DPL' not in asset_type:
+                self.movie_url = url_default.est_movie_file
+            elif (('hd.' in provider_id) or ('_hd' in provider_id)) and 'DPL' not in asset_type:
+                self.movie_url = url_default.hd_movie_file
+            elif 'DPL' in asset_type:
+                self.movie_url = url_default.dpl_movie_file
+            else:
+                self.movie_url = url_default.title_movie_file
         else:
-            self.movie_url = url_default.title_movie_file
+            self.movie_url = request.form.get('video_file')
 
         try:
             self.movie_checksum = self.get_checksum(self.movie_url)

@@ -1,5 +1,6 @@
 from . import movie_config
 from . import errorchecker
+from flask import request
 from .models import MEDIA_LIBRARY, MEDIA_DEFAULT
 class image_default_params(object):
 
@@ -24,13 +25,16 @@ class image_default_params(object):
     def image_entry(self, asset_type):
         image_path_default = MEDIA_DEFAULT.query.first()
         if 'DPL' in asset_type:
-            file_pref = image_path_default.dpl_image_file_prefix
-            self.image_1 = file_pref + 'THUM.jpg'
-            self.image_2 = file_pref + 'CATI.jpg'
-            self.image_3 = file_pref + 'PRAW.jpg'
-            self.image_4 = file_pref + 'PRIW.jpg'
-            self.image_5 = file_pref + 'PRSW.jpg'
-            self.image_6 = file_pref + 'PRMW.jpg'
+            if request.form.get('image_group') == "":
+                file_pref = image_path_default.dpl_image_file_prefix
+            else:
+                file_pref = request.form.get('image_group')
+            self.image_1 = file_pref + '_THUM.jpg'
+            self.image_2 = file_pref + '_CATI.jpg'
+            self.image_3 = file_pref + '_PRAW.jpg'
+            self.image_4 = file_pref + '_PRIW.jpg'
+            self.image_5 = file_pref + '_PRSW.jpg'
+            self.image_6 = file_pref + '_PRMW.jpg'
             self.image_1_checksum = self.get_checksum(self.image_1)
             self.image_2_checksum = self.get_checksum(self.image_2)
             self.image_3_checksum = self.get_checksum(self.image_3)
@@ -38,11 +42,14 @@ class image_default_params(object):
             self.image_5_checksum = self.get_checksum(self.image_5)
             self.image_6_checksum = self.get_checksum(self.image_6)
         else:
-            file_pref = image_path_default.standard_image_file_prefix
-            self.image_1 = file_pref + '182x98.jpg'
-            self.image_2 = file_pref + '182x243.jpg'
-            self.image_3 = file_pref + '262x349.jpg'
-            self.image_4 = file_pref + '456x257.jpg'
+            if request.form.get('image_group') == "":
+                file_pref = image_path_default.standard_image_file_prefix
+            else:
+                file_pref = request.form.get('image_group')
+            self.image_1 = file_pref + '_182x98.jpg'
+            self.image_2 = file_pref + '_182x243.jpg'
+            self.image_3 = file_pref + '_262x349.jpg'
+            self.image_4 = file_pref + '_456x257.jpg'
             self.image_5 = ""
             self.image_6 = ""
             self.image_1_checksum = self.get_checksum(self.image_1)
