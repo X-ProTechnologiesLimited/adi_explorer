@@ -29,6 +29,7 @@ class metadata_default_params(object):
         self.trailer_file = None
         self.trailer_checksum = None
         self.tank_path = None
+        self.genre = None
 
     def param_logic_entry(self, asset_type):
         if request.form.get('synopsis') != "":
@@ -78,6 +79,15 @@ class metadata_default_params(object):
         else:
             self.runtime = movie_config.default_asset_runtime
             self.duration = movie_config.default_asset_duration
+
+    def genre_entry(self, asset_type):
+        if request.form.get('genre') != "":
+            self.genre = request.form.get('genre')
+        elif request.form.get('genre') == "" and 'EPISODE' in asset_type:
+            self.genre = movie_config.default_episode_genre
+        else:
+            self.genre = movie_config.default_movie_genre
+
 
     def get_checksum(self, filename):
         file = MEDIA_LIBRARY.query.filter_by(filename=filename).first()

@@ -53,7 +53,11 @@ def create_single_title_vrp_post():
 
 @main.route('/create_est_show')
 def create_est_show():
-    return render_template('create_box_set.html')
+    video_filename = 'ts'
+    search = "%{}%".format(video_filename)
+    library = MEDIA_LIBRARY.query.filter(MEDIA_LIBRARY.filename.like(search))
+    image_group_name = db.session.query(MEDIA_LIBRARY.image_group).distinct().filter(MEDIA_LIBRARY.image_group != 'None')
+    return render_template('create_box_set.html', library=library, image_group_name=image_group_name)
 
 @main.route('/create_est_show', methods=['POST'])
 def create_est_show_post():

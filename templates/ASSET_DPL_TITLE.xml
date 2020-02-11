@@ -45,7 +45,7 @@
       <title:Rating ratingSystem="BSkyBca">{{val.btc_rating}}</title:Rating>
       <title:Rating ratingSystem="BSkyBsi">{{val.par_rating}}</title:Rating>
       <title:DisplayRunTime>{{val.runtime}}</title:DisplayRunTime>
-      <title:Genre>3:4</title:Genre>
+      <title:Genre>{{val.genre}}</title:Genre>
       <title:ShowType>Other</title:ShowType>
    </adi:Title>
    <adi:Movie uriId="{{val.providerid}}/MAIN{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"

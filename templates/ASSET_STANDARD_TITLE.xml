@@ -49,7 +49,7 @@
     <title:Advisory>private:SEX</title:Advisory>
         <title:DisplayRunTime>{{val.runtime}}</title:DisplayRunTime>
     <title:Year>{{val.production_year}}</title:Year>
-    <title:Genre>6:1</title:Genre>
+    <title:Genre>{{val.genre}}</title:Genre>
     <title:ShowType>private:H</title:ShowType>
   </Title>
   <Movie creationDateTime="2014-11-24T10:34:34Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/MAIN{{val.assetid}}01">

@@ -36,6 +36,8 @@ def update_single_title():
             package = ADI_metadata.query.filter_by(assetId=assetId).update(dict(subtitle_lang=field_value))
         elif update_field == 'duration':
             package = ADI_metadata.query.filter_by(assetId=assetId).update(dict(duration=field_value))
+        elif update_field == 'genre':
+            package = ADI_metadata.query.filter_by(assetId=assetId).update(dict(genre=field_value))
         else:
             return errorchecker.undefined_update_field(update_field)
 

@@ -30,6 +30,7 @@ def create_single_title():
     service_key = request.form.get('service_key')
     params.multiformat_entry(request.form.get('multiformat_id'),asset_timestamp)
     params.param_logic_entry(asset_type)
+    params.genre_entry(asset_type)
     params.svod_episode_entry(request.form.get('svod_season_number'), request.form.get('svod_episode_number'),
                               request.form.get('svod_total_episodes'), asset_type, title) # Only used for Episode Types
     params.dpl_entry(request.form.get('dpl_asset_parts'), asset_type, asset_timestamp)
@@ -51,7 +52,7 @@ def create_single_title():
         new_package_meta = ADI_metadata(assetId=asset_timestamp + '01', title=title, par_rating=params.par_rating,
                                         subtitle_flag=params.subtitle_flag, audio_type=params.audio_type,
                                         frame_rate=params.frame_rate, btc_rating=params.ca_btc, video_type=params.video_type,
-                                        synopsis=params.synopsis, production_year=params.production_year,
+                                        synopsis=params.synopsis, production_year=params.production_year, genre=params.genre,
                                         duration=params.runtime, title_filter='true', svod_episode_name=params.svod_episode_name,
                                         svod_season_number=params.svod_season_number,
                                         svod_episode_number=params.svod_episode_number,
@@ -98,7 +99,7 @@ def create_est_show_adi():
     num_of_seasons = int(est_params.no_of_seasons)
     no_of_episodes = int(est_params.no_of_episodes)
     params.param_logic_entry('est_show')
-    params.movie_details_entry(show_provider_id, 'EST')
+    params.movie_details_entry(show_provider_id, 'est')
     params.offer_type_entry('est_show')
     image_set.image_entry('est_show')
     path_default = MEDIA_DEFAULT.query.first()

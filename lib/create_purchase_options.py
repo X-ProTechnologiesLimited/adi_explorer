@@ -15,7 +15,7 @@ il_vip_price_blu = str(float(movie_config.il_vip_price) + 15)
 
 def create_po(order_type, assetId):
     if order_type == 'Digital Only':
-        new_purchase_option_dig = EST_PO(assetId=assetId, poptionId=assetId + '01', poption_media_type='1',
+        new_purchase_option_dig = EST_PO(assetId=assetId, poption_Id=assetId + '01', poption_media_type='1',
                                          poption_media_filter='4', uk_std_price=movie_config.uk_std_price,
                                          uk_vip_price=movie_config.uk_vip_price, il_std_price=movie_config.il_std_price,
                                          il_vip_price=movie_config.il_vip_price)

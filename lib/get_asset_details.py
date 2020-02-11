@@ -54,6 +54,7 @@ def download_title(assetId):
             'offer_type': package_offer.offer_type,
             'asset_syn': package_meta.synopsis,
             'production_year': package_meta.production_year,
+            'genre': package_meta.genre,
             'movie_path': adicreate.movie_path,
             'image_path': adicreate.image_path,
         })
@@ -170,10 +171,10 @@ def download_est_episode(assetId):
     show_metadata = ADI_metadata.query.filter_by(assetId=show_group.parent_group_id).first()
     if package_group.show_type == 'Movie BS':
         deal_sub = 'M/B'
-        genre = '6:4'
+        genre = movie_config.default_movie_genre
     else:
         deal_sub = 'E/B'
-        genre = '3:4'
+        genre = movie_config.default_episode_genre
     values.append({
         'episode_title': package_meta.title,
         'show_title': show_metadata.title,
