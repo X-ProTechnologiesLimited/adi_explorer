@@ -67,6 +67,13 @@
             </ul>
           </li>
           <li><a href="{{ url_for('main.consult_omdb') }}">OMDB</a></li>
+          <li><a href="javascript:void(0)" >Help<span class="arrow-down"></span></a>
+            <ul class="dropdown">
+              <li><a href="#">User Guide</a></li>
+              <li><a href="{{ url_for('main.genre_guide') }}">Genre Guide</a></li>
+              <li><a href="{{ url_for('main.rating_guide') }}">CA/SI Rating Guide</a></li>
+            </ul>
+          </li>
         </ul>
       </div>
       <div class="nav-bg-fostrap">

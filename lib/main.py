@@ -371,6 +371,14 @@ def update_default_config():
 def update_default_config_post():
     return update_package.update_default_fields()
 
+@main.route("/genre_guide")
+def genre_guide():
+    return render_template('sky_genre.html')
+
+@main.route("/rating_guide")
+def rating_guide():
+    return render_template('sky_rating.html')
+
 
 @main.route('/quit')
 def quit():
