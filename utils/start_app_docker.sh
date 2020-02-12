@@ -34,7 +34,7 @@ if [[ "$1" == '--new-db' ]];then
     printf "Loading Default Media Data...\n"
     sleep 5
     curl -s "http://$FLASK_HOST_NAME:$FLASK_RUN_PORT/load_defaults"
-
+     
 elif [[ "$1" == '--old-db' ]];then
     source $PROJECT_DIR/utils/app_run.config && export $(cut -d= -f1 $PROJECT_DIR/utils/app_run.config)
     printf "Using the existing database...\n"
