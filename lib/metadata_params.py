@@ -49,6 +49,8 @@ class metadata_default_params(object):
 
         if request.form.get('ca_btc') != "":
             self.ca_btc = request.form.get('ca_btc')
+        elif request.form.get('ca_btc') == "" and 'PREMIUM VOD' in asset_type:
+            self.ca_btc = '31'
         else:
             self.ca_btc = movie_config.default_ca_btc
 

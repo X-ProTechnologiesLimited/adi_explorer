@@ -28,16 +28,16 @@ if [[ "$1" == '--new-db' ]];then
     source $PROJECT_DIR/utils/app_run.config && export $(cut -d= -f1 $PROJECT_DIR/utils/app_run.config)
     rm -rf $PROJECT_DIR/lib/db.sqlite
     python $PROJECT_DIR/initialise_db.py
-    echo "Created new database for application..."
+    printf "Created new database for application...\n"
     echo "Created new database for application..." >> $PROJECT_DIR/logs/$filename
     python -m flask run --host=0.0.0.0 >> $PROJECT_DIR/logs/$filename 2>&1 &
-    echo "Loading Default Media Data..."
+    printf "Loading Default Media Data...\n"
     sleep 5
-    curl "http://$FLASK_HOST_NAME:$FLASK_RUN_PORT/load_defaults"
+    curl -s "http://$FLASK_HOST_NAME:$FLASK_RUN_PORT/load_defaults"
      
 elif [[ "$1" == '--old-db' ]];then
     source $PROJECT_DIR/utils/app_run.config && export $(cut -d= -f1 $PROJECT_DIR/utils/app_run.config)
-    echo "Using the existing database..."
+    printf "Using the existing database...\n"
     echo "Using the existing database..." >> $PROJECT_DIR/logs/$filename
     python -m flask run --host=0.0.0.0 >> $PROJECT_DIR/logs/$filename 2>&1 &
 
@@ -49,18 +49,18 @@ else
     exit
 fi
 
-echo "Wating for the application to initialise...."
+printf "Wating for the application to initialise....\n"
 sleep 5
-echo "Application Started Successfully"
-echo "Container for ADI Manager Started successfully. ADI Manager API is ready to serve http requests now...."
-echo "To Shutdown Container, press Ctrl+C AND run /utils/shutdown.sh (For Standalone and Detached Containers)"
-trap printout SIGINT
-    printout() {
-       echo ""
-       echo "Shutting Down Container..User Interrupted Container"
-       sleep 5
-       exit
-    }
-    while true ; do continue ; done
-# For Development and Debug Purposes, to keep the container running, uncomment the following line
-#tail -200f $PROJECT_DIR/logs/$filename
+printf "Application Started Successfully\n"
+printf "Container for ADI Manager Started successfully. ADI Manager API is ready to serve http requests now....\n"
+printf "To Shutdown Container, press Ctrl+C AND run /utils/shutdown.sh (For Standalone and Detached Containers)\n"
+#trap printout SIGINT
+#    printout() {
+#       echo ""
+#       echo "Shutting Down Container..User Interrupted Container"
+#       sleep 5
+#       exit
+#    }
+#    while true ; do continue ; done
+## For Development and Debug Purposes, to keep the container running, uncomment the following line
+##tail -200f $PROJECT_DIR/logs/$filename
