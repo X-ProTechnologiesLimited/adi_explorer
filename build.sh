@@ -5,9 +5,9 @@ cp utils/Dockerfile.local Dockerfile
 
 
 if [[ $1 == "--new-db" ]];then
-  echo -e '\nENTRYPOINT ["utils/start_app.sh", "--new-db"]' >> Dockerfile
+  echo -e '\nENTRYPOINT ["utils/start_app_docker.sh", "--new-db"]' >> Dockerfile
 elif [[ "$1" == '' ]];then
-  echo -e '\nENTRYPOINT ["utils/start_app.sh", "--old-db"]' >> Dockerfile
+  echo -e '\nENTRYPOINT ["utils/start_app_docker.sh", "--old-db"]' >> Dockerfile
 else
   echo "Error: Incorrect Database Creation option specified.."
   printf "Please use correct flags for database creation...\n"
@@ -25,7 +25,7 @@ docker run --rm -it --name adi_explorer --name adi_explorer -d -p $FLASK_RUN_POR
 
 
 ## Deleting any untagged loaded image to keep Docker clean
-docker image rm `docker images | grep 'none' | awk -F ' ' '{print $3}'`
+docker image rm -f `docker images | grep 'none' | awk -F ' ' '{print $3}'`
 printf "Removed unnecessary images\n"
 
 # Remove Dockerfile
