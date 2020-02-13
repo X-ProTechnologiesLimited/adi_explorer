@@ -2,7 +2,7 @@
 from flask import request
 import datetime, time
 from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, ADI_EST_Show, MEDIA_DEFAULT, EST_PO
-from . import db, errorchecker, offerdate, response, movie_config, create_purchase_options
+from . import db, errorchecker, offerdate, response, movie_config, create_purchase_options, create_est_order_type
 from .sitemap_create import sitemap_mapper
 from .est_show_params import est_show_default_params
 from .metadata_params import metadata_default_params
@@ -89,8 +89,9 @@ def create_est_show_adi():
     ts = time.time()
     asset_timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d%H%M%S')
     licenseEndTime = offerdate.offer_date(int(request.form.get('LicenseWindow')), 0)
-    offerStartTime = offerdate.offer_date(0, 0)
-    offerEndTime = offerdate.offer_date(int(request.form.get('offer_window')), 0)
+    base_offerStartTime = offerdate.offer_date(0, 0)
+    order_type = request.form.get('order_type')
+    est_pur_option = request.form.get('po_type')
     show_type = request.form.get('est_show_type')
     title = request.form.get('title')
     est_params.est_show_type_entry(show_type, title)
@@ -111,10 +112,6 @@ def create_est_show_adi():
     show_new_package_meta = ADI_metadata(assetId=asset_timestamp + '00', title=title, par_rating=params.par_rating,
                                         btc_rating=params.ca_btc, synopsis=params.synopsis, title_filter='true')
 
-    show_new_package_offer = ADI_offer(assetId=asset_timestamp + '00', offer_type=params.offer_type,
-                                      offerStartTime=offerStartTime, offerEndTime=offerEndTime,
-                                      licenseEndTime=licenseEndTime)
-
     show_new_package_group = ADI_EST_Show(assetId=asset_timestamp + '00', title=title, no_of_seasons=str(num_of_seasons),
                                          season_number="", no_of_episodes="", episode_number="",
                                           show_type=show_type, parent_group_id="")
@@ -126,6 +123,7 @@ def create_est_show_adi():
                                        image_checksum_2=image_set.image_2_checksum, image_url_3=image_set.image_3,
                                        image_checksum_3=image_set.image_3_checksum, image_url_4=image_set.image_4,
                                        image_checksum_4=image_set.image_4_checksum)
+
 
 
     int_timestamp = int(asset_timestamp)
@@ -141,7 +139,7 @@ def create_est_show_adi():
                                         btc_rating=params.ca_btc, synopsis=season_synopsis, title_filter='false')
 
         season_new_package_offer = ADI_offer(assetId=season_asset_id + '11', offer_type=params.offer_type,
-                                           offerStartTime=offerStartTime, offerEndTime=offerEndTime,
+                                           offerStartTime=base_offerStartTime, offerEndTime=licenseEndTime,
                                            licenseEndTime=licenseEndTime)
 
         season_new_package_group = ADI_EST_Show(assetId=season_asset_id + '11', title=season_title,  no_of_seasons="",
@@ -167,7 +165,7 @@ def create_est_show_adi():
                                                      show_type=show_type, parent_group_id=season_asset_id + '11')
 
             episode_new_package_offer = ADI_offer(assetId=episode_asset_id + '22', offer_type=params.offer_type,
-                                                 offerStartTime=offerStartTime, offerEndTime=offerEndTime,
+                                                 offerStartTime=base_offerStartTime, offerEndTime=licenseEndTime,
                                                  licenseEndTime=licenseEndTime)
 
             episode_new_package_media = ADI_media(assetId=episode_asset_id + '22',
@@ -192,17 +190,22 @@ def create_est_show_adi():
                                        season_new_package_group])
                     db.session.commit()
 
-                    try:
-                        db.session.add_all([show_new_package_main, show_new_package_meta, show_new_package_offer,
-                                        show_new_package_group, show_new_package_media])
-                        db.session.commit()
-
-                    except:
-                        errorchecker.internal_server_error_show('EST_SHOW')
                 except:
                     errorchecker.internal_server_error_show('EST_SEASON')
             except:
                 errorchecker.internal_server_error_show('EST_EPISODE')
+
+    try:
+        db.session.add_all([show_new_package_main, show_new_package_meta,
+                            show_new_package_group, show_new_package_media])
+        db.session.commit()
+
+        create_est_order_type.create_est_orders(asset_timestamp, licenseEndTime, order_type, 'est_show')
+        create_purchase_options.create_po(est_pur_option, asset_timestamp, 'est_show')
+        db.session.commit()
+
+    except:
+        errorchecker.internal_server_error_show('EST_SHOW')
 
     return response.asset_creation_success(asset_timestamp + '00', title)
 
@@ -213,10 +216,6 @@ def create_est_title_adi():
     licenseEndTime = offerdate.offer_date(int(request.form.get('LicenseWindow')), 0)
     order_type = request.form.get('order_type')
     est_pur_option = request.form.get('po_type')
-    est_params.est_offer_window_entry(request.form.get('po_offer_window'), request.form.get('cs_offer_window'),
-                                      request.form.get('reg_offer_window'))
-    est_params.est_offer_date_entry(order_type, est_params.po_offer_window, est_params.cs_offer_window,
-                                    est_params.reg_offer_window)
     asset_type = 'EST SINGLE TITLE'
     if (asset_type not in movie_config.default_standard_package) and (
             asset_type not in movie_config.default_vrp_package):
@@ -253,58 +252,9 @@ def create_est_title_adi():
                                   image_checksum_6=image_set.image_6_checksum)
 
 
-    if order_type == "PO":
-        new_package_offer_PO = ADI_offer(assetId=asset_timestamp + '01', offer_type=params.offer_type,
-                                         offerStartTime=est_params.po_start, offerEndTime=est_params.po_end,
-                                         licenseEndTime=licenseEndTime, est_order_type='PreOrder',
-                                         est_offerId=asset_timestamp + '01')
-
-        db.session.add(new_package_offer_PO)
-    elif order_type == "REG":
-        new_package_offer_REG = ADI_offer(assetId=asset_timestamp + '01', offer_type=params.offer_type,
-                                         offerStartTime=est_params.reg_start, offerEndTime=est_params.reg_end,
-                                         licenseEndTime=licenseEndTime, est_order_type='Regular',
-                                         est_offerId=asset_timestamp + '01')
-
-        db.session.add(new_package_offer_REG)
-
-    elif order_type == "PO+CS":
-        new_package_offer_CS = ADI_offer(assetId=asset_timestamp + '01', offer_type=params.offer_type,
-                                         offerStartTime=est_params.cs_start, offerEndTime=est_params.cs_end,
-                                         licenseEndTime=licenseEndTime, est_order_type='ComingSoon',
-                                         est_offerId=asset_timestamp + '01')
-
-        new_package_offer_PO = ADI_offer(assetId=asset_timestamp + '01', offer_type=params.offer_type,
-                                         offerStartTime=est_params.po_start, offerEndTime=est_params.po_end,
-                                         licenseEndTime=licenseEndTime, est_order_type='PreOrder',
-                                         est_offerId=asset_timestamp + '02')
-
-        db.session.add_all([new_package_offer_CS, new_package_offer_PO])
-
-    elif order_type == 'PO+CS+REG':
-        new_package_offer_REG = ADI_offer(assetId=asset_timestamp + '01', offer_type=params.offer_type,
-                                          offerStartTime=est_params.reg_start, offerEndTime=est_params.reg_end,
-                                          licenseEndTime=licenseEndTime, est_order_type='Regular',
-                                          est_offerId=asset_timestamp + '01')
-        db.session.add(new_package_offer_REG)
-
-        new_package_offer_CS = ADI_offer(assetId=asset_timestamp + '01', offer_type=params.offer_type,
-                                         offerStartTime=est_params.cs_start, offerEndTime=est_params.cs_end,
-                                         licenseEndTime=licenseEndTime, est_order_type='ComingSoon',
-                                         est_offerId=asset_timestamp + '02')
-        db.session.add(new_package_offer_CS)
-
-        new_package_offer_PO = ADI_offer(assetId=asset_timestamp + '01', offer_type=params.offer_type,
-                                         offerStartTime=est_params.po_start, offerEndTime=est_params.po_end,
-                                         licenseEndTime=licenseEndTime, est_order_type='PreOrder',
-                                         est_offerId=asset_timestamp + '03')
-        db.session.add_all([new_package_offer_REG, new_package_offer_CS, new_package_offer_PO])
-
-    else:
-        return errorchecker.internal_server_error()
-
     db.session.add_all([new_package_main, new_package_meta, new_package_media])
-    create_purchase_options.create_po(est_pur_option, asset_timestamp)
+    create_est_order_type.create_est_orders(asset_timestamp, licenseEndTime, order_type, asset_type)
+    create_purchase_options.create_po(est_pur_option, asset_timestamp, asset_type)
     db.session.commit()
 
 

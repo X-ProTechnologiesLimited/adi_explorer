@@ -94,42 +94,49 @@
       <content:Y_Resolution>349</content:Y_Resolution>
       <ext:Usage>urn:csco:vcs:metadata:MediaTypeCS:2015:stb:3-4</ext:Usage>
     </ext:PressPackImage>
-    <ext:PurchaseOption creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PROP{{val.assetid}}">
-      <PO:mediaType>1</PO:mediaType>
-      <PO:mediaTypeFilter>4</PO:mediaTypeFilter>
+    {% for option in purchase_options -%}
+    <ext:PurchaseOption creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PROP{{option.option_id}}">
+      <PO:mediaType>{{option.media_type}}</PO:mediaType>
+      <PO:mediaTypeFilter>{{option.media_filter}}</PO:mediaTypeFilter>
       <PO:optionMetadata><![CDATA[{"physicalReleaseDate":"20170826"}]]></PO:optionMetadata>
-      <PO:defaultPriceBundleRef uriId="{{val.providerid}}/PRBU{{val.assetid}}"/>
+      <PO:defaultPriceBundleRef uriId="{{val.providerid}}/PRBU{{option.option_id}}"/>
       <PO:purchaseOptionAvailability>
-        <PO:startDateTime>2016-11-02T15:41:01Z</PO:startDateTime>
-        <PO:endDateTime>{{val.offerEndDateTime}}</PO:endDateTime>
+        <PO:startDateTime>2014-11-24T00:00:00Z</PO:startDateTime>
+        <PO:endDateTime>{{option.po_end}}</PO:endDateTime>
       </PO:purchaseOptionAvailability>
     </ext:PurchaseOption>
-    <ext:PriceBundle creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PRBU{{val.assetid}}">
-      <PO:priceCategory currency="GBP" marketingSegment="Standard" price="7.99" territory="GBR"/>
-      <PO:priceCategory currency="GBP" marketingSegment="VIP" price="6.99" territory="GBR"/>
-      <PO:priceCategory currency="GBP" marketingSegment="Standard" price="9.99" territory="IRL"/>
-      <PO:priceCategory currency="GBP" marketingSegment="VIP" price="8.99" territory="IRL"/>
+    <ext:PriceBundle creationDateTime="2014-11-24T00:00:00Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/PRBU{{option.option_id}}">
+      <PO:priceCategory currency="GBP" marketingSegment="Standard" price="{{option.uk_std_price}}" territory="GBR"/>
+      <PO:priceCategory currency="GBP" marketingSegment="VIP" price="{{option.uk_vip_price}}" territory="GBR"/>
+      <PO:priceCategory currency="GBP" marketingSegment="Standard" price="{{option.il_std_price}}" territory="IRL"/>
+      <PO:priceCategory currency="GBP" marketingSegment="VIP" price="{{option.il_vip_price}}" territory="IRL"/>
     </ext:PriceBundle>
+    {% endfor -%}
   </Ext>
   {% endfor -%}
-  <Offer creationDateTime="2016-11-07T15:41:03Z" endDateTime="{{val.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="{{val.offerStartDateTime}}" uriId="{{val.providerid}}/OFBD{{val.assetid}}">
+  {% for offer in est_offers -%}
+  <Offer creationDateTime="2016-10-27T13:10:01Z" endDateTime="{{offer.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2018-01-01T00:00:01Z" uriId="{{val.providerid}}/OAVT{{offer.offer_id}}">
     <core:Ext>
-      <ext:OfferAvailability endDateTime="{{val.offerEndDateTime}}" offerType="IPPR" startDateTime="{{val.offerStartDateTime}}"/>
-          <ext:optionMetadata><![CDATA[{"DigitalReleaseDate":"2016-11-01T00:00:00Z","EstimatedMediaReleaseDate":"2017-01-15T00:00:00Z"}]]></ext:optionMetadata>
-      <ext:PurchaseOptionRef uriId="{{val.providerid}}/PROP{{val.assetid}}"/>
+      <ext:OfferAvailability endDateTime="{{offer.offerEndDateTime}}" offerType="{{offer.offer_type}}" startDateTime="{{offer.offerStartDateTime}}"/>
+          <ext:optionMetadata><![CDATA[{"physicalReleaseDate":"20170826"}]]></ext:optionMetadata>
+        {% for option in purchase_options -%}
+      <ext:PurchaseOptionRef uriId="{{val.providerid}}/PROP{{option.option_id}}"/>
+        {% endfor -%}
     </core:Ext>
     <offer:BillingId>DUMMY</offer:BillingId>
-    <offer:TermsRef uriId="{{val.providerid}}/TEBD{{val.assetid}}"/>
+    <offer:TermsRef uriId="{{val.providerid}}/TAVT{{offer.offer_id}}"/>
     <offer:ContentGroupRef uriId="{{val.providerid}}/CGVT{{val.assetid}}"/>
   </Offer>
-  <Terms creationDateTime="2016-11-07T15:41:03Z" endDateTime="{{val.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="{{val.offerStartDateTime}}" uriId="{{val.providerid}}/TEBD{{val.assetid}}">
+  <Terms creationDateTime="2016-10-27T13:10:01Z" endDateTime="{{offer.offerEndDateTime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2018-01-01T00:00:01Z" uriId="{{val.providerid}}/TAVT{{offer.offer_id}}">
     <core:Ext>
       <ext:TermType>EST</ext:TermType>
+      <ext:platform>ES</ext:platform>
       <ext:TermExtensions>
-        <ext:OrderType>Regular</ext:OrderType>
+        <ext:OrderType>{{offer.order_type}}</ext:OrderType>
       </ext:TermExtensions>
     </core:Ext>
     <terms:SuggestedPrice>0</terms:SuggestedPrice>
   </Terms>
+ {% endfor -%}
  {% endfor -%}
 </ADI3>
