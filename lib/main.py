@@ -360,6 +360,7 @@ def consult_omdb_post():
 @main.route("/create_omdb_image", methods=['POST'])
 def omdb_image_create():
     title = request.form.get('title')
+    consult_omdb_post()
     return create_omdb_image.omdb_image_create(title)
 
 @main.route("/view_default_config")
