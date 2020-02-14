@@ -458,6 +458,35 @@ def get_asset_data(assetId):
     json_data = dumps(adi_metadata)
     return response.asset_retrieve(json_data)
 
+def get_est_offers(assetId):
+    adi_offers = {}
+    adi_offers['offers'] = []
+    package_check = ADI_main.query.filter_by(assetId=assetId).first()
+    if (package_check.adi_type == 'EST SINGLE TITLE') or (package_check.adi_type == 'est_show'):
+        for package in ADI_offer.query.filter(ADI_offer.assetId == assetId).all():
+            package_offer = ADI_offer.query.filter_by(est_offerId=package.est_offerId).first()
+            package_meta = ADI_metadata.query.filter_by(assetId=package.assetId).first()
+            adi_offers['offers'].append({
+                'title': package_meta.title,
+                'assetId': package.assetId,
+                'offer_type': package_offer.offer_type,
+                'est_offer_id': package_offer.est_offerId,
+                'est_order_type': package_offer.est_order_type,
+                'offerStartTime': package_offer.offerStartTime,
+                'offerEndTime': package_offer.offerEndTime,
+                })
+
+
+        adi_offers['total'] = ADI_offer.query.filter(ADI_offer.assetId == assetId).count()
+        if adi_offers['total'] == 0:  # If no countries found in the continent
+            return errorchecker.no_assets_in_db()
+        else:
+            json_data = dumps(adi_offers)
+
+        return response.asset_retrieve(json_data)
+
+    else:
+        return errorchecker.not_est_offer(assetId)
 
 
 def get_default_config():
@@ -471,6 +500,7 @@ def get_default_config():
     default_config['config']['4K Video'] = config_data.sdr_movie_file
     default_config['config']['HDR Video'] = config_data.hdr_movie_file
     default_config['config']['DPL Video'] = config_data.dpl_movie_file
+    default_config['config']['EST Video'] = config_data.est_movie_file
     default_config['config']['Trailer'] = config_data.trailer_file
     default_config['config']['Standard Image'] = config_data.standard_image_file_prefix
     default_config['config']['DPL Image'] = config_data.dpl_image_file_prefix

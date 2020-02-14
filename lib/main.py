@@ -1,5 +1,4 @@
 # main.py
-
 from flask import Blueprint, render_template, request, send_from_directory, flash, redirect
 from .nocache import nocache
 from .models import ADI_main, MEDIA_LIBRARY
@@ -27,53 +26,49 @@ def index():
 def load_defaults():
     return load_default_data.load_default_media()
 
-@main.route('/create_single_title_standard')
+@main.route('/create_single_title_standard', methods=['GET', 'POST'])
 def create_single_title_standard():
     video_filename = 'ts'
     search = "%{}%".format(video_filename)
     library = MEDIA_LIBRARY.query.filter(MEDIA_LIBRARY.filename.like(search))
     image_group_name = db.session.query(MEDIA_LIBRARY.image_group).distinct().filter(MEDIA_LIBRARY.image_group != 'None')
+    if request.method == 'POST':
+        return create_asset.create_single_title()
     return render_template('create_single_title_standard.html', library=library, image_group_name=image_group_name)
 
-@main.route('/create_single_title_standard', methods=['POST'])
-def create_single_title_standard_post():
-    return create_asset.create_single_title()
 
-@main.route('/create_single_title_vrp')
+@main.route('/create_single_title_vrp', methods=['GET', 'POST'])
 def create_single_title_vrp():
     video_filename = 'ts'
     search = "%{}%".format(video_filename)
     library = MEDIA_LIBRARY.query.filter(MEDIA_LIBRARY.filename.like(search))
     image_group_name = db.session.query(MEDIA_LIBRARY.image_group).distinct().filter(MEDIA_LIBRARY.image_group != 'None')
+    if request.method == 'POST':
+        return create_asset.create_single_title()
     return render_template('create_single_title_vrp.html', library=library, image_group_name=image_group_name)
 
-@main.route('/create_single_title_vrp', methods=['POST'])
-def create_single_title_vrp_post():
-    return create_asset.create_single_title()
 
-@main.route('/create_est_show')
+@main.route('/create_est_show', methods=['GET', 'POST'])
 def create_est_show():
     video_filename = 'ts'
     search = "%{}%".format(video_filename)
     library = MEDIA_LIBRARY.query.filter(MEDIA_LIBRARY.filename.like(search))
     image_group_name = db.session.query(MEDIA_LIBRARY.image_group).distinct().filter(MEDIA_LIBRARY.image_group != 'None')
+    if request.method == 'POST':
+        return create_asset.create_est_show_adi()
     return render_template('create_box_set.html', library=library, image_group_name=image_group_name)
 
-@main.route('/create_est_show', methods=['POST'])
-def create_est_show_post():
-    return create_asset.create_est_show_adi()
 
-@main.route('/create_est_single_title')
+@main.route('/create_est_single_title', methods=['GET', 'POST'])
 def create_est_single_title():
     video_filename = 'ts'
     search = "%{}%".format(video_filename)
     library = MEDIA_LIBRARY.query.filter(MEDIA_LIBRARY.filename.like(search))
     image_group_name = db.session.query(MEDIA_LIBRARY.image_group).distinct().filter(MEDIA_LIBRARY.image_group != 'None')
+    if request.method == 'POST':
+        return create_asset.create_est_title_adi()
     return render_template('create_est_title.html', library=library, image_group_name=image_group_name)
 
-@main.route('/create_est_single_title', methods=['POST'])
-def create_est_single_title_post():
-    return create_asset.create_est_title_adi()
 
 @main.route('/search')
 def search_adi():
@@ -83,10 +78,6 @@ def search_adi():
 @nocache
 def search_adi_post():
     return search.search_by_title()
-
-@main.route('/search_est')
-def search_est():
-    return render_template('search_est.html')
 
 @main.route('/search_est', methods=['POST'])
 @nocache
@@ -144,6 +135,15 @@ def get_asset_video():
 def get_asset_video_post():
     assetId = request.form.get('AssetId')
     return get_asset_details.get_asset_video(assetId)
+
+
+@main.route("/get_est_offers", methods=['GET', 'POST'])
+def get_est_offers():
+    assetId = request.form.get('AssetId')
+    if request.method == 'POST':
+        return get_asset_details.get_est_offers(assetId)
+    return render_template('get_est_offers.html')
+
 
 @main.route('/update_single_title')
 def update_single_title():
@@ -382,6 +382,10 @@ def genre_guide():
 @main.route("/rating_guide")
 def rating_guide():
     return render_template('sky_rating.html')
+
+@main.route("/audio_guide")
+def audio_guide():
+    return render_template('sky_audio_type.html')
 
 
 @main.route('/quit')
