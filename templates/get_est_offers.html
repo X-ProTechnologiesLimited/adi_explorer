@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h3 class="title">View ADI</h3>
+    <div class="box">
+        <form method="POST" action="/get_est_offers">
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="AssetId" placeholder="AssetId" autofocus="" required>
+                </div>
+            </div>
+            <br>
+            <button class="button is-block is-info is-medium is-fullwidth">Get EST Offers</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

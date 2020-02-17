@@ -285,8 +285,8 @@ def download_est_show(assetId):
         'par_rating': package_meta.par_rating,
         'btc_rating': package_meta.btc_rating,
         'asset_syn': package_meta.synopsis,
-        'offerStartDateTime': package_offer.offerStartTime,
-        'offerEndDateTime': package_offer.offerEndTime,
+        # 'offerStartDateTime': package_offer.offerStartTime,
+        # 'offerEndDateTime': package_offer.offerEndTime,
         'image_path': adicreate.image_path,
         })
 
@@ -312,8 +312,35 @@ def download_est_show(assetId):
             'season_number': season_group.season_number,
         })
 
+    purchase_options = []
+    for package in EST_PO.query.filter(EST_PO.assetId == assetId).all():
+        po = EST_PO.query.filter_by(poption_Id=package.poption_Id).first()
+        purchase_options.append({
+            'option_id': po.poption_Id,
+            'media_type': po.poption_media_type,
+            'media_filter': po.poption_media_filter,
+            'po_end': package_offer.offerEndTime,
+            'uk_std_price': po.uk_std_price,
+            'uk_vip_price': po.uk_vip_price,
+            'il_std_price': po.il_std_price,
+            'il_vip_price': po.il_vip_price,
 
-    template = render_template(sitemap.sitemap, values=values, seasonlist=seasonlist, media_items=media_items)
+        })
+
+    est_offers = []
+    for offers in ADI_offer.query.filter(ADI_offer.assetId == assetId).all():
+        offeritem = ADI_offer.query.filter_by(est_offerId=offers.est_offerId).first()
+        est_offers.append({
+            'offer_id': offeritem.est_offerId,
+            'offerEndDateTime': offeritem.offerEndTime,
+            'offerStartDateTime': offeritem.offerStartTime,
+            'offer_type': offeritem.offer_type,
+            'order_type': offeritem.est_order_type,
+        })
+
+
+    template = render_template(sitemap.sitemap, values=values, seasonlist=seasonlist, media_items=media_items,
+                               purchase_options=purchase_options, est_offers=est_offers)
     response = make_response(template)
     response.headers['Content-Type'] = 'application/xml'
 
@@ -431,6 +458,35 @@ def get_asset_data(assetId):
     json_data = dumps(adi_metadata)
     return response.asset_retrieve(json_data)
 
+def get_est_offers(assetId):
+    adi_offers = {}
+    adi_offers['offers'] = []
+    package_check = ADI_main.query.filter_by(assetId=assetId).first()
+    if (package_check.adi_type == 'EST SINGLE TITLE') or (package_check.adi_type == 'est_show'):
+        for package in ADI_offer.query.filter(ADI_offer.assetId == assetId).all():
+            package_offer = ADI_offer.query.filter_by(est_offerId=package.est_offerId).first()
+            package_meta = ADI_metadata.query.filter_by(assetId=package.assetId).first()
+            adi_offers['offers'].append({
+                'title': package_meta.title,
+                'assetId': package.assetId,
+                'offer_type': package_offer.offer_type,
+                'est_offer_id': package_offer.est_offerId,
+                'est_order_type': package_offer.est_order_type,
+                'offerStartTime': package_offer.offerStartTime,
+                'offerEndTime': package_offer.offerEndTime,
+                })
+
+
+        adi_offers['total'] = ADI_offer.query.filter(ADI_offer.assetId == assetId).count()
+        if adi_offers['total'] == 0:  # If no countries found in the continent
+            return errorchecker.no_assets_in_db()
+        else:
+            json_data = dumps(adi_offers)
+
+        return response.asset_retrieve(json_data)
+
+    else:
+        return errorchecker.not_est_offer(assetId)
 
 
 def get_default_config():
@@ -444,6 +500,7 @@ def get_default_config():
     default_config['config']['4K Video'] = config_data.sdr_movie_file
     default_config['config']['HDR Video'] = config_data.hdr_movie_file
     default_config['config']['DPL Video'] = config_data.dpl_movie_file
+    default_config['config']['EST Video'] = config_data.est_movie_file
     default_config['config']['Trailer'] = config_data.trailer_file
     default_config['config']['Standard Image'] = config_data.standard_image_file_prefix
     default_config['config']['DPL Image'] = config_data.dpl_image_file_prefix

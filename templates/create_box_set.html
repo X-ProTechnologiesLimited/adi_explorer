@@ -22,6 +22,19 @@
             </div>
             <div class="field">
                 <div class="control">
+                    <input class="input is-large" list="order_type" name="order_type" placeholder="PO/CS/REG" autocomplete="off" autofocus="" required>
+                    <datalist id="order_type">
+                      <option value="PO">
+                      <option value="PO+CS">
+                      <option value="REG">
+                      <option value="PO+CS+REG">
+                    </option>
+                    </datalist>
+                    <d>**  Order Types: PO=PreOrder; CS=ComingSoon; REG=Regular. </d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
                     <input class="input is-large" type="text" name="LicenseWindow" placeholder="LicenseWindow" autofocus="" required>
                     <d>** License Expiry in Days from Now. Eg 30 for 1 month from now.</d>
                 </div>
@@ -105,8 +118,22 @@
             <h4>Offer Section</h4>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="text" name="offer_window" placeholder="Offer Window" autofocus="" required>
-                    <d>** Offer Availability in Days from Now. Eg 30 for 1 month from now.</d>
+                    <input class="input is-large" type="text" name="po_offer_window" placeholder="PO Offer Window" autofocus="">
+                    <input class="input is-large" type="text" name="cs_offer_window" placeholder="CS Offer Window" autofocus="">
+                    <input class="input is-large" type="text" name="reg_offer_window" placeholder="REG Offer Window" autofocus="">
+                    <p>** Offer Availability in Days from Now. Eg 30 for 1 month from now. Incase of multiple offers, the hiatus would be created automatically</p>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" list="po_type" name="po_type" placeholder="Purchase Option" autocomplete="off" autofocus="" required>
+                    <datalist id="po_type">
+                      <option value="Digital Only">
+                      <option value="Digital+DVD">
+                      <option value="Digital+DVD+BluR">
+                    </option>
+                    </datalist>
+                    <d>**</d>
                 </div>
             </div>
             <br>

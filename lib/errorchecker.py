@@ -177,6 +177,15 @@ def no_ingest_history(assetId):
         }
     return error_response_creator(message)
 
+
+@errorchecker.errorhandler(404)
+def not_est_offer(assetId):
+    message = {
+            'status': 404,
+            'message': 'Asset: ' + assetId + ' has no EST Offers Associated with it'
+        }
+    return error_response_creator(message)
+
 @errorchecker.errorhandler(404)
 def omdb_data_not_found(title):
     message = {
