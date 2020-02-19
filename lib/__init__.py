@@ -17,6 +17,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['DEBUG'] = True
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
     db.init_app(app)
 

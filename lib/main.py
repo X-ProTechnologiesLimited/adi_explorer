@@ -1,11 +1,11 @@
 # main.py
-from flask import Blueprint, render_template, request, send_from_directory, flash, redirect
+from flask import Blueprint, render_template, request, send_from_directory, flash, redirect, Response
 from .nocache import nocache
 from .models import ADI_main, MEDIA_LIBRARY
 from bson.json_util import dumps
 from .metadata_params import metadata_default_params
 from . import db
-import os
+import os, time
 import hashlib
 import os.path
 from . import errorchecker, create_asset, search, get_asset_details, update_package, response, create_tar, movie_config
@@ -18,6 +18,8 @@ VRP_PACKAGE_DIR = movie_config.premium_vrp_dir
 
 main = Blueprint('main', __name__)
 
+######## Index and Defaults #########
+
 @main.route('/')
 def index():
     return render_template('index.html')
@@ -25,6 +27,8 @@ def index():
 @main.route('/load_defaults')
 def load_defaults():
     return load_default_data.load_default_media()
+
+######## Create Asset Routes #########
 
 @main.route('/create_single_title_standard', methods=['GET', 'POST'])
 def create_single_title_standard():
@@ -70,6 +74,17 @@ def create_est_single_title():
     return render_template('create_est_title.html', library=library, image_group_name=image_group_name)
 
 
+@main.route("/create_tar")
+def make_tarfile():
+    return render_template('create_tar.html')
+
+@main.route("/create_tar", methods=['POST'])
+def make_tarfile_post():
+    return create_tar.make_tarfile()
+
+
+########### Search Asset Routes ##############
+
 @main.route('/search')
 def search_adi():
     return render_template('search.html')
@@ -90,6 +105,8 @@ def search_adi_all():
     return search.search_all_packages()
 
 
+########## Download ADI and View Metadata Routes #############
+
 @main.route('/get_adi/<assetId>')
 def get_back_adi(assetId):
     try:
@@ -107,34 +124,22 @@ def get_back_adi(assetId):
     except:
         return errorchecker.asset_not_found_id(assetId)
 
-@main.route('/get_adi')
+
+@main.route('/get_adi', methods=['GET', 'POST'])
 def get_adi():
+    assetId = request.form.get('AssetId')
+    if request.method == 'POST':
+        return get_back_adi(assetId)
     return render_template('retrieve_package.html')
 
-@main.route('/get_adi', methods=['POST'])
-def get_adi_post():
-    assetId = request.form.get('AssetId')
-    return get_back_adi(assetId)
 
-@main.route('/get_asset_metadata')
+@main.route('/get_asset_metadata', methods=['GET', 'POST'])
+@nocache
 def get_asset_metadata():
+    assetId = request.form.get('AssetId')
+    if request.method == 'POST':
+        return get_asset_details.get_asset_data(assetId)
     return render_template('retrieve_metadata.html')
-
-@main.route('/get_asset_metadata', methods=['POST'])
-@nocache
-def get_asset_metadata_post():
-    assetId = request.form.get('AssetId')
-    return get_asset_details.get_asset_data(assetId)
-
-@main.route('/get_asset_video')
-def get_asset_video():
-    return render_template('retrieve_video.html')
-
-@main.route('/get_asset_video', methods=['POST'])
-@nocache
-def get_asset_video_post():
-    assetId = request.form.get('AssetId')
-    return get_asset_details.get_asset_video(assetId)
 
 
 @main.route("/get_est_offers", methods=['GET', 'POST'])
@@ -142,37 +147,43 @@ def get_est_offers():
     assetId = request.form.get('AssetId')
     if request.method == 'POST':
         return get_asset_details.get_est_offers(assetId)
-    return render_template('get_est_offers.html')
+    return render_template('get_est_offers.html', title='Get EST Offers', action='/get_est_offers')
 
 
-@main.route('/update_single_title')
+######## Update Asset Routes #################
+
+@main.route('/update_single_title', methods=['GET', 'POST'])
 def update_single_title():
+    if request.method == 'POST':
+        return update_package.update_single_title()
     return render_template('update_single_title.html')
 
-@main.route('/update_single_title', methods=['POST'])
-def update_single_title_post():
-    return update_package.update_single_title()
 
-@main.route('/update_video')
+@main.route('/update_video', methods=['GET', 'POST'])
 def update_video():
+    if request.method == 'POST':
+        return update_package.update_asset_video()
     return render_template('update_video.html')
 
-@main.route('/update_video', methods=['POST'])
-def update_video_post():
-    return update_package.update_asset_video()
+########### Ingest and Post ADI Routes ############
 
-@main.route('/update_show_season')
-def update_show_season():
-    return errorchecker.not_implemented_yet()
-
-@main.route('/post_adi')
+@main.route('/post_adi', methods=['GET', 'POST'])
+@nocache
 def post_adi():
+    if request.method == 'POST':
+        return get_asset_details.post_adi_endpoint()
     return render_template('post_adi.html')
 
-@main.route('/post_adi', methods=['POST'])
-@nocache
-def post_adi_post():
-    return get_asset_details.post_adi_endpoint()
+@main.route("/get_ingest_history", methods=['GET', 'POST'])
+def get_ingest_history():
+    assetId = request.form.get('assetId')
+    if request.method == 'POST':
+        return search.search_ingest_history(assetId)
+    return render_template('ingest_history.html')
+
+
+
+########### Media Management Routes ###############
 
 @main.route("/files")
 def list_files():
@@ -196,7 +207,6 @@ def delete_image_group():
 
     return list_files()
 
-
 @main.route("/get_file_list_checksum")
 def list_files_checksum():
     """Endpoint to list files on the server."""
@@ -213,8 +223,6 @@ def list_tar_files():
     json_data = dumps(files)
     return response.asset_retrieve(json_data)
 
-
-
 @main.route("/files/<path:path>")
 @nocache
 def get_file(path):
@@ -226,21 +234,17 @@ def send_tar_file(path):
     """Download a file."""
     return send_from_directory(VRP_PACKAGE_DIR, path, as_attachment=True)
 
-
-@main.route("/download_tar_files")
+@main.route("/download_tar_files", methods=['GET', 'POST'])
 def get_tar_file():
     """Download a file."""
-    return render_template('get_tar.html')
-
-
-@main.route("/download_tar_files", methods=['POST'])
-def get_tar_file_post():
-    """Download a file."""
     filename = request.form.get('filename')
-    try:
-        return send_from_directory(VRP_PACKAGE_DIR, filename, as_attachment=True)
-    except:
-        return errorchecker.no_supporting_file(filename)
+    if request.method == 'POST':
+        try:
+            return send_from_directory(VRP_PACKAGE_DIR, filename, as_attachment=True)
+        except:
+            return errorchecker.no_supporting_file(filename)
+
+    return render_template('get_tar.html')
 
 def checksum_creator(filename):
     hash_md5 = hashlib.md5()
@@ -272,10 +276,17 @@ def post_files_post():
             return list_files()
     return render_template('upload_files.html')
 
+@main.route("/upload_to_tank")
+def upload_to_tank():
+    return render_template('upload_to_tank.html')
 
-@main.route("/delete_tar")
-def delete_tar_file():
-    return render_template('delete_tar.html')
+@main.route("/upload_to_tank", methods=['POST'])
+def upload_to_tank_post():
+    return copy_to_tank.scp_to_tank()
+
+
+
+############# Admin and Delete Routes ################
 
 @main.route("/delete_tar", methods=['POST'])
 def delete_tar_file_post():
@@ -286,9 +297,6 @@ def delete_tar_file_post():
         return errorchecker.no_supporting_file(filename)
     return list_tar_files()
 
-@main.route("/delete_file")
-def delete_file():
-    return render_template('delete_supp_file.html')
 
 @main.route("/delete_file", methods=['POST'])
 def delete_file_post():
@@ -322,31 +330,22 @@ def delete_asset_post():
     except:
         return errorchecker.asset_not_found_id(assetId)
 
-@main.route("/get_ingest_history")
-def get_ingest_history():
-    return render_template('ingest_history.html')
 
-@main.route("/get_ingest_history", methods=['POST'])
-def get_ingest_history_post():
-    assetId = request.form.get('assetId')
-    return search.search_ingest_history(assetId)
-
-@main.route("/create_tar")
-def make_tarfile():
-    return render_template('create_tar.html')
-
-@main.route("/create_tar", methods=['POST'])
-def make_tarfile_post():
-    return create_tar.make_tarfile()
+@main.route("/view_default_config")
+def view_default_config():
+    return get_asset_details.get_default_config()
 
 
-@main.route("/upload_to_tank")
-def upload_to_tank():
-    return render_template('upload_to_tank.html')
+@main.route("/update_default_config")
+def update_default_config():
+    return render_template('update_default_paths.html')
 
-@main.route("/upload_to_tank", methods=['POST'])
-def upload_to_tank_post():
-    return copy_to_tank.scp_to_tank()
+@main.route("/update_default_config", methods=['POST'])
+def update_default_config_post():
+    return update_package.update_default_fields()
+
+
+########### CONSULT OMDB Routes ##############
 
 @main.route("/consult_omdb")
 def consult_omdb():
@@ -363,18 +362,8 @@ def omdb_image_create():
     consult_omdb_post()
     return create_omdb_image.omdb_image_create(title)
 
-@main.route("/view_default_config")
-def view_default_config():
-    return get_asset_details.get_default_config()
 
-
-@main.route("/update_default_config")
-def update_default_config():
-    return render_template('update_default_paths.html')
-
-@main.route("/update_default_config", methods=['POST'])
-def update_default_config_post():
-    return update_package.update_default_fields()
+############# HELP and GUIDE Routes ##############
 
 @main.route("/genre_guide")
 def genre_guide():
@@ -388,6 +377,8 @@ def rating_guide():
 def audio_guide():
     return render_template('sky_audio_type.html')
 
+
+########## API Shutdown Route ####################
 
 @main.route('/quit')
 def quit():

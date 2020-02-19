@@ -1,3 +1,6 @@
+# Filename errorchecker.py
+# This function handles all the error conditional messages
+
 from flask import Blueprint, render_template
 from os import path
 from json2html import *
@@ -22,8 +25,8 @@ def error_response_creator(message):
 @errorchecker.errorhandler(501)
 def internal_server_error():
     message = {
-        'status' : 501,
-        'message' : 'Internal Server Error. Cannot update database'
+        'status': 501,
+        'message': 'Internal Server Error. Could not update database.'
     }
     return error_response_creator(message)
 
@@ -31,9 +34,9 @@ def internal_server_error():
 @errorchecker.errorhandler(501)
 def file_already_uploaded(filename):
     message = {
-        'status' : 501,
-        'message' : 'This supporting file: ' + filename + ' is already added to the library.',
-        'view' : 'To view the supporting files, please use option VRP management > Show VRP Library'
+        'status': 501,
+        'message': 'This supporting file: ' + filename + ' is already added to the library.',
+        'view': 'To view the supporting files, please use option VRP management > Show VRP Library'
     }
     return error_response_creator(message)
 
@@ -42,8 +45,8 @@ def file_already_uploaded(filename):
 @errorchecker.errorhandler(501)
 def internal_server_error_show(show_type):
     message = {
-        'status' : 501,
-        'message' : 'Not able to create the Package for ' + show_type
+        'status': 501,
+        'message': 'Not able to create the Package for ' + show_type
     }
     return error_response_creator(message)
 
@@ -196,9 +199,17 @@ def omdb_data_not_found(title):
 
 
 @errorchecker.errorhandler(502)
-def upload_unsuccessful():
+def upload_authentication_error():
     message = {
             'status': 502,
             'message': 'Upload Not Successful. Authentication error!'
+        }
+    return error_response_creator(message)
+
+@errorchecker.errorhandler(404)
+def upload_filenotfound_error(filename):
+    message = {
+            'status': 404,
+            'message': 'Upload Not Successful. File: ' + filename + ' Not Found!'
         }
     return error_response_creator(message)

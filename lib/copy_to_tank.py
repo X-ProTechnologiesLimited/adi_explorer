@@ -1,3 +1,6 @@
+# Filename copy_to_tank.py
+# This function allows to copy Files from Local Tool Library to the Tank Location
+
 import paramiko
 from paramiko import SSHClient
 from scp import SCPClient
@@ -24,15 +27,24 @@ def scp_to_tank():
     ssh = SSHClient()
     ssh.load_system_host_keys()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect(tank_hostname, username=username, password=password, look_for_keys=False)
+    try:
+        ssh.connect(tank_hostname, username=username, password=password, look_for_keys=False)
+    except:
+        return errorchecker.upload_authentication_error()
 
     try:
         with SCPClient(ssh.get_transport()) as scp:
             if file_type == 'VRP TAR':
-                scp.put(VRP_DIRECTORY + '/' + filename, recursive=True, remote_path=tank_params.tank_path)
-                return response.file_upload_successful(filename, environment)
+                try:
+                    scp.put(VRP_DIRECTORY + '/' + filename, recursive=True, remote_path=tank_params.tank_path)
+                    return response.file_upload_successful(filename, environment)
+                except FileNotFoundError:
+                    return errorchecker.upload_filenotfound_error(filename)
             else:
-                scp.put(UPLOAD_DIRECTORY + '/' + filename, recursive=True, remote_path=tank_params.tank_path)
-                return response.file_upload_successful(filename,environment)
+                try:
+                    scp.put(UPLOAD_DIRECTORY + '/' + filename, recursive=True, remote_path=tank_params.tank_path)
+                    return response.file_upload_successful(filename,environment)
+                except FileNotFoundError:
+                    return errorchecker.upload_filenotfound_error(filename)
     except:
-        return errorchecker.upload_unsuccessful()
+        return errorchecker.upload_authentication_error()

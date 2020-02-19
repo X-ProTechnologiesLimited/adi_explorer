@@ -1,4 +1,5 @@
 # Filename create_asset.py
+# This function creates the database entries for different type of assets
 from flask import request
 import datetime, time
 from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, ADI_EST_Show, MEDIA_DEFAULT, EST_PO
@@ -8,7 +9,7 @@ from .est_show_params import est_show_default_params
 from .metadata_params import metadata_default_params
 from .image_params import image_default_params
 
-# Call Parameter Functions
+# Call Parameter Functions - These are functions to load default parameter values unless supplied in request
 est_params = est_show_default_params()
 params = metadata_default_params()
 image_set = image_default_params()
@@ -86,6 +87,7 @@ def create_single_title():
 
 
 def create_est_show_adi():
+    # This function creates database entries for EST Shows (TV and Movie Box-Sets)
     ts = time.time()
     asset_timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d%H%M%S')
     licenseEndTime = offerdate.offer_date(int(request.form.get('LicenseWindow')), 0)
@@ -124,8 +126,7 @@ def create_est_show_adi():
                                        image_checksum_3=image_set.image_3_checksum, image_url_4=image_set.image_4,
                                        image_checksum_4=image_set.image_4_checksum)
 
-
-
+    # This function creates database entries for all the Seasons under the Show
     int_timestamp = int(asset_timestamp)
     for season in range(1, num_of_seasons+1):
         season_asset_id = str(int_timestamp + season)
@@ -146,6 +147,7 @@ def create_est_show_adi():
                                                 season_number=str(season), no_of_episodes=str(no_of_episodes),
                                                 episode_number="", show_type=show_type, parent_group_id=asset_timestamp + '00')
 
+        # This function creates database entries for all the Episodes under the Season
         for episode in range(1, no_of_episodes+1):
             path_default = MEDIA_DEFAULT.query.first()
             episode_asset_id = str(int_timestamp + (season*100) + episode)
@@ -211,6 +213,7 @@ def create_est_show_adi():
 
 
 def create_est_title_adi():
+    # This function creates database entries for EST Single Titles
     ts = time.time()
     asset_timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d%H%M%S')
     licenseEndTime = offerdate.offer_date(int(request.form.get('LicenseWindow')), 0)
