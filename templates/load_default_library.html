@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h3 class="title">Get Default Video Files</h3>
+    <div class="box">
+        <form method="POST" action="/add_default_media">
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" name="username" placeholder="Tank Username" autofocus="" autocomplete="off">
+                    <d>**</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="password" name="password" placeholder="Tank Password" autofocus="" required>
+                    <d>**</d>
+                </div>
+            </div>
+             <br>
+            <div id="Progress_Status">
+                <div id="myprogressBar"></div>
+            </div>
+            <br>
+            <button onclick="update()" class="button is-block is-info is-medium is-fullwidth">Get From Tank</button>
+            <script>
+            function update() {
+                var element = document.getElementById("myprogressBar");
+                var width = 1;
+                var identity = setInterval(scene, 1500);
+                function scene() {
+                    if (width >= 99) {
+                        clearInterval(identity);
+                    } else {
+                    width++;
+                    element.style.width = width + '%';
+                    }
+                }
+            }
+            </script>
+        </form>
+    </div>
+</div>
+{% endblock %}

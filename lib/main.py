@@ -28,6 +28,16 @@ def index():
 def load_defaults():
     return load_default_data.load_default_media()
 
+# @main.route("/add_default_media")
+# def add_default_media():
+#     return render_template('load_default_library.html')
+
+@main.route("/add_default_media", methods=['GET', 'POST'])
+def add_default_media():
+    if request.method == 'POST':
+        return copy_to_tank.scp_default_video_from_tank()
+    return render_template('load_default_library.html')
+
 ######## Create Asset Routes #########
 
 @main.route('/create_single_title_standard', methods=['GET', 'POST'])

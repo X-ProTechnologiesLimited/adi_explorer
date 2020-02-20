@@ -96,6 +96,7 @@ class ADI_INGEST_HISTORY(db.Model):
     provider_version = db.Column(db.String(10))
     environment = db.Column(db.String(10))
     conversationId = db.Column(db.String(100))
+    ingest_timestamp = db.Column(db.String(100))
 
 class MEDIA_LIBRARY(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
