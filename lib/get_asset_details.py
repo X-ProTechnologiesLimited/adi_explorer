@@ -4,8 +4,7 @@ from . import movie_config
 from .sitemap_create import sitemap_mapper
 from bson.json_util import dumps
 from . import response
-import datetime
-import time
+import datetime, time
 from .metadata_params import metadata_default_params
 from .load_adi_logic import adi_package_logic
 from . import errorchecker
@@ -513,6 +512,7 @@ def get_default_config():
 def post_adi_endpoint():
     ts = time.time()
     conversationId = datetime.datetime.fromtimestamp(ts).strftime('%d%H%M%S')
+    ingest_timestamp = datetime.datetime.fromtimestamp(ts).strftime('%H:%M:%S %d/%m/%Y')
     environment = request.form.get('environment')
     params.environment_entry(environment)
     source = request.form.get('source')
@@ -566,7 +566,8 @@ def post_adi_endpoint():
                 post_response['Endpoint_Response'] = response_post_adi.text
                 package = ADI_main.query.filter_by(assetId=assetId).first()
                 ingest_response = ADI_INGEST_HISTORY(assetId=assetId, provider_version=package.provider_version,
-                                                     environment=environment, conversationId=conversationId)
+                                                     environment=environment, conversationId=conversationId,
+                                                     ingest_timestamp=ingest_timestamp)
                 db.session.add(ingest_response)
                 db.session.commit()
             except:

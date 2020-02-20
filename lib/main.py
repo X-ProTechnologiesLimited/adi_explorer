@@ -28,6 +28,12 @@ def index():
 def load_defaults():
     return load_default_data.load_default_media()
 
+@main.route("/add_default_media", methods=['GET', 'POST'])
+def add_default_media():
+    if request.method == 'POST':
+        return copy_to_tank.scp_default_video_from_tank()
+    return render_template('load_default_library.html')
+
 ######## Create Asset Routes #########
 
 @main.route('/create_single_title_standard', methods=['GET', 'POST'])
@@ -130,7 +136,7 @@ def get_adi():
     assetId = request.form.get('AssetId')
     if request.method == 'POST':
         return get_back_adi(assetId)
-    return render_template('retrieve_package.html')
+    return render_template('asset_info.html', title='View ADI', action='/get_adi')
 
 
 @main.route('/get_asset_metadata', methods=['GET', 'POST'])
@@ -139,7 +145,7 @@ def get_asset_metadata():
     assetId = request.form.get('AssetId')
     if request.method == 'POST':
         return get_asset_details.get_asset_data(assetId)
-    return render_template('retrieve_metadata.html')
+    return render_template('asset_info.html', title='Get Asset Metadata', action='/get_asset_metadata')
 
 
 @main.route("/get_est_offers", methods=['GET', 'POST'])
@@ -147,7 +153,7 @@ def get_est_offers():
     assetId = request.form.get('AssetId')
     if request.method == 'POST':
         return get_asset_details.get_est_offers(assetId)
-    return render_template('get_est_offers.html', title='Get EST Offers', action='/get_est_offers')
+    return render_template('asset_info.html', title='Get EST Offers', action='/get_est_offers')
 
 
 ######## Update Asset Routes #################
@@ -176,10 +182,10 @@ def post_adi():
 
 @main.route("/get_ingest_history", methods=['GET', 'POST'])
 def get_ingest_history():
-    assetId = request.form.get('assetId')
+    assetId = request.form.get('AssetId')
     if request.method == 'POST':
         return search.search_ingest_history(assetId)
-    return render_template('ingest_history.html')
+    return render_template('asset_info.html', title='Get Ingest History', action='/get_ingest_history')
 
 
 

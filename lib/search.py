@@ -38,7 +38,8 @@ def search_by_title():
 def search_all_packages():
     adi_data = {}
     adi_data['packages'] = []
-    for package in ADI_main.query.filter(or_(ADI_main.adi_type != 'est_episode'), (ADI_main.adi_type != 'est_season')).all():
+    for package in ADI_main.query.filter(or_(ADI_main.adi_type != 'est_episode'), (ADI_main.adi_type != 'est_season')).\
+            order_by(ADI_main.id.desc()).all():
         package_offer = ADI_offer.query.filter_by(assetId=package.assetId).first()
         package_meta = ADI_metadata.query.filter_by(assetId=package.assetId).first()
         adi_data['packages'].append({
@@ -104,7 +105,8 @@ def search_ingest_history(assetId):
             'assetId': package.assetId,
             'provider_version': package.provider_version,
             'environment': package.environment,
-            'conversationId': package.conversationId
+            'conversationId': package.conversationId,
+            'ingest_timestanp': package.ingest_timestamp,
         })
 
     ingest_data['total'] = ADI_INGEST_HISTORY.query.filter_by(assetId=assetId).count()
