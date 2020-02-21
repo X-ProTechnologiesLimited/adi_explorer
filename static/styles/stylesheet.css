@@ -573,3 +573,106 @@ table th[class*=col-] {
   line-height: 32px;
   color: black;
 }
+
+@-webkit-keyframes spinner-border {
+	to {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg)
+	}
+}
+
+@keyframes spinner-border {
+	to {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg)
+	}
+}
+
+.spinner-border {
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	vertical-align: text-bottom;
+	border: .25em solid currentColor;
+	border-right-color: transparent;
+	border-radius: 50%;
+	-webkit-animation: spinner-border .75s linear infinite;
+	animation: spinner-border .75s linear infinite
+}
+
+.spinner-border-sm {
+	width: 1rem;
+	height: 1rem;
+	border-width: .2em
+}
+
+.d-none {
+	display: none!important
+}
+
+progress {
+	vertical-align: baseline
+}
+
+@-webkit-keyframes progress-bar-stripes {
+	from {
+		background-position: 1rem 0
+	}
+	to {
+		background-position: 0 0
+	}
+}
+
+@keyframes progress-bar-stripes {
+	from {
+		background-position: 1rem 0
+	}
+	to {
+		background-position: 0 0
+	}
+}
+
+.progress {
+	display: -ms-flexbox;
+	display: flex;
+	height: 1rem;
+	overflow: hidden;
+	font-size: .75rem;
+	background-color: #e9ecef;
+	border-radius: .25rem
+}
+
+.progress-bar {
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-ms-flex-pack: center;
+	justify-content: center;
+	color: #fff;
+	text-align: center;
+	white-space: nowrap;
+	background-color: #007bff;
+	transition: width .6s ease
+}
+
+@media screen and (prefers-reduced-motion:reduce) {
+	.progress-bar {
+		transition: none
+	}
+}
+
+.progress-bar-striped {
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+	background-size: 1rem 1rem
+}
+
+.progress-bar-animated {
+	-webkit-animation: progress-bar-stripes 1s linear infinite;
+	animation: progress-bar-stripes 1s linear infinite
+}
+
+.mb-3,
+.my-3 {
+	margin-bottom: 1rem!important
+}

@@ -261,25 +261,15 @@ def checksum_creator(filename):
     return hash_md5.hexdigest()
 
 
-@main.route("/post_files_post", methods=['GET', 'POST'])
+@main.route("/post_files_post", methods=["GET", "POST"])
 def post_files_post():
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
+    if request.method == "POST":
         file = request.files['file']
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file:
-            file.save(os.path.join(UPLOAD_DIRECTORY, file.filename))
-            image_group = request.form.get('image_group')
-            checksum = checksum_creator(os.path.join(UPLOAD_DIRECTORY, file.filename))
-            create_tar.add_supporting_files_to_db(file.filename, checksum, image_group)
-            return list_files()
+        file.save(os.path.join(UPLOAD_DIRECTORY, file.filename))
+        image_group = request.form.get('image_group')
+        checksum = checksum_creator(os.path.join(UPLOAD_DIRECTORY, file.filename))
+        create_tar.add_supporting_files_to_db(file.filename, checksum, image_group)
+        return list_files()
     return render_template('upload_files.html')
 
 @main.route("/upload_to_tank")
