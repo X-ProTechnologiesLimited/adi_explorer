@@ -566,7 +566,21 @@ table th[class*=col-] {
 }
 
 #myprogressBar {
-  width: 1%;
+  width: 0%;
+  height: 15px;
+  background-color: #4CAF50;
+  text-align: center;
+  line-height: 32px;
+  color: black;
+}
+
+#Progress_Status_download {
+  width: 50%;
+  background-color: #ddd;
+}
+
+#myprogressBar_download {
+  width: 0%;
   height: 15px;
   background-color: #4CAF50;
   text-align: center;

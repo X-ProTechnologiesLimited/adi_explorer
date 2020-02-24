@@ -62,10 +62,6 @@ def scp_default_video_from_tank():
     except:
         return errorchecker.upload_authentication_error()
 
-    # with SCPClient(ssh.get_transport()) as scp:
-    #     scp.get('/ifs/PDLTankTest/Providers/BSS/Content/Distribution/TestFiles/HD_MOVIE.ts', UPLOAD_DIRECTORY + '/', recursive=True )
-    #     return main.list_files()
-
     for filename in filelist:
         try:
             with SCPClient(ssh.get_transport()) as scp:
@@ -82,3 +78,26 @@ def scp_default_video_from_tank():
 
 
 
+def scp_file_from_tank(tank_path, filename):
+    username = request.form.get('username')
+    password = request.form.get('password')
+    ssh = SSHClient()
+    ssh.load_system_host_keys()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    try:
+        ssh.connect(tank_hostname, username=username, password=password, look_for_keys=False)
+    except:
+        return errorchecker.upload_authentication_error()
+
+
+    try:
+        with SCPClient(ssh.get_transport()) as scp:
+            try:
+                scp.get(tank_path + '/' + filename, UPLOAD_DIRECTORY + '/', recursive=True)
+            except FileNotFoundError:
+                return errorchecker.upload_filenotfound_error(filename)
+
+    except:
+        return errorchecker.upload_authentication_error()
+
+    return main.list_files()

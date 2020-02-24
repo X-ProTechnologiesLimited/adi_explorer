@@ -122,7 +122,7 @@ def search_ingest_history(assetId):
 def search_all_files_checksum():
     filedetails = {}
     filedetails['files'] = []
-    for file in MEDIA_LIBRARY.query.all():
+    for file in MEDIA_LIBRARY.query.order_by(MEDIA_LIBRARY.id.desc()).all():
         filedetails['files'].append({
             'filename': file.filename,
             'checksum': file.checksum,

@@ -269,17 +269,29 @@ def post_files_post():
         image_group = request.form.get('image_group')
         checksum = checksum_creator(os.path.join(UPLOAD_DIRECTORY, file.filename))
         create_tar.add_supporting_files_to_db(file.filename, checksum, image_group)
-        return list_files()
+        return list_files_checksum()
     return render_template('upload_files.html')
 
-@main.route("/upload_to_tank")
+@main.route("/upload_to_tank", methods=["GET", "POST"])
 def upload_to_tank():
+    if request.method == "POST":
+        return copy_to_tank.scp_to_tank()
     return render_template('upload_to_tank.html')
 
-@main.route("/upload_to_tank", methods=['POST'])
-def upload_to_tank_post():
-    return copy_to_tank.scp_to_tank()
-
+@main.route("/download_from_tank", methods=["GET", "POST"])
+def download_from_tank():
+    if request.method == "POST":
+        filename = request.form.get('filename')
+        tank_path = request.form.get('tank_path')
+        image_group = request.form.get('image_group')
+        copy_to_tank.scp_file_from_tank(tank_path, filename)
+        try:
+            checksum = checksum_creator(os.path.join(UPLOAD_DIRECTORY, filename))
+        except FileNotFoundError:
+            return errorchecker.upload_filenotfound_error(filename)
+        create_tar.add_supporting_files_to_db(filename, checksum, image_group)
+        return list_files_checksum()
+    return render_template('upload_to_tank.html')
 
 
 ############# Admin and Delete Routes ################
@@ -305,26 +317,26 @@ def delete_file_post():
     return list_files()
 
 
-@main.route("/delete_asset")
+@main.route("/delete_asset", methods=["GET", "POST"])
 def delete_asset():
-    image_group_name = db.session.query(MEDIA_LIBRARY.image_group).distinct().filter(MEDIA_LIBRARY.image_group != 'None')
-    return render_template('delete_asset.html', image_group_name=image_group_name)
-
-@main.route("/delete_asset", methods=['POST'])
-def delete_asset_post():
     assetId = request.form.get('assetId')
-    try:
-        package = ADI_main.query.filter_by(assetId=assetId).first()
-        if package.adi_type == 'est_episode':
-            delete.delete_asset_est_episode(assetId)
-        elif package.adi_type == 'est_season' or package.adi_type == 'est_show':
-            delete.delete_asset_est_group(assetId)
-        else:
-            delete.delete_asset_standard(assetId)
+    image_group_name = db.session.query(MEDIA_LIBRARY.image_group).distinct().filter(
+        MEDIA_LIBRARY.image_group != 'None')
+    if request.method == "POST":
+        try:
+            package = ADI_main.query.filter_by(assetId=assetId).first()
+            if package.adi_type == 'est_episode':
+                delete.delete_asset_est_episode(assetId)
+            elif package.adi_type == 'est_season' or package.adi_type == 'est_show':
+                delete.delete_asset_est_group(assetId)
+            else:
+                delete.delete_asset_standard(assetId)
 
-        return response.asset_delete_success(assetId)
-    except:
-        return errorchecker.asset_not_found_id(assetId)
+            return response.asset_delete_success(assetId)
+        except:
+            return errorchecker.asset_not_found_id(assetId)
+
+    return render_template('delete_asset.html', image_group_name=image_group_name)
 
 
 @main.route("/view_default_config")
@@ -332,13 +344,11 @@ def view_default_config():
     return get_asset_details.get_default_config()
 
 
-@main.route("/update_default_config")
+@main.route("/update_default_config", methods=["GET", "POST"])
 def update_default_config():
+    if request.method == "POST":
+        return update_package.update_default_fields()
     return render_template('update_default_paths.html')
-
-@main.route("/update_default_config", methods=['POST'])
-def update_default_config_post():
-    return update_package.update_default_fields()
 
 
 ########### CONSULT OMDB Routes ##############

@@ -8,22 +8,21 @@
 
         <div class="mb-3 mt-3">
 
-          <h3 class="title">Upload New Video File</h3>
+          <h3 class="title">Upload Local Video File</h3>
 
           <div class="form-group mb-3">
             <div class="custom-file">
               <input type="file" class="custom-file-input" name="file_input" id="file_input" oninput="input_filename();">
             </div>
           </div>
-
-          <button onclick="upload('{{ request.url }}');" id="upload_btn" class="btn btn-primary">Upload</button>
+          <button onclick="upload('{{ request.url }}');" id="upload_btn" class="button is-block is-info is-medium is-fullwidth">Upload Video Files</button>
 
           <button class="btn btn-primary d-none" id="loading_btn" type="button" disabled>
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             Uploading...
           </button>
 
-          <button type="button" id="cancel_btn" class="btn btn-secondary d-none">Cancel upload</button>
+          <button type="button" id="cancel_btn" class="button is-block is-info is-medium is-fullwidth d-none">Cancel upload</button>
 
         </div>
 
@@ -145,7 +144,7 @@ function upload(url) {
 
     if (request.status == 200) {
 
-      document.location.href = "http://localhost:5000/files";
+      document.location.href = "http://localhost:5000/get_file_list_checksum";
 
     }
     else {
@@ -230,7 +229,7 @@ function reset() {
 <br>
 
 <div class="container">
-    <h3 class="title">Upload New Image File</h3>
+    <h3 class="title">Upload Local Image File</h3>
     <div class="box">
         <form method=post enctype=multipart/form-data>
             <div class="field">
@@ -250,12 +249,75 @@ function reset() {
                 <div id="myprogressBar"></div>
             </div>
             <br>
-            <button onclick="update()" class="button is-block is-info is-medium is-fullwidth">Upload Files</button>
+            <button onclick="update()" class="button is-block is-info is-medium is-fullwidth">Upload Image Files</button>
             <script>
             function update() {
                 var element = document.getElementById("myprogressBar");
                 var width = 1;
-                var identity = setInterval(scene, 10);
+                var identity = setInterval(scene, 2);
+                function scene() {
+                    if (width >= 99) {
+                        clearInterval(identity);
+                    } else {
+                    width++;
+                    element.style.width = width + '%';
+                    }
+                }
+            }
+            </script>
+        </form>
+    </div>
+</div>
+
+<br>
+<p></p>
+<br>
+<div class="container">
+    <h3 class="title">Download Media From Tank</h3>
+    <div class="box">
+        <form method="POST" action="/download_from_tank">
+            <p>Enter the Filename with Complete Path in Tank to Download From</p>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" name="filename" placeholder="Filename" autofocus="" autocomplete="off">
+                    <d>**</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" name="tank_path" placeholder="Full Tank Path" autofocus="" autocomplete="off">
+                    <d>**</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" name="image_group" placeholder="Image_Group" autofocus="" autocomplete="off">
+                    <d>Please specify Image Group Name for tagging the Image to a group(Only required for Images)</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" name="username" placeholder="Tank Username" autofocus="" autocomplete="off">
+                    <d>**</d>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="password" name="password" placeholder="Tank Password" autofocus="" required>
+                    <d>**</d>
+                </div>
+            </div>
+             <br>
+            <div id="Progress_Status_download">
+                <div id="myprogressBar_download"></div>
+            </div>
+            <br>
+            <button onclick="download()" class="button is-block is-info is-medium is-fullwidth">Download From Tank</button>
+            <script>
+            function download() {
+                var element = document.getElementById("myprogressBar_download");
+                var width = 1;
+                var identity = setInterval(scene, 200);
                 function scene() {
                     if (width >= 99) {
                         clearInterval(identity);
