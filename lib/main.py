@@ -278,6 +278,7 @@ def upload_to_tank():
         return copy_to_tank.scp_to_tank()
     return render_template('upload_to_tank.html')
 
+
 @main.route("/download_from_tank", methods=["GET", "POST"])
 def download_from_tank():
     if request.method == "POST":
@@ -285,11 +286,13 @@ def download_from_tank():
         tank_path = request.form.get('tank_path')
         image_group = request.form.get('image_group')
         copy_to_tank.scp_file_from_tank(tank_path, filename)
-        try:
-            checksum = checksum_creator(os.path.join(UPLOAD_DIRECTORY, filename))
-        except FileNotFoundError:
-            return errorchecker.upload_filenotfound_error(filename)
-        create_tar.add_supporting_files_to_db(filename, checksum, image_group)
+        files_to_copy = [f for f in os.listdir(UPLOAD_DIRECTORY) if f.startswith(filename[:-1])]
+        for item in files_to_copy:
+            try:
+                checksum = checksum_creator(os.path.join(UPLOAD_DIRECTORY, item))
+                create_tar.add_supporting_files_to_db(item, checksum, image_group)
+            except FileNotFoundError:
+                return errorchecker.upload_filenotfound_error(item)
         return list_files_checksum()
     return render_template('upload_to_tank.html')
 
@@ -382,6 +385,16 @@ def rating_guide():
 @main.route("/audio_guide")
 def audio_guide():
     return render_template('sky_audio_type.html')
+
+@main.route("/provider_guide")
+def provider_guide():
+    return render_template('sky_provider_guide.html')
+
+@main.route('/user_guide', methods=['GET', 'POST'])
+def user_guide():
+    return send_from_directory(directory=UPLOAD_DIRECTORY,
+                               filename='Asset_Generator_User_Guide.pdf',
+                               mimetype='application/pdf')
 
 
 ########## API Shutdown Route ####################

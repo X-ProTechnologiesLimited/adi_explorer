@@ -1,3 +1,6 @@
+# Filename create_est_order_type.py
+# This module is responsible for creating different order types (PreOrder/ComingSoon/Regular) for EST Assets
+
 from .models import ADI_offer
 from . import db
 from .est_show_params import est_show_default_params

@@ -1,8 +1,8 @@
 # Filename create_asset.py
-# This function creates the database entries for different type of assets
+# This module creates the database entries for different type of assets
 from flask import request
 import datetime, time
-from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, ADI_EST_Show, MEDIA_DEFAULT, EST_PO
+from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, ADI_EST_Show, MEDIA_DEFAULT
 from . import db, errorchecker, offerdate, response, movie_config, create_purchase_options, create_est_order_type
 from .sitemap_create import sitemap_mapper
 from .est_show_params import est_show_default_params
@@ -11,21 +11,22 @@ from .image_params import image_default_params
 
 # Call Parameter Functions - These are functions to load default parameter values unless supplied in request
 est_params = est_show_default_params()
-params = metadata_default_params()
-image_set = image_default_params()
-sitemap = sitemap_mapper()
+params = metadata_default_params()  # Checking Default Param Value if Form entry is null
+image_set = image_default_params()  # Image classification function
+sitemap = sitemap_mapper()  # Jinja template picker
 
 
-def create_single_title():
-    # This function creates database entries for all types of Single Titles
+def create_single_title():  # This function creates database entries for all types of Single Titles
     ts = time.time()
-    asset_timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d%H%M%S')
-    licenseEndTime = offerdate.offer_date(int(request.form.get('LicenseWindow')), 0)
-    offerStartTime = offerdate.offer_date(0, 0)
-    offerEndTime = offerdate.offer_date(int(request.form.get('offer_window')), 0)
+    # Getting values from HTML Form
+    asset_timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d%H%M%S')  # Setting current timestamp
+    licenseEndTime = offerdate.offer_date(int(request.form.get('LicenseWindow')), 0)  # Adding Window days from now
+    offerStartTime = offerdate.offer_date(0, 0)  # Setting Offer Start Time to now
+    offerEndTime = offerdate.offer_date(int(request.form.get('offer_window')), 0) # Adding Window days from now
     asset_type = request.form.get('asset_type')
-    if (asset_type not in movie_config.default_standard_package) and (asset_type not in movie_config.default_vrp_package):
-        return errorchecker.not_supported_asset_type(asset_type) # Asset type check
+    if (asset_type not in movie_config.default_standard_package) and \
+            (asset_type not in movie_config.default_vrp_package):
+        return errorchecker.not_supported_asset_type(asset_type)  # Asset type validation
     provider_id = request.form.get('provider_id')
     title = request.form.get('title')
     service_key = request.form.get('service_key')
@@ -33,7 +34,7 @@ def create_single_title():
     params.param_logic_entry(asset_type)
     params.genre_entry(asset_type)
     params.svod_episode_entry(request.form.get('svod_season_number'), request.form.get('svod_episode_number'),
-                              request.form.get('svod_total_episodes'), asset_type, title) # Only used for Episode Types
+                              request.form.get('svod_total_episodes'), asset_type, title)  # Only used for Episodes
     params.dpl_entry(request.form.get('dpl_asset_parts'), asset_type, asset_timestamp)
     params.movie_details_entry(provider_id, asset_type)
     params.video_type_entry(provider_id)
@@ -42,19 +43,21 @@ def create_single_title():
     image_set.image_entry(asset_type)
     path_default = MEDIA_DEFAULT.query.first()
 
-    if (service_key == "") and ('CATCHUP' in asset_type):
+    if (service_key == "") and ('CATCHUP' in asset_type):  # Catchup Missing Input Parameter Check
         return errorchecker.input_missing('service_key')
 
-    try:
+    try:  # Creating Dictionary for Database Entries
         new_package_main = ADI_main(assetId=asset_timestamp + '01', original_timestamp=asset_timestamp,
                                     adi_type=asset_type, provider_version=params.provider_version,
                                     provider_id=provider_id, multiformat_id=params.multiformat_id)
 
         new_package_meta = ADI_metadata(assetId=asset_timestamp + '01', title=title, par_rating=params.par_rating,
                                         subtitle_flag=params.subtitle_flag, audio_type=params.audio_type,
-                                        frame_rate=params.frame_rate, btc_rating=params.ca_btc, video_type=params.video_type,
-                                        synopsis=params.synopsis, production_year=params.production_year, genre=params.genre,
-                                        duration=params.runtime, title_filter='true', svod_episode_name=params.svod_episode_name,
+                                        frame_rate=params.frame_rate, btc_rating=params.ca_btc,
+                                        video_type=params.video_type,synopsis=params.synopsis,
+                                        production_year=params.production_year, genre=params.genre,
+                                        duration=params.runtime, title_filter='true',
+                                        svod_episode_name=params.svod_episode_name,
                                         svod_season_number=params.svod_season_number,
                                         svod_episode_number=params.svod_episode_number,
                                         svod_total_episodes=params.svod_total_episodes,
@@ -80,14 +83,13 @@ def create_single_title():
         db.session.add_all([new_package_main, new_package_meta, new_package_offer, new_package_media])
         db.session.commit()
 
-    except:
+    except:  # Handling DB error
         return errorchecker.internal_server_error()
 
     return response.asset_creation_success(asset_timestamp + '01', title)
 
 
-def create_est_show_adi():
-    # This function creates database entries for EST Shows (TV and Movie Box-Sets)
+def create_est_show_adi():  # This function creates database entries for EST Shows (TV and Movie Box-Sets)
     ts = time.time()
     asset_timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d%H%M%S')
     licenseEndTime = offerdate.offer_date(int(request.form.get('LicenseWindow')), 0)
@@ -114,9 +116,9 @@ def create_est_show_adi():
     show_new_package_meta = ADI_metadata(assetId=asset_timestamp + '00', title=title, par_rating=params.par_rating,
                                         btc_rating=params.ca_btc, synopsis=params.synopsis, title_filter='true')
 
-    show_new_package_group = ADI_EST_Show(assetId=asset_timestamp + '00', title=title, no_of_seasons=str(num_of_seasons),
-                                         season_number="", no_of_episodes="", episode_number="",
-                                          show_type=show_type, parent_group_id="")
+    show_new_package_group = ADI_EST_Show(assetId=asset_timestamp + '00', title=title,
+                                          no_of_seasons=str(num_of_seasons), season_number="", no_of_episodes="",
+                                          episode_number="", show_type=show_type, parent_group_id="")
 
     show_new_package_media = ADI_media(assetId=asset_timestamp + '00', image_url_1=image_set.image_1,
                                        video_path=path_default.default_video_path,
@@ -126,7 +128,7 @@ def create_est_show_adi():
                                        image_checksum_3=image_set.image_3_checksum, image_url_4=image_set.image_4,
                                        image_checksum_4=image_set.image_4_checksum)
 
-    # This function creates database entries for all the Seasons under the Show
+    # This section creates database entries for all the Seasons under the Show
     int_timestamp = int(asset_timestamp)
     for season in range(1, num_of_seasons+1):
         season_asset_id = str(int_timestamp + season)
@@ -136,8 +138,9 @@ def create_est_show_adi():
                                     adi_type='est_season', provider_version=params.provider_version,
                                     provider_id='est__season_hd')
 
-        season_new_package_meta = ADI_metadata(assetId=season_asset_id + '11', title=season_title, par_rating=params.par_rating,
-                                        btc_rating=params.ca_btc, synopsis=season_synopsis, title_filter='false')
+        season_new_package_meta = ADI_metadata(assetId=season_asset_id + '11', title=season_title,
+                                               par_rating=params.par_rating, btc_rating=params.ca_btc,
+                                               synopsis=season_synopsis, title_filter='false')
 
         season_new_package_offer = ADI_offer(assetId=season_asset_id + '11', offer_type=params.offer_type,
                                            offerStartTime=base_offerStartTime, offerEndTime=licenseEndTime,
@@ -145,9 +148,10 @@ def create_est_show_adi():
 
         season_new_package_group = ADI_EST_Show(assetId=season_asset_id + '11', title=season_title,  no_of_seasons="",
                                                 season_number=str(season), no_of_episodes=str(no_of_episodes),
-                                                episode_number="", show_type=show_type, parent_group_id=asset_timestamp + '00')
+                                                episode_number="", show_type=show_type,
+                                                parent_group_id=asset_timestamp + '00')
 
-        # This function creates database entries for all the Episodes under the Season
+        # This section creates database entries for all the Episodes under the Season
         for episode in range(1, no_of_episodes+1):
             path_default = MEDIA_DEFAULT.query.first()
             episode_asset_id = str(int_timestamp + (season*100) + episode)
@@ -159,12 +163,14 @@ def create_est_show_adi():
                                         adi_type='est_episode', provider_version=params.provider_version,
                                         provider_id=est_params.est_episode_provider)
 
-            episode_new_package_meta = ADI_metadata(assetId=episode_asset_id + '22', title=episode_title, par_rating=params.par_rating,
-                                            btc_rating=params.ca_btc, synopsis=episode_synopsis, title_filter='false')
+            episode_new_package_meta = ADI_metadata(assetId=episode_asset_id + '22', title=episode_title,
+                                                    par_rating=params.par_rating, btc_rating=params.ca_btc,
+                                                    synopsis=episode_synopsis, title_filter='false')
 
-            episode_new_package_group = ADI_EST_Show(assetId=episode_asset_id + '22', title=episode_title, no_of_seasons="",
-                                                     season_number=str(season), no_of_episodes="", episode_number=str(episode),
-                                                     show_type=show_type, parent_group_id=season_asset_id + '11')
+            episode_new_package_group = ADI_EST_Show(assetId=episode_asset_id + '22', title=episode_title,
+                                                     no_of_seasons="", season_number=str(season), no_of_episodes="",
+                                                     episode_number=str(episode), show_type=show_type,
+                                                     parent_group_id=season_asset_id + '11')
 
             episode_new_package_offer = ADI_offer(assetId=episode_asset_id + '22', offer_type=params.offer_type,
                                                  offerStartTime=base_offerStartTime, offerEndTime=licenseEndTime,
@@ -174,20 +180,27 @@ def create_est_show_adi():
                                                   video_path=path_default.default_video_path,
                                                   image_path=path_default.default_image_path,
                                                   movie_url=params.movie_url, movie_checksum=params.movie_checksum,
-                                                  trailer_url=params.trailer_file, trailer_checksum=params.trailer_checksum,
-                                                  image_url_1=image_set.image_1, image_checksum_1=image_set.image_1_checksum,
-                                                  image_url_2=image_set.image_2, image_checksum_2=image_set.image_2_checksum,
-                                                  image_url_3=image_set.image_3, image_checksum_3=image_set.image_3_checksum,
-                                                  image_url_4=image_set.image_4, image_checksum_4=image_set.image_4_checksum,
-                                                  image_url_5=image_set.image_5, image_checksum_5=image_set.image_5_checksum,
-                                                  image_url_6=image_set.image_6, image_checksum_6=image_set.image_6_checksum)
+                                                  trailer_url=params.trailer_file,
+                                                  trailer_checksum=params.trailer_checksum,
+                                                  image_url_1=image_set.image_1,
+                                                  image_checksum_1=image_set.image_1_checksum,
+                                                  image_url_2=image_set.image_2,
+                                                  image_checksum_2=image_set.image_2_checksum,
+                                                  image_url_3=image_set.image_3,
+                                                  image_checksum_3=image_set.image_3_checksum,
+                                                  image_url_4=image_set.image_4,
+                                                  image_checksum_4=image_set.image_4_checksum,
+                                                  image_url_5=image_set.image_5,
+                                                  image_checksum_5=image_set.image_5_checksum,
+                                                  image_url_6=image_set.image_6,
+                                                  image_checksum_6=image_set.image_6_checksum)
 
-            try:
+            try:  # Handling DB Transaction Error to add EST Episode. If not added, Seasons and Show not added too
                 db.session.add_all([episode_new_package_main, episode_new_package_meta, episode_new_package_meta,
                                     episode_new_package_group, episode_new_package_offer, episode_new_package_media])
                 db.session.commit()
 
-                try:
+                try:  # Handling DB Transaction Error to add EST Season. If not added, Show not added
                     db.session.add_all([season_new_package_main, season_new_package_meta, season_new_package_offer,
                                        season_new_package_group])
                     db.session.commit()
@@ -197,7 +210,7 @@ def create_est_show_adi():
             except:
                 errorchecker.internal_server_error_show('EST_EPISODE')
 
-    try:
+    try:  # Handling DB Transaction Error to add EST Show
         db.session.add_all([show_new_package_main, show_new_package_meta,
                             show_new_package_group, show_new_package_media])
         db.session.commit()
@@ -212,8 +225,7 @@ def create_est_show_adi():
     return response.asset_creation_success(asset_timestamp + '00', title)
 
 
-def create_est_title_adi():
-    # This function creates database entries for EST Single Titles
+def create_est_title_adi():  # This function creates database entries for EST Single Titles
     ts = time.time()
     asset_timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d%H%M%S')
     licenseEndTime = offerdate.offer_date(int(request.form.get('LicenseWindow')), 0)
@@ -239,9 +251,10 @@ def create_est_title_adi():
 
     new_package_meta = ADI_metadata(assetId=asset_timestamp + '01', title=title, par_rating=params.par_rating,
                                     subtitle_flag=params.subtitle_flag, audio_type=params.audio_type,
-                                    frame_rate=params.frame_rate, btc_rating=params.ca_btc, video_type=params.video_type,
-                                    synopsis=params.synopsis, production_year=params.production_year,
-                                    duration=params.runtime, title_filter='true')
+                                    frame_rate=params.frame_rate, btc_rating=params.ca_btc,
+                                    video_type=params.video_type, synopsis=params.synopsis,
+                                    production_year=params.production_year, duration=params.runtime,
+                                    title_filter='true')
 
     new_package_media = ADI_media(assetId=asset_timestamp + '01', video_path=path_default.default_video_path,
                                   image_path=path_default.default_image_path, movie_url=params.movie_url,
