@@ -4,7 +4,7 @@ template_dir = '../templates'
 static_dir = '../static'
 
 # Allowed Package Types
-default_standard_package = ['EST SINGLE TITLE', 'SVOD', 'RENTAL', 'CATCHUP VOD', 'CATCHUP EPISODE', 'SVOD EPISODE', 'DPL SVOD', 'DPL CATCHUP', 'DPL SVOD EPISODE', 'DPL CATCHUP EPISODE']
+default_standard_package = ['EST SINGLE TITLE', 'SVOD', 'RENTAL', 'CATCHUP VOD', 'CATCHUP EPISODE', 'SVOD EPISODE', 'DPL SVOD', 'DPL CATCHUP', 'DPL SVOD EPISODE', 'DPL CATCHUP EPISODE', 'SECONDARY']
 default_vrp_package = ['VRP SVOD', 'VRP PREMIUM VOD', 'VRP_RENTAL', 'VRP CATCHUP VOD', 'VRP CATCHUP EPISODE', 'VRP SVOD EPISODE', 'VRP DPL SVOD', 'VRP DPL CATCHUP', 'VRP DPL SVOD EPISODE', 'VRP DPL CATCHUP EPISODE']
 default_file_list = ['HDR_MOVIE.ts', 'HD_MOVIE.ts', '4K_SDR_MOVIE.ts', 'FinestHours_Trailer.ts', 'SD_2.5_min.ts', 'DPL_VIDEO_FILE.ts']
 

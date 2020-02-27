@@ -43,7 +43,8 @@
           <li><a>Update Package<span class="arrow-down"></span></a>
             <ul class="dropdown">
               <li><a href="{{ url_for('main.update_single_title') }}">Update Metadata</a></li>
-              <li><a href="{{ url_for('main.update_video') }}">Update Video</a></li>
+              <li><a href="{{ url_for('main.update_video', movie_type='movie') }}">Update Movie File</a></li>
+              <li><a href="{{ url_for('main.update_video', movie_type='trailer') }}">Update Trailer File</a></li>
             </ul>
           </li>
           <li><a>Ingest<span class="arrow-down"></span></a>

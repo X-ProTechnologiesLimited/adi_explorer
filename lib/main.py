@@ -165,11 +165,12 @@ def update_single_title():
     return render_template('update_single_title.html')
 
 
-@main.route('/update_video', methods=['GET', 'POST'])
-def update_video():
+@main.route('/update_video/<movie_type>', methods=['GET', 'POST'])
+def update_video(movie_type):
     if request.method == 'POST':
-        return update_package.update_asset_video()
-    return render_template('update_video.html')
+        return update_package.update_asset_video(movie_type)
+    return render_template('update_video.html', movie_type=movie_type)
+
 
 ########### Ingest and Post ADI Routes ############
 

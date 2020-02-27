@@ -146,6 +146,9 @@ def download_title(assetId):
                 template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms, cutv=cutv,
                                            dpl_items=dpl_items, dpl_base=dpl_base, media_items=media_items)
 
+        elif 'SECONDARY' in package_main.adi_type:
+            template = render_template(sitemap.sitemap, values=values, terms=terms, media_items=media_items)
+
         response = make_response(template)
         response.headers['Content-Type'] = 'application/xml'
         return response
@@ -284,8 +287,6 @@ def download_est_show(assetId):
         'par_rating': package_meta.par_rating,
         'btc_rating': package_meta.btc_rating,
         'asset_syn': package_meta.synopsis,
-        # 'offerStartDateTime': package_offer.offerStartTime,
-        # 'offerEndDateTime': package_offer.offerEndTime,
         'image_path': adicreate.image_path,
         })
 

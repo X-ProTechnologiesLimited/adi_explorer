@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+{% for val in values -%}
+<ADI3 xmlns="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1" xmlns:content="http://www.cablelabs.com/namespaces/metadata/xsd/content/1" xmlns:core="http://www.cablelabs.com/namespaces/metadata/xsd/core/1" xmlns:ext="URN:NNDS:CMS:ADI3:01" xmlns:offer="http://www.cablelabs.com/namespaces/metadata/xsd/offer/1" xmlns:vod30="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1" xmlns:terms="http://www.cablelabs.com/namespaces/metadata/xsd/terms/1" xmlns:title="http://www.cablelabs.com/namespaces/metadata/xsd/title/1">
+   <ContentGroup uriId="{{val.providerid}}/MAIN{{val.assetid}}01" providerVersionNum="{{val.provider_version}}" creationDateTime="2019-09-04T10:31:03Z" startDateTime="2019-09-04T10:31:03Z" endDateTime="{{val.licensetime}}">
+      <core:Ext>
+         <ext:ContentGroupType>AV</ext:ContentGroupType>
+         <ext:SecondaryContentRef uriId="{{val.providerid}}/SCTV{{val.assetid}}01" />
+      </core:Ext>
+      <offer:TitleRef uriId="{{val.providerid}}/TITL{{val.assetid}}01" />
+   </ContentGroup>
+   <Title uriId="{{val.providerid}}/TITL{{val.assetid}}01" providerVersionNum="{{val.provider_version}}" creationDateTime="2019-09-04T10:31:03Z" startDateTime="2019-09-04T10:31:03Z" endDateTime="{{val.licensetime}}">
+      <title:LocalizableTitle>
+         <title:TitleBrief>Secondary Brief Title</title:TitleBrief>
+         <title:TitleMedium>{{val.title}}</title:TitleMedium>
+         <title:TitleLong>Secondary Long Title</title:TitleLong>
+         <title:SummaryShort>{{val.asset_syn}}</title:SummaryShort>
+      </title:LocalizableTitle>
+      <title:Rating ratingSystem="BSkyBca">{{val.btc_rating}}</title:Rating>
+      <title:Rating ratingSystem="BSkyBsi">{{val.par_rating}}</title:Rating>
+      <title:DisplayRunTime>{{val.runtime}}</title:DisplayRunTime>
+      <title:Genre>0:0</title:Genre>
+      <title:ShowType>Other</title:ShowType>
+   </Title>
+   {% for media in media_items -%}
+   <Ext>
+      <ext:SecondaryContent uriId="{{val.providerid}}/SCTV{{val.assetid}}01" providerVersionNum="{{val.provider_version}}" creationDateTime="2019-09-04T10:31:03Z" startDateTime="2019-09-04T10:31:03Z" endDateTime="{{val.licensetime}}" conditionedFor="DPL">
+         <content:SourceUrl>{{val.movie_path}}{{val.movie_url}}</content:SourceUrl>
+         <content:ContentFileSize>100</content:ContentFileSize>
+         <content:ContentCheckSum>{{val.movie_checksum}}</content:ContentCheckSum>
+         <content:FrameRate>{{val.frame_rate}}</content:FrameRate>
+         <content:Duration>{{val.duration}}</content:Duration>
+         <ext:EncodingProfile>0x54402400</ext:EncodingProfile>
+         <ext:LinkedObject type="parentContent" object="MAIN{{val.assetid}}01" />
+      </ext:SecondaryContent>
+   </Ext>
+   {% endfor -%}
+   <Offer uriId="{{val.providerid}}/OFFR{{val.assetid}}01" providerVersionNum="{{val.provider_version}}" creationDateTime="2019-09-04T10:31:03Z" startDateTime="{{val.offerStartDateTime}}" endDateTime="{{val.offerEndDateTime}}">
+      <offer:BillingId>DUMMY</offer:BillingId>
+      <offer:TermsRef uriId="{{val.providerid}}/TERM{{val.assetid}}01" />
+      <offer:ContentGroupRef uriId="{{val.providerid}}/MAIN{{val.assetid}}01" />
+   </Offer>
+   <Terms uriId="{{val.providerid}}/TERM{{val.assetid}}01" providerVersionNum="{{val.provider_version}}" creationDateTime="2019-09-04T10:31:03Z" startDateTime="{{val.offerStartDateTime}}" endDateTime="{{val.offerEndDateTime}}">
+      <core:Ext>
+         {% for term in terms -%}
+         <ext:TermType>{{term.term_type}}</ext:TermType>
+         {% endfor -%}
+         <ext:platform>VT</ext:platform>
+      </core:Ext>
+      <terms:SuggestedPrice>0</terms:SuggestedPrice>
+   </Terms>
+  {% endfor -%}
+</ADI3>

@@ -52,18 +52,24 @@ def update_single_title():
         return errorchecker.asset_not_found_id(assetId)
 
 
-def update_asset_video():
+def update_asset_video(movie_type):
     assetId = request.form.get('AssetId')
-    movie_url = request.form.get('movie_url')
-    movie_checksum = request.form.get('movie_checksum')
+    filename = request.form.get('video_filename')
+    checksum = request.form.get('video_checksum')
     try:
         package = ADI_main.query.filter_by(assetId=assetId).first()
         provider_version = int(package.provider_version)
         updated_provider_version = (provider_version + 1)
-        package = ADI_media.query.filter_by(assetId=assetId).update(dict(movie_url=movie_url, movie_checksum=movie_checksum))
+        if movie_type == 'movie':
+            package = ADI_media.query.filter_by(assetId=assetId).update(
+                dict(movie_url=filename, movie_checksum=checksum))
+        else:
+            package = ADI_media.query.filter_by(assetId=assetId).update(
+                dict(trailer_url=filename, trailer_checksum=checksum))
+
         package = ADI_main.query.filter_by(assetId=assetId).update(dict(provider_version=str(updated_provider_version)))
         db.session.commit()
-        return response.asset_update_success(assetId, 'movie')
+        return response.asset_update_success(assetId, movie_type)
     except:
         return errorchecker.asset_not_found_id(assetId)
 

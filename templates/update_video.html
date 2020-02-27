@@ -4,9 +4,9 @@
 
 {% block content %}
 <div class="container">
-    <h3 class="title">Update Video</h3>
+    <h3 class="title">Update {{movie_type}} File</h3>
     <div class="box">
-        <form method="POST" action="/update_video">
+        <form method="POST" action="/update_video/{{movie_type}}">
             <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="AssetId" placeholder="Asset_ID" autofocus="" required>
@@ -15,19 +15,19 @@
             <br>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="text" name="movie_url" placeholder="Movie File URL" autofocus="" required>
+                    <input class="input is-large" type="text" name="video_filename" placeholder="{{movie_type}} filename" autofocus="" required>
                 </div>
             </div>
             <br>
 
                 <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="text" name="movie_checksum" placeholder="Movie_Checksum" autofocus="" required>
+                    <input class="input is-large" type="text" name="video_checksum" placeholder="{{movie_type}} checksum" autofocus="" required>
                 </div>
             </div>
             </div>
             <br>
-            <button class="button is-block is-info is-medium is-fullwidth">Update Video</button>
+            <button class="button is-block is-info is-medium is-fullwidth">Update {{movie_type}}</button>
         </form>
     </div>
 </div>

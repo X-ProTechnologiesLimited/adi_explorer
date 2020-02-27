@@ -114,6 +114,8 @@ class metadata_default_params(object):
                 self.movie_url = url_default.hd_movie_file
             elif 'DPL' in asset_type:
                 self.movie_url = url_default.dpl_movie_file
+            elif 'SECONDARY' in asset_type:
+                self.movie_url = url_default.trailer_file
             else:
                 self.movie_url = url_default.title_movie_file
         else:
