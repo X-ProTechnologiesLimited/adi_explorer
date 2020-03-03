@@ -20,9 +20,21 @@
                     <d>**</d>
                 </div>
             </div>
-            <p></p>
-
-            <button class="button is-block is-info is-medium is-fullwidth">Create VRP TAR File</button>
+            <br>
+            <button class="btn btn-primary d-none" id="creating_tar" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Creating Tar Package...
+            </button>
+            <br>
+            <button onclick="createtar();" id="create_tar" class="button is-block is-info is-medium is-fullwidth">Create VRP TAR File</button>
+            <div id="loader" class="d-none"></div>
+            <script>
+            function createtar() {
+             create_tar.classList.add("d-none");
+             loader.classList.remove("d-none");
+             creating_tar.classList.remove("d-none");
+            }
+        </script>
         </form>
     </div>
 </div>

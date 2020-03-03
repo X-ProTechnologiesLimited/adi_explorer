@@ -17,28 +17,23 @@
                     <d>**</d>
                 </div>
             </div>
-             <br>
-            <div id="Progress_Status">
-                <div id="myprogressBar"></div>
-            </div>
             <br>
-            <button onclick="update()" class="button is-block is-info is-medium is-fullwidth">Get From Tank</button>
+            <button class="btn btn-primary d-none" id="loading_btn" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Downloading...
+            </button>
+            <br>
+            <button onclick="update();" id="Tank_upload" class="button is-block is-info is-medium is-fullwidth">Get From Tank</button>
+            <div id="loader" class="d-none"></div>
             <script>
             function update() {
-                var element = document.getElementById("myprogressBar");
-                var width = 1;
-                var identity = setInterval(scene, 1500);
-                function scene() {
-                    if (width >= 99) {
-                        clearInterval(identity);
-                    } else {
-                    width++;
-                    element.style.width = width + '%';
-                    }
-                }
+             Tank_upload.classList.add("d-none");
+             loader.classList.remove("d-none");
+             loading_btn.classList.remove("d-none");
             }
-            </script>
+        </script>
         </form>
+        </div>
     </div>
 </div>
 {% endblock %}

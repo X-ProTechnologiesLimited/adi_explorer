@@ -12,7 +12,12 @@
                 </div>
             </div>
             <br>
-            <button class="button is-block is-info is-medium is-fullwidth">Download</button>
+            <button onclick="download()" id="download_btn" class="button is-block is-info is-medium is-fullwidth">Download</button>
+             <script>
+            function download() {
+               download_btn.classList.add("d-none");
+            }
+            </script>
         </form>
     </div>
 </div>

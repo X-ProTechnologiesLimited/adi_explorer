@@ -5,7 +5,7 @@ from .models import ADI_main, MEDIA_LIBRARY
 from bson.json_util import dumps
 from .metadata_params import metadata_default_params
 from . import db
-import os, time
+import os
 import hashlib
 import os.path
 from . import errorchecker, create_asset, search, get_asset_details, update_package, response, create_tar, movie_config
@@ -14,12 +14,12 @@ params = metadata_default_params()
 path_to_script = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_DIRECTORY = movie_config.premium_upload_dir
 VRP_PACKAGE_DIR = movie_config.premium_vrp_dir
+TEMPLATE_DIR = os.path.abspath(movie_config.template_dir)
 
 
 main = Blueprint('main', __name__)
 
 ######## Index and Defaults #########
-
 @main.route('/')
 def index():
     return render_template('index.html')
@@ -80,13 +80,12 @@ def create_est_single_title():
     return render_template('create_est_title.html', library=library, image_group_name=image_group_name)
 
 
-@main.route("/create_tar")
+@main.route("/create_tar", methods=['GET', 'POST'])
 def make_tarfile():
+    filename = request.form.get('filename')
+    if request.method == 'POST':
+        return create_tar.make_tarfile(filename)
     return render_template('create_tar.html')
-
-@main.route("/create_tar", methods=['POST'])
-def make_tarfile_post():
-    return create_tar.make_tarfile()
 
 
 ########### Search Asset Routes ##############

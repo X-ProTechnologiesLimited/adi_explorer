@@ -234,7 +234,7 @@ function reset() {
         <form method=post enctype=multipart/form-data>
             <div class="field">
                 <div class="control">
-                    <input class="input is-medium" type="file" name="file" placeholder="Path or Filename" autofocus="" required>
+                    <input class="input is-medium" type="file" name="file" id="file_new" placeholder="Path or Filename" autofocus="" required>
                 </div>
             </div>
             <br>
@@ -244,27 +244,20 @@ function reset() {
                     <d>Please specify Image Group Name for tagging the Image to a group(Only required for Images)</d>
                 </div>
             </div>
+            <button class="btn btn-primary d-none" id="loading_btn_new" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Uploading...
+            </button>
             <br>
-            <div id="Progress_Status">
-                <div id="myprogressBar"></div>
-            </div>
-            <br>
-            <button onclick="update()" class="button is-block is-info is-medium is-fullwidth">Upload Image Files</button>
+            <button onclick="update();" id="upload_btn_new" class="button is-block is-info is-medium is-fullwidth">Upload Image Files</button>
+<!--            <div id="loader" class="d-none"></div>-->
             <script>
             function update() {
-                var element = document.getElementById("myprogressBar");
-                var width = 1;
-                var identity = setInterval(scene, 2);
-                function scene() {
-                    if (width >= 99) {
-                        clearInterval(identity);
-                    } else {
-                    width++;
-                    element.style.width = width + '%';
-                    }
-                }
+                upload_btn_new.classList.add("d-none");
+<!--                loader.classList.remove("d-none");-->
+                loading_btn_new.classList.remove("d-none");
             }
-            </script>
+        </script>
         </form>
     </div>
 </div>
@@ -307,25 +300,17 @@ function reset() {
                     <d>**</d>
                 </div>
             </div>
-             <br>
-            <div id="Progress_Status_download">
-                <div id="myprogressBar_download"></div>
-            </div>
+            <button class="btn btn-primary d-none" id="loading_btn_download" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Downloading...
+            </button>
             <br>
-            <button onclick="download()" class="button is-block is-info is-medium is-fullwidth">Download From Tank</button>
+            <button onclick="download()" id="download_btn" class="button is-block is-info is-medium is-fullwidth">Download From Tank</button>
             <script>
             function download() {
-                var element = document.getElementById("myprogressBar_download");
-                var width = 1;
-                var identity = setInterval(scene, 200);
-                function scene() {
-                    if (width >= 99) {
-                        clearInterval(identity);
-                    } else {
-                    width++;
-                    element.style.width = width + '%';
-                    }
-                }
+               download_btn.classList.add("d-none");
+<!--               loader.classList.remove("d-none");-->
+               loading_btn_download.classList.remove("d-none");
             }
             </script>
         </form>

@@ -10,8 +10,8 @@ from sqlalchemy.exc import IntegrityError
 UPLOAD_DIRECTORY = movie_config.premium_upload_dir
 VRP_PACKAGE_DIR = movie_config.premium_vrp_dir
 
-def make_tarfile():
-    output_filename = request.form.get('filename')
+def make_tarfile(filename):
+    output_filename = filename
     assetId = request.form.get('assetId')
     package_media = ADI_media.query.filter_by(assetId=assetId).first()
     package = ADI_main.query.filter_by(assetId=assetId).first()
@@ -37,7 +37,7 @@ def make_tarfile():
         subprocess.call(['tar', '-C', UPLOAD_DIRECTORY, '-cf', tar_filename, media_map[0], media_map[1], media_map[2],
                          media_map[3], media_map[4], media_map[5], 'ADI.xml'])
 
-    return main.send_tar_file(output_filename)
+    return main.list_tar_files()
 
 
 def add_supporting_files_to_db(filename, checksum, group):
