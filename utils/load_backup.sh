@@ -1,2 +1,2 @@
 #!/bin/bash
-sqlite3 ../lib/db.sqlite < data.sql
+./sqlite3 ../lib/db.sqlite < data.sql
