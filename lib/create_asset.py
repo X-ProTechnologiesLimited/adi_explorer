@@ -1,5 +1,6 @@
 # Filename create_asset.py
 # This module creates the database entries for different type of assets
+from sqlalchemy.orm.session import make_transient
 from flask import request
 import datetime, time
 from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, ADI_EST_Show, MEDIA_DEFAULT
@@ -275,6 +276,51 @@ def create_est_title_adi():  # This function creates database entries for EST Si
 
 
     return response.asset_creation_success(asset_timestamp + '01', title)
+
+
+def clone_asset():
+    assetId = request.form.get('AssetId')
+    title = request.form.get('title')
+    ts = time.time()
+    asset_timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d%H%M%S')
+    package_main = ADI_main.query.filter_by(assetId=assetId).first()
+    if package_main.adi_type == 'EST SINGLE TITLE' or package_main.adi_type == 'est_show':
+        return errorchecker.not_supported_asset_type(package_main.adi_type)
+
+    package_media = ADI_media.query.filter_by(assetId=assetId).first()
+    package_meta = ADI_metadata.query.filter_by(assetId=assetId).first()
+    package_offer = ADI_offer.query.filter_by(assetId=assetId).first()
+
+    db.session.expunge(package_main)
+    make_transient(package_main)
+    package_main.assetId = asset_timestamp + '01'
+    package_main.original_timestamp = asset_timestamp
+    package_main.multiformat_id = 'BSKYPR' + asset_timestamp
+    package_main.id = None
+
+    db.session.expunge(package_meta)
+    make_transient(package_meta)
+    package_meta.assetId = asset_timestamp + '01'
+    package_meta.title = title
+    package_meta.id = None
+
+    db.session.expunge(package_media)
+    make_transient(package_media)
+    package_media.assetId = asset_timestamp + '01'
+    package_media.id = None
+
+    db.session.expunge(package_offer)
+    make_transient(package_offer)
+    package_offer.assetId = asset_timestamp + '01'
+    package_offer.id = None
+
+    db.session.add_all([package_main, package_offer, package_media, package_meta])
+    db.session.commit()
+    return 'success'
+
+
+
+
 
 
 

@@ -7,6 +7,7 @@ from . import response
 def update_single_title():
     assetId = request.form.get('AssetId')
     update_field = request.form.get('asset_field')
+    offerId = request.form.get('offerId')
     field_value = request.form.get('value')
     try:
         package = ADI_main.query.filter_by(assetId=assetId).first()
@@ -15,9 +16,15 @@ def update_single_title():
         elif update_field == 'synopsis':
             package = ADI_metadata.query.filter_by(assetId=assetId).update(dict(synopsis=field_value))
         elif update_field == 'offerStartTime':
-            package = ADI_offer.query.filter_by(assetId=assetId).update(dict(offerStartTime=field_value))
+            if package.adi_type == 'EST SINGLE TITLE' or package.adi_type == 'est_show':
+                package = ADI_offer.query.filter_by(est_offerId=offerId).update(dict(offerStartTime=field_value))
+            else:
+                package = ADI_offer.query.filter_by(assetId=assetId).update(dict(offerStartTime=field_value))
         elif update_field == 'offerEndTime':
-            package = ADI_offer.query.filter_by(assetId=assetId).update(dict(offerEndTime=field_value))
+            if package.adi_type == 'EST SINGLE TITLE' or package.adi_type == 'est_show':
+                package = ADI_offer.query.filter_by(est_offerId=offerId).update(dict(offerEndTime=field_value))
+            else:
+                package = ADI_offer.query.filter_by(assetId=assetId).update(dict(offerEndTime=field_value))
         elif update_field == 'licenseEndTime':
             package = ADI_offer.query.filter_by(assetId=assetId).update(dict(licenseEndTime=field_value))
         elif update_field == 'audio_type':

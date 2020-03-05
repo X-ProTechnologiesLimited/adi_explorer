@@ -22,11 +22,12 @@
           <li><a href="{{ url_for('main.index') }}">Home</a></li>
           <li><a>Create package<span class="arrow-down"></span></a>
             <ul class="dropdown">
-              <li><a href="{{ url_for('main.create_single_title_standard') }}">Standard Title</a></li>
-              <li><a href="{{ url_for('main.create_single_title_vrp') }}">VRP Single Title</a></li>
-              <li><a href="{{ url_for('main.create_est_show') }}">EST Box Set</a></li>
-              <li><a href="{{ url_for('main.create_est_single_title') }}">EST Single Title</a></li>
+              <li><a href="{{ url_for('main.create_single_title', package='Standard') }}">Standard Title</a></li>
+              <li><a href="{{ url_for('main.create_single_title', package='VRP') }}">VRP Single Title</a></li>
+              <li><a href="{{ url_for('main.create_est', package='show') }}">EST Box Set</a></li>
+              <li><a href="{{ url_for('main.create_est', package='single_title') }}">EST Single Title</a></li>
               <li><a href="{{ url_for('main.make_tarfile') }}">Create VRP Package</a></li>
+              <li><a href="{{ url_for('main.clone_adi') }}">Clone ADI</a></li>
             </ul>
           </li>
           <li><a>View<span class="arrow-down"></span></a>
@@ -72,11 +73,11 @@
           <li><a href="{{ url_for('main.consult_omdb') }}">OMDB</a></li>
           <li><a>Help<span class="arrow-down"></span></a>
             <ul class="dropdown">
-              <li><a href="{{ url_for('main.user_guide') }}" target="_blank">User Guide</a></li>
-              <li><a href="{{ url_for('main.genre_guide') }}">Genre Guide</a></li>
-              <li><a href="{{ url_for('main.rating_guide') }}">CA/SI Rating Guide</a></li>
-              <li><a href="{{ url_for('main.audio_guide') }}">AudioType Guide</a></li>
-              <li><a href="{{ url_for('main.provider_guide') }}">Provider Guide</a></li>
+              <li><a href="{{ url_for('main.help', guide_type='user_guide') }}" target="_blank">User Guide</a></li>
+              <li><a href="{{ url_for('main.help', guide_type='genre') }}">Genre Guide</a></li>
+              <li><a href="{{ url_for('main.help', guide_type='parental_rating') }}">CA/SI Rating Guide</a></li>
+              <li><a href="{{ url_for('main.help', guide_type='audio_type') }}">AudioType Guide</a></li>
+              <li><a href="{{ url_for('main.help', guide_type='provider_id') }}">Provider Guide</a></li>
             </ul>
           </li>
         </ul>

@@ -4,15 +4,15 @@
 <p>** Mandatory Fields. Optional fields populates default values as per 'config.properties' file. </p>
 {% block content %}
 <div class="container">
-    <h2 class="title">Create Standard ADI</h2>
+    <h2 class="title">Create {{package}} ADI</h2>
     <div class="box">
-        <form method="POST" action="/create_single_title_standard">
+        <form method="POST" action="/create_single_title/{{package}}">
 
             <h4>Licensing Section</h4>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" list="asset_type" name="asset_type" placeholder="Type of Asset"  autofocus="" autocomplete="off" required>
-                    <datalist id="asset_type">
+                    <input class="input is-large" list="{{package}}_asset_type" name="asset_type" placeholder="Type of Asset"  autofocus="" autocomplete="off" required>
+                    <datalist id="Standard_asset_type">
                       <option value="SVOD">
                       <option value="RENTAL">
                       <option value="CATCHUP VOD">
@@ -23,6 +23,19 @@
                       <option value="DPL SVOD EPISODE">
                       <option value="DPL CATCHUP EPISODE">
                       <option value="SECONDARY">
+                    </option>
+                    </datalist>
+                    <datalist id="VRP_asset_type">
+                      <option value="VRP SVOD">
+                      <option value="VRP PREMIUM VOD">
+                      <option value="VRP RENTAL">
+                      <option value="VRP CATCHUP VOD">
+                      <option value="VRP CATCHUP EPISODE">
+                      <option value="VRP SVOD EPISODE">
+                      <option value="VRP DPL SVOD">
+                      <option value="VRP DPL CATCHUP">
+                      <option value="VRP DPL SVOD EPISODE">
+                      <option value="VRP DPL CATCHUP EPISODE">
                     </option>
                     </datalist>
                     <d>**</d>

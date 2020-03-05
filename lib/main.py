@@ -1,7 +1,7 @@
 # main.py
 from flask import Blueprint, render_template, request, send_from_directory, flash, redirect, Response
 from .nocache import nocache
-from .models import ADI_main, MEDIA_LIBRARY
+from .models import ADI_main, MEDIA_LIBRARY, ADI_offer
 from bson.json_util import dumps
 from .metadata_params import metadata_default_params
 from . import db
@@ -36,48 +36,33 @@ def add_default_media():
 
 ######## Create Asset Routes #########
 
-@main.route('/create_single_title_standard', methods=['GET', 'POST'])
-def create_single_title_standard():
+@main.route('/create_single_title/<package>', methods=['GET', 'POST'])
+def create_single_title(package):
     video_filename = 'ts'
     search = "%{}%".format(video_filename)
     library = MEDIA_LIBRARY.query.filter(MEDIA_LIBRARY.filename.like(search))
     image_group_name = db.session.query(MEDIA_LIBRARY.image_group).distinct().filter(MEDIA_LIBRARY.image_group != 'None')
     if request.method == 'POST':
         return create_asset.create_single_title()
-    return render_template('create_single_title_standard.html', library=library, image_group_name=image_group_name)
+    return render_template('create_single_title.html', library=library, image_group_name=image_group_name, package=package)
 
 
-@main.route('/create_single_title_vrp', methods=['GET', 'POST'])
-def create_single_title_vrp():
+@main.route('/create_est/<package>', methods=['GET', 'POST'])
+def create_est(package):
     video_filename = 'ts'
     search = "%{}%".format(video_filename)
     library = MEDIA_LIBRARY.query.filter(MEDIA_LIBRARY.filename.like(search))
     image_group_name = db.session.query(MEDIA_LIBRARY.image_group).distinct().filter(MEDIA_LIBRARY.image_group != 'None')
-    if request.method == 'POST':
-        return create_asset.create_single_title()
-    return render_template('create_single_title_vrp.html', library=library, image_group_name=image_group_name)
-
-
-@main.route('/create_est_show', methods=['GET', 'POST'])
-def create_est_show():
-    video_filename = 'ts'
-    search = "%{}%".format(video_filename)
-    library = MEDIA_LIBRARY.query.filter(MEDIA_LIBRARY.filename.like(search))
-    image_group_name = db.session.query(MEDIA_LIBRARY.image_group).distinct().filter(MEDIA_LIBRARY.image_group != 'None')
-    if request.method == 'POST':
-        return create_asset.create_est_show_adi()
-    return render_template('create_box_set.html', library=library, image_group_name=image_group_name)
-
-
-@main.route('/create_est_single_title', methods=['GET', 'POST'])
-def create_est_single_title():
-    video_filename = 'ts'
-    search = "%{}%".format(video_filename)
-    library = MEDIA_LIBRARY.query.filter(MEDIA_LIBRARY.filename.like(search))
-    image_group_name = db.session.query(MEDIA_LIBRARY.image_group).distinct().filter(MEDIA_LIBRARY.image_group != 'None')
-    if request.method == 'POST':
-        return create_asset.create_est_title_adi()
-    return render_template('create_est_title.html', library=library, image_group_name=image_group_name)
+    if package == 'show':
+        if request.method == 'POST':
+            return create_asset.create_est_show_adi()
+        return render_template('create_box_set.html', library=library, image_group_name=image_group_name)
+    elif package == 'single_title':
+        if request.method == 'POST':
+            return create_asset.create_est_title_adi()
+        return render_template('create_est_title.html', library=library, image_group_name=image_group_name)
+    else:
+        return errorchecker.not_supported_asset_type(package)
 
 
 @main.route("/create_tar", methods=['GET', 'POST'])
@@ -86,6 +71,13 @@ def make_tarfile():
     if request.method == 'POST':
         return create_tar.make_tarfile(filename)
     return render_template('create_tar.html')
+
+@main.route("/clone_adi", methods=['GET', 'POST'])
+def clone_adi():
+    if request.method == 'POST':
+        return create_asset.clone_asset()
+    return render_template('clone_adi.html')
+
 
 
 ########### Search Asset Routes ##############
@@ -374,27 +366,20 @@ def omdb_image_create():
 
 ############# HELP and GUIDE Routes ##############
 
-@main.route("/genre_guide")
-def genre_guide():
-    return render_template('sky_genre.html')
-
-@main.route("/rating_guide")
-def rating_guide():
-    return render_template('sky_rating.html')
-
-@main.route("/audio_guide")
-def audio_guide():
-    return render_template('sky_audio_type.html')
-
-@main.route("/provider_guide")
-def provider_guide():
-    return render_template('sky_provider_guide.html')
-
-@main.route('/user_guide', methods=['GET', 'POST'])
-def user_guide():
-    return send_from_directory(directory=UPLOAD_DIRECTORY,
-                               filename='Asset_Generator_User_Guide.pdf',
-                               mimetype='application/pdf')
+@main.route("/help/<guide_type>")
+def help(guide_type):
+    if guide_type == 'genre':
+        return render_template('sky_genre.html')
+    elif guide_type == 'parental_rating':
+        return render_template('sky_rating.html')
+    elif guide_type == 'audio_type':
+        return render_template('sky_audio_type.html')
+    elif guide_type =='provider_id':
+        return render_template('sky_provider_guide.html')
+    elif guide_type =='user_guide':
+        return send_from_directory(directory=UPLOAD_DIRECTORY,
+                                   filename='Asset_Generator_User_Guide.pdf',
+                                   mimetype='application/pdf')
 
 
 ########## API Shutdown Route ####################

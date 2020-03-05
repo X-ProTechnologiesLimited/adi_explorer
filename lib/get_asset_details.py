@@ -517,7 +517,7 @@ def post_adi_endpoint():
     environment = request.form.get('environment')
     params.environment_entry(environment)
     source = request.form.get('source')
-    endpoint_url = params.environment_url + 'source=' + source + '&conversationId=' + conversationId
+    endpoint_url = params.environment_url + 'source=' + source + '&conversationId=1' + conversationId
     headers = {'Content-type': 'text/xml; charset=UTF-8'}
     if 'file' not in request.files and request.form.get('assetId') == "":
         return errorchecker.input_missing('AssetId or ADI Filename')
@@ -535,12 +535,12 @@ def post_adi_endpoint():
                 post_response['Status'] = '200'
                 post_response['Message'] = file.filename + ' ingested successfully'
                 post_response['Endpoint'] = endpoint_url
-                post_response['ConversationId'] = conversationId
+                post_response['ConversationId'] = '1' + conversationId
                 post_response['Endpoint_Response'] = response_post_adi.text
             except:
                 post_response['Status'] = '404'
                 post_response['Message'] = 'Error connecting to Endpoint: ' + endpoint_url
-                post_response['ConversationId'] = conversationId
+                post_response['ConversationId'] = '1' + conversationId
 
             json_data = dumps(post_response)
             return response.asset_retrieve(json_data)
@@ -563,18 +563,18 @@ def post_adi_endpoint():
                 post_response['Status'] = '200'
                 post_response['Message'] = 'AssetID: ' + assetId_db + ' ingested successfully'
                 post_response['Endpoint'] = endpoint_url
-                post_response['ConversationId'] = conversationId
+                post_response['ConversationId'] = '1' + conversationId
                 post_response['Endpoint_Response'] = response_post_adi.text
                 package = ADI_main.query.filter_by(assetId=assetId).first()
                 ingest_response = ADI_INGEST_HISTORY(assetId=assetId, provider_version=package.provider_version,
-                                                     environment=environment, conversationId=conversationId,
+                                                     environment=environment, conversationId='1' + conversationId,
                                                      ingest_timestamp=ingest_timestamp)
                 db.session.add(ingest_response)
                 db.session.commit()
             except:
                 post_response['Status'] = '404'
                 post_response['Message'] = 'Error connecting to Endpoint: ' + endpoint_url
-                post_response['ConversationId'] = conversationId
+                post_response['ConversationId'] = '1' + conversationId
 
             json_data = dumps(post_response)
             return response.asset_retrieve(json_data)

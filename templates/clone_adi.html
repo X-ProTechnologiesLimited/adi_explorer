@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h3 class="title">Clone ADI</h3>
+    <div class="box">
+        <form method="POST" action="/clone_adi">
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="AssetId" placeholder="Original AssetId" autofocus="" required>
+                    <d>**</d>
+                </div>
+            </div>
+            <br>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="title" placeholder="Cloned Asset Title" autofocus="" required>
+                    <d>**</d>
+                </div>
+            </div>
+            <br>
+            <button class="button is-block is-info is-medium is-fullwidth">Clone ADI</button>
+             <script>
+        </form>
+    </div>
+</div>
+{% endblock %}

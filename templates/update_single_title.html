@@ -15,7 +15,7 @@
             <br>
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" list="atype" name="asset_field" placeholder="Update Field" autofocus="" required>
+                    <input class="input is-large" onmousedown="this.value='';" list="atype" name="asset_field" placeholder="Update Field" autofocus="" onchange="jsFunction(this.value);" required>
                     <datalist id="atype">
                       <option value="title">
                       <option value="synopsis">
@@ -33,10 +33,34 @@
                     </option>
                     </datalist>
                 </div>
+                <script type="text/javascript">
+                function jsFunction(value)
+                    {
+                    if (value == 'offerStartTime' || value == 'offerEndTime')
+                    {
+                      offers.classList.remove("d-none");
+                      offer_guide.classList.remove("d-none");
+                      format_guide.classList.remove("d-none");
+                      alert("Make sure you enter the offerId for EST Assets");
+                    }
+                    else if (value == 'licenseEndTime')
+                    {
+                    format_guide.classList.remove("d-none");
+                    }
+                    }
+                </script>
+                <br>
+                <div class="field">
+                <div class="control">
+                    <input class="input is-large d-none" id="offers" type="text" name="offerId" placeholder="Offer_ID" autofocus="">
+                    <d id="offer_guide" class="d-none"> Please specify the OfferId for EST Assets Only. Use View > Get EST Offers for IDs. </d>
+                </div>
+                </div>
                 <br>
                 <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="value" placeholder="Field_Value" autofocus="" required>
+                    <d id="format_guide" class="d-none"> Please use format: YYYY-MM-DDTHH:MM:SSZ</d>
                 </div>
             </div>
             </div>

@@ -54,7 +54,7 @@ def internal_server_error_show(show_type):
 def not_supported_asset_type(asset_type):
     message = {
             'status': 502,
-            'message': 'Asset Type: ' + asset_type + ' is not supported yet'
+            'message': 'Asset Type: ' + asset_type + ' is not supported for this operation'
         }
     return error_response_creator(message)
 
