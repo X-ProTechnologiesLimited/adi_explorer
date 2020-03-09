@@ -36,15 +36,15 @@ il_std_price = '8.95'
 il_vip_price = '7.95'
 
 # ADI POST Endpoint Parameters
-ts1_cms = 'http://localhost:14231/gateway/submit?'
+ts1_cms = 'http://10.81.24.32:14231/gateway/submit?'
 ts1_vms = 'http://chipdlvwebt01.broadcast.bskyb.com/opencase/ContentProcessor/resource/rest/triggerworkflow?'
-ts2_cms = 'http://localhost:14231/gateway/submit?'
+ts2_cms = 'http://10.81.24.33:14231/gateway/submit?'
 ts2_vms = 'http://chipdlvwebt03.broadcast.bskyb.com/opencase/ContentProcessor/resource/rest/triggerworkflow?'
-ts3_cms = 'http://localhost:14231/gateway/submit?'
+ts3_cms = 'http://10.81.24.2:14231/gateway/submit?'
 ts3_vms = 'http://10.83.6.7/opencase/ContentProcessor/resource/rest/triggerworkflow?'
-ts4_cms = 'http://localhost:14231/gateway/submit?'
+ts4_cms = 'http://10.81.24.214:14231/gateway/submit?'
 ts4_vms = 'http://chipdlvinstt03.broadcast.bskyb.com/opencase/ContentProcessor/resource/rest/triggerworkflow?'
-stage_cms = 'http://localhost:14231/gateway/submit?'
+stage_cms = 'http://10.81.24.73:14231/gateway/submit?'
 stage_vms = 'http://vmswkflowapt01.broadcast.bskyb.com/opencase/ContentProcessor/resource/rest/triggerworkflow?'
 
 # TAR DIRECTORIES

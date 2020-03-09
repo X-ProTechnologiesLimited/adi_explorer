@@ -164,7 +164,7 @@ class metadata_default_params(object):
             if svod_total_episodes != "":
                 self.svod_total_episodes = svod_total_episodes
             else:
-                self.svod_total_episodes = svod_episode_number
+                self.svod_total_episodes = self.svod_episode_number
 
             self.svod_episode_name = title + ',S:' + self.svod_season_number + ',Ep:' + self.svod_episode_number
 

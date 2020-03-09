@@ -316,7 +316,7 @@ def clone_asset():
 
     db.session.add_all([package_main, package_offer, package_media, package_meta])
     db.session.commit()
-    return 'success'
+    return response.asset_creation_success(asset_timestamp + '01', title)
 
 
 
