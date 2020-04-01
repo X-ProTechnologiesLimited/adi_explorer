@@ -59,10 +59,10 @@ def asset_creation_success(assetId, title):
     return response_creator(message)
 
 
-def file_upload_successful(filename, environment):
+def file_upload_successful(filename):
     message = {
             'status': 200,
-            'message': 'Filename: ' + filename + ' uploaded successfully to ' + environment + ' location of tank'
+            'message': 'Filename: ' + filename + ' uploaded successfully'
         }
     return response_creator(message)
 

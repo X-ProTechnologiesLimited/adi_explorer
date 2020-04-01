@@ -19,6 +19,30 @@ def progress(filename, size, sent):
 def progress4(filename, size, sent, peername):
     sys.stdout.write("(%s:%s) %s\'s progress: %.2f%%   \r" % (peername[0], peername[1], filename, float(sent)/float(size)*100) )
 
+def scp_to_jump():
+    filename = request.form.get('filename')
+    jump_host = request.form.get('hostname')
+    username = request.form.get('username')
+    password = request.form.get('password')
+    ssh = SSHClient()
+    ssh.load_system_host_keys()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    try:
+        ssh.connect(jump_host, username=username, password=password, look_for_keys=False)
+    except:
+        return errorchecker.upload_authentication_error()
+
+    try:
+        with SCPClient(ssh.get_transport()) as scp:
+            try:
+                scp.put(VRP_DIRECTORY + '/' + filename, recursive=True, remote_path='/tmp')
+                return response.file_upload_successful(filename)
+            except FileNotFoundError:
+                return errorchecker.upload_filenotfound_error(filename)
+
+    except:
+        return errorchecker.upload_authentication_error()
+
 
 def scp_to_tank():  # This function copies files from tool library to Tank
     # Taking inputs from Form
@@ -46,13 +70,13 @@ def scp_to_tank():  # This function copies files from tool library to Tank
             if file_type == 'VRP TAR':
                 try:
                     scp.put(VRP_DIRECTORY + '/' + filename, recursive=True, remote_path=tank_params.tank_path)
-                    return response.file_upload_successful(filename, environment)
+                    return response.file_upload_successful(filename)
                 except FileNotFoundError:
                     return errorchecker.upload_filenotfound_error(filename)
             elif file_type == 'Video':
                 try:
                     scp.put(UPLOAD_DIRECTORY + '/' + filename, recursive=True, remote_path=tank_params.tank_path)
-                    return response.file_upload_successful(filename,environment)
+                    return response.file_upload_successful(filename)
                 except FileNotFoundError:
                     return errorchecker.upload_filenotfound_error(filename)
             else:
@@ -62,7 +86,7 @@ def scp_to_tank():  # This function copies files from tool library to Tank
                     except FileNotFoundError:
                         return errorchecker.upload_filenotfound_error(item)
 
-                return response.file_upload_successful(item, environment)
+                return response.file_upload_successful(item)
     except:
         return errorchecker.upload_authentication_error()
 

@@ -12,27 +12,39 @@ def search_by_title():
     adi_data = {}
     adi_data['packages'] = []
     search = "%{}%".format(title_uncoded)
-    for package in ADI_metadata.query.filter(or_(ADI_metadata.title.like(search)), (ADI_metadata.title_filter == 'true')).all():
+    title_search = ADI_metadata.query.filter(or_(ADI_metadata.title.like(search)),
+                                                  (ADI_metadata.title_filter == 'true')).count()
+    id_search = ADI_main.query.filter(ADI_main.assetId == title).count()
+
+    if title_search == 0 and id_search == 0:
+        return errorchecker.not_matched_criteria()
+    elif title_search == 0:
+        matched_items = ADI_main.query.filter(ADI_main.assetId == title).all()
+        adi_data['total'] = ADI_main.query.filter(ADI_main.assetId == title).count()
+    elif id_search == 0:
+        matched_items = ADI_metadata.query.filter(or_(ADI_metadata.title.like(search)),
+                                                  (ADI_metadata.title_filter == 'true')).all()
+        adi_data['total'] = ADI_metadata.query.filter(or_(ADI_metadata.title.like(search)),
+                                                       (ADI_metadata.title_filter == 'true')).count()
+
+
+    for package in matched_items:
         package_main = ADI_main.query.filter_by(assetId=package.assetId).first()
         package_offer = ADI_offer.query.filter_by(assetId=package.assetId).first()
+        package_meta = ADI_metadata.query.filter_by(assetId=package.assetId).first()
         adi_data['packages'].append({
-            'title': package.title,
-            'assetId': package.assetId,
+            'title': package_meta.title,
+            'assetId': package_main.assetId,
             'package_type': package_main.adi_type,
             'providerVersionNum': package_main.provider_version,
             'providerId': package_main.provider_id,
             'offerEndDateTime': package_offer.offerEndTime,
             'multiformat_id': package_main.multiformat_id
         })
-
-    adi_data['total'] = ADI_metadata.query.filter(or_(ADI_metadata.title.like(search)), (ADI_metadata.title_filter == 'true')).count()
-
-    if adi_data['total'] == 0:  # If no ADI found
-        return errorchecker.not_matched_criteria()
-    else:
-        json_data = dumps(adi_data)
+    json_data = dumps(adi_data)
 
     return response.asset_retrieve(json_data)
+
 
 
 def search_all_packages():

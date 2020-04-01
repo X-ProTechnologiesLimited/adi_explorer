@@ -146,6 +146,13 @@ def get_est_offers():
         return get_asset_details.get_est_offers(assetId)
     return render_template('asset_info.html', title='Get EST Offers', action='/get_est_offers')
 
+@main.route("/download_box_set", methods=["GET", "POST"])
+def download_box_set():
+    assetId = request.form.get('AssetId')
+    if request.method == "POST":
+        return create_tar.create_est_show_zip(assetId)
+    return render_template('asset_info.html', title='Download Show', action='/download_box_set')
+
 
 ######## Update Asset Routes #################
 
@@ -214,7 +221,8 @@ def list_files_checksum():
 def list_tar_files():
     """Endpoint to list files on the server."""
     files = []
-    for filename in os.listdir(VRP_PACKAGE_DIR):
+    tar_files = [f for f in os.listdir(VRP_PACKAGE_DIR) if f.endswith('tar')]
+    for filename in tar_files:
         path = os.path.join(VRP_PACKAGE_DIR, filename)
         if os.path.isfile(path):
             files.append(filename)
@@ -269,6 +277,12 @@ def upload_to_tank():
     if request.method == "POST":
         return copy_to_tank.scp_to_tank()
     return render_template('upload_to_tank.html')
+
+@main.route("/upload_to_jump", methods=["GET", "POST"])
+def upload_to_jump():
+    if request.method == "POST":
+        return copy_to_tank.scp_to_jump()
+    return render_template('upload_to_jump.html')
 
 
 @main.route("/download_from_tank", methods=["GET", "POST"])

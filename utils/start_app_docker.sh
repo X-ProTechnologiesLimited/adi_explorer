@@ -18,7 +18,7 @@ mkdir -p $PROJECT_DIR/logs
 mkdir -p $PROJECT_DIR/supp_files
 mkdir -p $PROJECT_DIR/created_package
 mkdir -p $PROJECT_DIR/OMDB_Images
-
+mkdir -p $PROJECT_DIR/temp_adi
 
 echo "Starting the ADI Manager App..."
 echo "Starting the ADI Manager App..." >> $PROJECT_DIR/logs/$filename

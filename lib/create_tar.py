@@ -1,14 +1,22 @@
 from . import main, db
 import subprocess
-from flask import request
-import requests
+from flask import request, send_from_directory
+import requests, shutil, os
 from . import movie_config
-from .models import ADI_main, MEDIA_LIBRARY, ADI_media, MEDIA_DEFAULT
+from .models import ADI_main, MEDIA_LIBRARY, ADI_media, ADI_EST_Show, ADI_metadata
 from . import errorchecker
 from sqlalchemy.exc import IntegrityError
 
 UPLOAD_DIRECTORY = movie_config.premium_upload_dir
 VRP_PACKAGE_DIR = movie_config.premium_vrp_dir
+
+def get_adi_xml(assetId, xml_file):
+    my_filename = movie_config.adi_xml_dir + '/' + xml_file
+    get_adi_url = 'http://localhost:5000/get_adi/' + assetId
+    response_adi = requests.get(url=get_adi_url)
+    with open(my_filename, 'w') as f:
+        f.write(response_adi.text)
+
 
 def make_tarfile(filename):
     output_filename = filename
@@ -48,3 +56,21 @@ def add_supporting_files_to_db(filename, checksum, group):
     except IntegrityError:
         db.session.rollback()
         return errorchecker.file_already_uploaded(filename)
+
+
+def create_est_show_zip(show_asset_id):
+    get_adi_xml(show_asset_id, 'Show.xml')
+    show_data = ADI_metadata.query.filter(ADI_metadata.assetId == show_asset_id).first()
+    show_title = ''.join(show_data.title.split())
+    for season in ADI_EST_Show.query.filter(ADI_EST_Show.parent_group_id == show_asset_id).all():
+        get_adi_xml(season.assetId, 'Season' + season.season_number + '.xml')
+        for episodes in ADI_EST_Show.query.filter(ADI_EST_Show.parent_group_id == season.assetId).all():
+            get_adi_xml(episodes.assetId, 'S' + season.season_number + 'Ep' + episodes.episode_number + '.xml')
+
+    shutil.make_archive(movie_config.premium_vrp_dir + '/Show_' + show_title, 'zip', movie_config.adi_xml_dir)
+    adi_files = [f for f in os.listdir(movie_config.adi_xml_dir) if f.endswith('xml')]
+    for item in adi_files:
+        os.remove(os.path.join(movie_config.adi_xml_dir, item))
+    return send_from_directory(VRP_PACKAGE_DIR, 'Show_' + show_title + '.zip', as_attachment=True)
+
+
