@@ -1,5 +1,3 @@
-from . import movie_config
-from . import errorchecker
 class sitemap_mapper(object):
 
     def __init__(self):

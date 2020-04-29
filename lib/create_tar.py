@@ -1,10 +1,7 @@
-from . import main, db
-import subprocess
+import requests, shutil, os, subprocess
 from flask import request, send_from_directory
-import requests, shutil, os
-from . import movie_config
+from . import movie_config, main, db, errorchecker
 from .models import ADI_main, MEDIA_LIBRARY, ADI_media, ADI_EST_Show, ADI_metadata
-from . import errorchecker
 from sqlalchemy.exc import IntegrityError
 
 UPLOAD_DIRECTORY = movie_config.premium_upload_dir

@@ -9,6 +9,7 @@ class ADI_main(db.Model):
     provider_version = db.Column(db.String(100))
     provider_id = db.Column(db.String(100))
     multiformat_id = db.Column(db.String(100))
+    is_deleted = db.Column(db.String(10))
 
 class ADI_metadata(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy

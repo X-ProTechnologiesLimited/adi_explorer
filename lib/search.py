@@ -1,9 +1,8 @@
+import urllib.parse
 from flask import request
 from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, ADI_EST_Show, ADI_INGEST_HISTORY, MEDIA_LIBRARY
-from . import errorchecker
-import urllib.parse
+from . import errorchecker, response
 from bson.json_util import dumps
-from . import response
 from sqlalchemy import or_, and_
 
 def search_by_title():

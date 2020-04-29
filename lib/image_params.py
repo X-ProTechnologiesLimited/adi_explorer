@@ -1,5 +1,3 @@
-from . import movie_config
-from . import errorchecker
 from flask import request
 from .models import MEDIA_LIBRARY, MEDIA_DEFAULT
 class image_default_params(object):

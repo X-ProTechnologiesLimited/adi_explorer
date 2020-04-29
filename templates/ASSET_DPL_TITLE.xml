@@ -6,7 +6,7 @@
           xmlns:terms="http://www.cablelabs.com/namespaces/metadata/xsd/terms/1"
           xmlns:title="http://www.cablelabs.com/namespaces/metadata/xsd/title/1"
           xmlns:vod30="http://www.cablelabs.com/namespaces/metadata/xsd/vod30/1"
-          xmlns:ext="URN:NNDS:CMS:ADI3:01">
+          xmlns:ext="URN:NNDS:CMS:ADI3:01" {% for del in delete -%} delete="{{del.delete_flag}}" {% endfor -%}>
    {% for val in values -%}
    <adi:ContentGroup uriId="{{val.providerid}}/UKTV{{val.assetid}}01" providerVersionNum="{{val.provider_version}}"
                      creationDateTime="2019-12-04T16:01:57Z"

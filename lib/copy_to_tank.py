@@ -1,23 +1,18 @@
 # Filename copy_to_tank.py
 # This module allows the file transfer between the tool and the tank
 
-import paramiko, os, sys
+import paramiko, os
 from paramiko import SSHClient
 from scp import SCPClient
 from . import movie_config, response, errorchecker, main
 from .metadata_params import metadata_default_params
 from flask import request
+
 # Setting up the file transfer directories
 UPLOAD_DIRECTORY = movie_config.premium_upload_dir
 VRP_DIRECTORY = movie_config.premium_vrp_dir
 tank_params = metadata_default_params()
 tank_hostname = movie_config.tank_host
-
-def progress(filename, size, sent):
-    sys.stdout.write("%s\'s progress: %.2f%%   \r" % (filename, float(sent)/float(size)*100) )
-
-def progress4(filename, size, sent, peername):
-    sys.stdout.write("(%s:%s) %s\'s progress: %.2f%%   \r" % (peername[0], peername[1], filename, float(sent)/float(size)*100) )
 
 def scp_to_jump():
     filename = request.form.get('filename')

@@ -1,16 +1,11 @@
+import datetime, time, requests, os
 from flask import Blueprint, render_template, make_response, request
 from .models import ADI_main, ADI_media, ADI_metadata, ADI_offer, ADI_EST_Show, ADI_INGEST_HISTORY, MEDIA_DEFAULT, EST_PO
-from . import movie_config
+from . import movie_config, response, errorchecker, db
 from .sitemap_create import sitemap_mapper
 from bson.json_util import dumps
-from . import response
-import datetime, time
 from .metadata_params import metadata_default_params
 from .load_adi_logic import adi_package_logic
-from . import errorchecker
-import requests
-import os
-from . import db
 path_to_script = os.path.dirname(os.path.abspath(__file__))
 params = metadata_default_params()
 sitemap = sitemap_mapper()
@@ -101,6 +96,14 @@ def download_title(assetId):
             'subtitle_flag': package_meta.subtitle_flag,
         })
 
+        if package_main.is_deleted == "true":
+            delete = []
+            delete.append({
+                'delete_flag': 'true',
+            })
+        else:
+            delete = ""
+
         if 'DPL' in package_main.adi_type:
             dpl_base = []
             dpl_base.append({
@@ -117,37 +120,37 @@ def download_title(assetId):
         if 'EPISODE' not in package_main.adi_type and 'CATCHUP' not in package_main.adi_type:
             if 'DPL' not in package_main.adi_type and package_meta.subtitle_flag == 'true':
                 template = render_template(sitemap.sitemap, values=values, vodextensions=vodextensions, terms=terms,
-                                           subtitle=subtitle, media_items=media_items)
+                                           subtitle=subtitle, media_items=media_items, delete=delete)
             elif 'DPL' not in package_main.adi_type and package_meta.subtitle_flag == 'false':
                 template = render_template(sitemap.sitemap, values=values, vodextensions=vodextensions, terms=terms,
-                                           media_items=media_items)
+                                           media_items=media_items, delete=delete)
             else:
                 template = render_template(sitemap.sitemap, values=values, vodextensions=vodextensions, terms=terms,
-                                           dpl_items=dpl_items, dpl_base=dpl_base, media_items=media_items)
+                                           dpl_items=dpl_items, dpl_base=dpl_base, media_items=media_items, delete=delete)
         elif 'EPISODE' not in package_main.adi_type and 'CATCHUP' in package_main.adi_type:
             if 'DPL' not in package_main.adi_type:
                 template = render_template(sitemap.sitemap, values=values, terms=terms, cutv=cutv,
-                                           media_items=media_items)
+                                           media_items=media_items, delete=delete)
             else:
                 template = render_template(sitemap.sitemap, values=values, terms=terms, dpl_items=dpl_items,
-                                           dpl_base=dpl_base, cutv=cutv, media_items=media_items)
+                                           dpl_base=dpl_base, cutv=cutv, media_items=media_items, delete=delete)
         elif 'EPISODE' in package_main.adi_type and 'CATCHUP' not in package_main.adi_type:
             if 'DPL' not in package_main.adi_type:
                 template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms,
-                                           media_items=media_items)
+                                           media_items=media_items, delete=delete)
             else:
                 template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms,
-                                           dpl_items=dpl_items, dpl_base=dpl_base, media_items=media_items)
+                                           dpl_items=dpl_items, dpl_base=dpl_base, media_items=media_items, delete=delete)
         elif 'EPISODE' in package_main.adi_type and 'CATCHUP' in package_main.adi_type:
             if 'DPL' not in package_main.adi_type:
                 template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms,
-                                           cutv=cutv, media_items=media_items)
+                                           cutv=cutv, media_items=media_items, delete=delete)
             else:
                 template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms, cutv=cutv,
-                                           dpl_items=dpl_items, dpl_base=dpl_base, media_items=media_items)
+                                           dpl_items=dpl_items, dpl_base=dpl_base, media_items=media_items, delete=delete)
 
         elif 'SECONDARY' in package_main.adi_type:
-            template = render_template(sitemap.sitemap, values=values, terms=terms, media_items=media_items)
+            template = render_template(sitemap.sitemap, values=values, terms=terms, media_items=media_items, delete=delete)
 
         response = make_response(template)
         response.headers['Content-Type'] = 'application/xml'

@@ -1,15 +1,12 @@
 # main.py
+import os, hashlib, os.path
 from flask import Blueprint, render_template, request, send_from_directory, flash, redirect, Response
 from .nocache import nocache
 from .models import ADI_main, MEDIA_LIBRARY, ADI_offer
 from bson.json_util import dumps
 from .metadata_params import metadata_default_params
-from . import db
-import os
-import hashlib
-import os.path
 from . import errorchecker, create_asset, search, get_asset_details, update_package, response, create_tar, movie_config
-from . import delete, load_default_data, copy_to_tank, get_omdb_data, create_omdb_image
+from . import delete, load_default_data, copy_to_tank, get_omdb_data, create_omdb_image, db
 params = metadata_default_params()
 path_to_script = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_DIRECTORY = movie_config.premium_upload_dir

@@ -1,8 +1,6 @@
 from flask import request
-from . import db
+from . import db, errorchecker, response
 from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, MEDIA_DEFAULT, MEDIA_LIBRARY
-from . import errorchecker
-from . import response
 
 def update_single_title():
     assetId = request.form.get('AssetId')
@@ -47,6 +45,8 @@ def update_single_title():
             package = ADI_metadata.query.filter_by(assetId=assetId).update(dict(genre=field_value))
         elif update_field == 'provider_id':
             package = ADI_main.query.filter_by(assetId=assetId).update(dict(provider_id=field_value))
+        elif update_field == 'delete_verb':
+            package = ADI_main.query.filter_by(assetId=assetId).update(dict(is_deleted=field_value))
         else:
             return errorchecker.undefined_update_field(update_field)
 
