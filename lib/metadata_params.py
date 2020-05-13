@@ -1,94 +1,85 @@
-from . import movie_config, errorchecker
+from . import movie_config, errorchecker, offerdate
 from flask import request
 from .models import MEDIA_LIBRARY, MEDIA_DEFAULT
+import datetime, time
 class metadata_default_params(object):
 
     def __init__(self):
-        self.synopsis = None
-        self.provider_version = None
-        self.production_year = None
-        self.ca_btc = None
-        self.par_rating = None
-        self.audio_type = None
-        self.frame_rate = None
-        self.subtitle_flag = None
-        self.multiformat_id = None
-        self.movie_url = None
-        self.movie_checksum = None
-        self.video_type = None
-        self.offer_type = None
-        self.runtime = None
-        self.duration = None
+        self.asset_main = {}
+        self.asset_meta = {}
+        self.asset_media = {}
         self.environment_url = None
-        self.svod_season_number = None
-        self.svod_episode_number = None
-        self.svod_total_episodes = None
-        self.svod_episode_name = None
-        self.dpl_asset_parts = None
-        self.dpl_template = None
-        self.trailer_file = None
-        self.trailer_checksum = None
         self.tank_path = None
-        self.genre = None
+
+    def set_asset_base(self):
+        ts = time.time()
+        self.asset_main['asset_timestamp'] = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d%H%M%S')  # Setting current timestamp
+        self.asset_main['licenseEndTime'] = offerdate.offer_date(int(request.form.get('LicenseWindow')), 0)  # Adding Window days from now
+        self.asset_main['offerStartTime'] = offerdate.offer_date(0, 0)  # Setting Offer Start Time to now
+        if request.form.get('offer_window') != None:
+            self.asset_main['offerEndTime'] = offerdate.offer_date(int(request.form.get('offer_window')), 0)
+        else:
+            self.asset_main['offerEndTime'] = ""
+
 
     def param_logic_entry(self, asset_type):
         if request.form.get('synopsis') != "":
-            self.synopsis = request.form.get('synopsis')
+            self.asset_meta['synopsis'] = request.form.get('synopsis')
         else:
-            self.synopsis = movie_config.default_synopsis + request.form.get('title')
+            self.asset_meta['synopsis'] = movie_config.default_synopsis + request.form.get('title')
 
         if request.form.get('provider_version') != "":
-            self.provider_version = request.form.get('provider_version')
+            self.asset_main['provider_version'] = request.form.get('provider_version')
         else:
-            self.provider_version = movie_config.default_provider_version
+            self.asset_main['provider_version'] = movie_config.default_provider_version
 
         if request.form.get('production_year') != "":
-            self.production_year = request.form.get('production_year')
+            self.asset_meta['production_year'] = request.form.get('production_year')
         else:
-            self.production_year = movie_config.default_production_year
+            self.asset_meta['production_year'] = movie_config.default_production_year
 
         if request.form.get('ca_btc') != "":
-            self.ca_btc = request.form.get('ca_btc')
+            self.asset_meta['ca_btc'] = request.form.get('ca_btc')
         elif request.form.get('ca_btc') == "" and 'PREMIUM VOD' in asset_type:
-            self.ca_btc = '31'
+            self.asset_meta['ca_btc'] = '31'
         else:
-            self.ca_btc = movie_config.default_ca_btc
+            self.asset_meta['ca_btc'] = movie_config.default_ca_btc
 
         if request.form.get('par_rating') != "":
-            self.par_rating = request.form.get('par_rating')
+            self.asset_meta['par_rating'] = request.form.get('par_rating')
         else:
-            self.par_rating = movie_config.default_par_rating
+            self.asset_meta['par_rating'] = movie_config.default_par_rating
 
         if request.form.get('audio_type') != "":
-            self.audio_type = request.form.get('audio_type')
+            self.asset_meta['audio_type'] = request.form.get('audio_type')
         else:
-            self.audio_type = movie_config.default_audio_type
+            self.asset_meta['audio_type'] = movie_config.default_audio_type
 
         if request.form.get('frame_rate') != "":
-            self.frame_rate = request.form.get('frame_rate')
+            self.asset_meta['frame_rate']= request.form.get('frame_rate')
         else:
-            self.frame_rate = movie_config.default_frame_rate
+            self.asset_meta['frame_rate'] = movie_config.default_frame_rate
 
         if request.form.get('subtitle_flag') != "":
-            self.subtitle_flag = request.form.get('subtitle_flag')
+            self.asset_meta['subtitle_flag'] = request.form.get('subtitle_flag')
         else:
-            self.subtitle_flag = movie_config.default_subtitle_flag
+            self.asset_meta['subtitle_flag']  = movie_config.default_subtitle_flag
 
         if request.form.get('duration') != "" and 'est' not in asset_type:
-            self.runtime = request.form.get('duration')
-            self.duration = 'PT'+(request.form.get('duration')).split(':')[0]+'H'+\
+            self.asset_meta['runtime']  = request.form.get('duration')
+            self.asset_meta['duration']  = 'PT'+(request.form.get('duration')).split(':')[0]+'H'+\
                             (request.form.get('duration')).split(':')[1]+'M'+(request.form.get('duration')).split(':')[2]+'S'
         else:
-            self.runtime = movie_config.default_asset_runtime
-            self.duration = movie_config.default_asset_duration
+            self.asset_meta['runtime'] = movie_config.default_asset_runtime
+            self.asset_meta['duration'] = movie_config.default_asset_duration
 
     def genre_entry(self, asset_type):
         if request.form.get('genre') != "":
-            self.genre = request.form.get('genre')
+            self.asset_meta['genre'] = request.form.get('genre')
         elif request.form.get('genre') == "" and 'EPISODE' in asset_type:
-            self.genre = movie_config.default_episode_genre
+            self.asset_meta['genre'] = movie_config.default_episode_genre
         else:
-            self.genre = movie_config.default_movie_genre
+            self.asset_meta['genre'] = movie_config.default_movie_genre
 
 
     def get_checksum(self, filename):
@@ -97,82 +88,83 @@ class metadata_default_params(object):
 
     def multiformat_entry(self, multiformat_id, asset_timestamp):
         if multiformat_id != "":
-            self.multiformat_id = multiformat_id
+            self.asset_main['multiformat_id'] = multiformat_id
         else:
-            self.multiformat_id = 'BSKYPR' + asset_timestamp
+            self.asset_main['multiformat_id'] = 'BSKYPR' + asset_timestamp
 
     def movie_details_entry(self, provider_id, asset_type):
         url_default = MEDIA_DEFAULT.query.first()
         if request.form.get('video_file') == "":
             if 'hdr' in provider_id and 'DPL' not in asset_type:
-                self.movie_url = url_default.hdr_movie_file
+                self.asset_media['movie_url'] = url_default.hdr_movie_file
             elif '4k' in provider_id and 'DPL' not in asset_type:
-                self.movie_url = url_default.sdr_movie_file
+                self.asset_media['movie_url'] = url_default.sdr_movie_file
             elif 'est' in provider_id and 'DPL' not in asset_type:
-                self.movie_url = url_default.est_movie_file
+                self.asset_media['movie_url'] = url_default.est_movie_file
             elif (('hd.' in provider_id) or ('_hd' in provider_id)) and 'DPL' not in asset_type:
-                self.movie_url = url_default.hd_movie_file
+                self.asset_media['movie_url'] = url_default.hd_movie_file
             elif 'DPL' in asset_type:
-                self.movie_url = url_default.dpl_movie_file
+                self.asset_media['movie_url'] = url_default.dpl_movie_file
             elif 'SECONDARY' in asset_type:
-                self.movie_url = url_default.trailer_file
+                self.asset_media['movie_url'] = url_default.trailer_file
             else:
-                self.movie_url = url_default.title_movie_file
+                self.asset_media['movie_url'] = url_default.title_movie_file
         else:
-            self.movie_url = request.form.get('video_file')
+            self.asset_media['movie_url'] = request.form.get('video_file')
 
         try:
-            self.movie_checksum = self.get_checksum(self.movie_url)
+            self.asset_media['movie_checksum'] = self.get_checksum(self.asset_media['movie_url'])
         except AttributeError:
-            return errorchecker.missing_file_libary(self.movie_url)
+            return errorchecker.missing_file_libary(self.asset_media['movie_url'])
 
 
     def trailer_entry(self):
         trailer_default = MEDIA_DEFAULT.query.first()
-        self.trailer_file = trailer_default.trailer_file
+        self.asset_media['trailer_file'] = trailer_default.trailer_file
         try:
-            self.trailer_checksum = self.get_checksum(self.trailer_file)
+            self.asset_media['trailer_checksum'] = self.get_checksum(self.asset_media['trailer_file'])
         except AttributeError:
-            return errorchecker.missing_file_libary(self.trailer_file)
+            return errorchecker.missing_file_libary(self.asset_media['trailer_file'])
 
     def video_type_entry(self, provider_id):
         if ('hdr' in provider_id) or ('4k' in provider_id) or ('hd.' in provider_id) or ('_hd' in provider_id):
-            self.video_type = 'true'
+            self.asset_meta['video_type'] = 'true'
         else:
-            self.video_type = 'false'
+            self.asset_meta['video_type'] = 'false'
 
     def offer_type_entry(self, asset_type):
         if 'RENTAL' in asset_type or 'PREMIUM' in asset_type or 'EST' in asset_type:
-            self.offer_type = 'IPPR'
+            self.asset_meta['offer_type'] = 'IPPR'
         elif 'est' in asset_type:
-            self.offer_type = 'IPPR'
+            self.asset_meta['offer_type'] = 'IPPR'
         else:
-            self.offer_type = 'SVOD'
+            self.asset_meta['offer_type'] = 'SVOD'
 
     def svod_episode_entry(self, svod_season_number, svod_episode_number, svod_total_episodes, asset_type, title):
         if 'EPISODE' in asset_type:
             if svod_season_number != "":
-                self.svod_season_number = svod_season_number
+                self.asset_meta['svod_season_number'] = svod_season_number
             else:
-                self.svod_season_number = '1'
+                self.asset_meta['svod_season_number'] = '1'
 
             if svod_episode_number != "":
-                self.svod_episode_number = svod_episode_number
+                self.asset_meta['svod_episode_number'] = svod_episode_number
             else:
-                self.svod_episode_number = '1'
+                self.asset_meta['svod_episode_number'] = '1'
 
             if svod_total_episodes != "":
-                self.svod_total_episodes = svod_total_episodes
+                self.asset_meta['svod_total_episodes'] = svod_total_episodes
             else:
-                self.svod_total_episodes = self.svod_episode_number
+                self.asset_meta['svod_total_episodes'] = self.asset_meta['svod_episode_number']
 
-            self.svod_episode_name = title + ',S:' + self.svod_season_number + ',Ep:' + self.svod_episode_number
+            self.asset_meta['svod_episode_name'] = title + ',S:' + self.asset_meta['svod_season_number'] + ',Ep:' + \
+                                                   self.asset_meta['svod_episode_number']
 
         else:
-            self.svod_season_number = ""
-            self.svod_episode_number = ""
-            self.svod_total_episodes = ""
-            self.svod_episode_name = ""
+            self.asset_meta['svod_season_number'] = ""
+            self.asset_meta['svod_episode_number'] = ""
+            self.asset_meta['svod_total_episodes'] = ""
+            self.asset_meta['svod_episode_name'] = ""
 
 
 
@@ -180,14 +172,14 @@ class metadata_default_params(object):
     def dpl_entry(self, dpl_asset_parts, asset_type, asset_timestamp):
         if 'DPL' in asset_type:
             if dpl_asset_parts != "":
-                self.dpl_asset_parts = dpl_asset_parts
+                self.asset_meta['dpl_asset_parts'] = dpl_asset_parts
             else:
-                self.dpl_asset_parts = '2'
+                self.asset_meta['dpl_asset_parts'] = '2'
 
-            self.dpl_template = asset_timestamp + '_template_' + self.dpl_asset_parts
+            self.asset_meta['dpl_template'] = asset_timestamp + '_template_' + self.asset_meta['dpl_asset_parts']
         else:
-            self.dpl_asset_parts = ""
-            self.dpl_template = ""
+            self.asset_meta['dpl_asset_parts'] = ""
+            self.asset_meta['dpl_template'] = ""
 
 
 

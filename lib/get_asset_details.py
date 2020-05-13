@@ -71,30 +71,38 @@ def download_title(assetId):
             'image6_checksum': package_media.image_checksum_6,
         })
 
-        vodextensions = []
-        vodextensions.append({
-            'vod_deal_sub': 'M/N',
-        })
-        cutv = []
-        cutv.append({
-            'service_key': package_offer.service_key,
-            'epgTime': package_offer.epgTime
-        })
         terms = []
         terms.append({
             'term_type': adicreate.term_type,
         })
-        episodes = []
-        episodes.append({
-            'svod_episode_name': package_meta.svod_episode_name,
-            'svod_episode_number': package_meta.svod_episode_number,
-            'svod_season_number': package_meta.svod_season_number,
-            'svod_total_episodes': package_meta.svod_total_episodes,
-        })
-        subtitle = []
-        subtitle.append({
-            'subtitle_flag': package_meta.subtitle_flag,
-        })
+
+        if package_meta.subtitle_flag == 'true':
+            subtitle = []
+            subtitle.append({
+                'subtitle_flag': package_meta.subtitle_flag,
+            })
+        else:
+            subtitle = ""
+
+        if 'CATCHUP' in package_main.adi_type:
+            cutv = []
+            cutv.append({
+                'service_key': package_offer.service_key,
+                'epgTime': package_offer.epgTime
+            })
+        else:
+            cutv = ""
+
+        if 'EPISODE' in package_main.adi_type:
+            episodes = []
+            episodes.append({
+                'svod_episode_name': package_meta.svod_episode_name,
+                'svod_episode_number': package_meta.svod_episode_number,
+                'svod_season_number': package_meta.svod_season_number,
+                'svod_total_episodes': package_meta.svod_total_episodes,
+            })
+        else:
+            episodes = ""
 
         if package_main.is_deleted == "true":
             delete = []
@@ -116,42 +124,23 @@ def download_title(assetId):
                 dpl_items.append({
                     'part_no': parts,
                 })
+        else:
+            dpl_base = ""
+            dpl_items = ""
 
-        if 'EPISODE' not in package_main.adi_type and 'CATCHUP' not in package_main.adi_type:
-            if 'DPL' not in package_main.adi_type and package_meta.subtitle_flag == 'true':
-                template = render_template(sitemap.sitemap, values=values, vodextensions=vodextensions, terms=terms,
-                                           subtitle=subtitle, media_items=media_items, delete=delete)
-            elif 'DPL' not in package_main.adi_type and package_meta.subtitle_flag == 'false':
-                template = render_template(sitemap.sitemap, values=values, vodextensions=vodextensions, terms=terms,
-                                           media_items=media_items, delete=delete)
-            else:
-                template = render_template(sitemap.sitemap, values=values, vodextensions=vodextensions, terms=terms,
-                                           dpl_items=dpl_items, dpl_base=dpl_base, media_items=media_items, delete=delete)
-        elif 'EPISODE' not in package_main.adi_type and 'CATCHUP' in package_main.adi_type:
-            if 'DPL' not in package_main.adi_type:
-                template = render_template(sitemap.sitemap, values=values, terms=terms, cutv=cutv,
-                                           media_items=media_items, delete=delete)
-            else:
-                template = render_template(sitemap.sitemap, values=values, terms=terms, dpl_items=dpl_items,
-                                           dpl_base=dpl_base, cutv=cutv, media_items=media_items, delete=delete)
-        elif 'EPISODE' in package_main.adi_type and 'CATCHUP' not in package_main.adi_type:
-            if 'DPL' not in package_main.adi_type:
-                template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms,
-                                           media_items=media_items, delete=delete)
-            else:
-                template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms,
-                                           dpl_items=dpl_items, dpl_base=dpl_base, media_items=media_items, delete=delete)
-        elif 'EPISODE' in package_main.adi_type and 'CATCHUP' in package_main.adi_type:
-            if 'DPL' not in package_main.adi_type:
-                template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms,
-                                           cutv=cutv, media_items=media_items, delete=delete)
-            else:
-                template = render_template(sitemap.sitemap, values=values, episodes=episodes, terms=terms, cutv=cutv,
-                                           dpl_items=dpl_items, dpl_base=dpl_base, media_items=media_items, delete=delete)
+        if 'CATCHUP' in package_main.adi_type:
+            vodextensions = ""
+        elif 'EPISODE' in package_main.adi_type:
+            vodextensions = ""
+        else:
+            vodextensions = []
+            vodextensions.append({
+                'vod_deal_sub': 'M/N',
+            })
 
-        elif 'SECONDARY' in package_main.adi_type:
-            template = render_template(sitemap.sitemap, values=values, terms=terms, media_items=media_items, delete=delete)
-
+        template = render_template(sitemap.sitemap, values=values, media_items=media_items, terms=terms, cutv=cutv,
+                                   dpl_items=dpl_items, dpl_base=dpl_base, episodes=episodes, subtitle=subtitle,
+                                   vodextensions=vodextensions, delete=delete)
         response = make_response(template)
         response.headers['Content-Type'] = 'application/xml'
         return response

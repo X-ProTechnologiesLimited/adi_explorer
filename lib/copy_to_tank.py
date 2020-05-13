@@ -1,5 +1,11 @@
-# Filename copy_to_tank.py
-# This module allows the file transfer between the tool and the tank
+# Filename: lib/copy_to_tank.py
+"""
+Created on Nov 29, 2019
+
+@author: Krishnendu Banerjee
+@summary: This file holds the functions to transfer files from local to tank and vice versa:
+
+"""
 
 import paramiko, os
 from paramiko import SSHClient
@@ -15,6 +21,14 @@ tank_params = metadata_default_params()
 tank_hostname = movie_config.tank_host
 
 def scp_to_jump():
+    """
+        :author: Krishnendu Banerjee.
+        :date: 06/03/2019.
+        :description: Function that copies the files from local tool to the Secured Jump Box
+        :access: public.
+        :form_input: templates/upload_to_jump.html
+        """
+    # Taking the host/file/user credentials input from the user input form
     filename = request.form.get('filename')
     jump_host = request.form.get('hostname')
     username = request.form.get('username')
@@ -39,14 +53,21 @@ def scp_to_jump():
         return errorchecker.upload_authentication_error()
 
 
-def scp_to_tank():  # This function copies files from tool library to Tank
-    # Taking inputs from Form
+def scp_to_tank():
+    """
+        :author: Krishnendu Banerjee.
+        :date: 29/11/2019.
+        :description: Function that copies the files from local tool to the Tank
+        :access: public.
+        :form_input: templates/upload_to_tank.html
+    """
+    # Taking the host/file/user credentials input from the user input form
     filename = request.form.get('filename')
     file_type = request.form.get('file_type')
-    environment = request.form.get('tank_env')
+    environment = request.form.get('tank_env') # Depends on which environment is chosen by user
     username = request.form.get('username')
     password = request.form.get('password')
-    path = request.form.get('path')
+    path = request.form.get('path') # Another option is to specify the path directly
     if environment == "" and path == "":  # Error handling missing parameters in form
         return errorchecker.input_missing('Tank Path or Environment')
 
@@ -87,8 +108,15 @@ def scp_to_tank():  # This function copies files from tool library to Tank
 
 
 
-def scp_default_video_from_tank():  # This function copies default video files from Tank to Tool Library
-    # Taking inputs from Form
+def scp_default_video_from_tank():
+    """
+        :author: Krishnendu Banerjee.
+        :date: 29/11/2019.
+        :description: Function that copies the default video files from the Tank to the local tool
+        :access: public.
+        :form_input: templates/load_default_library.html
+        """
+    # Taking the host/file/user credentials input from the user input form
     username = request.form.get('username')
     password = request.form.get('password')
     ssh = SSHClient()
@@ -115,8 +143,15 @@ def scp_default_video_from_tank():  # This function copies default video files f
 
     return main.list_files()
 
-def scp_file_from_tank(tank_path, filename):  # This function copies local files in tool to Tank
-    # Taking inputs from Form
+def scp_file_from_tank(tank_path, filename):
+    """
+        :author: Krishnendu Banerjee.
+        :date: 29/11/2019.
+        :description: Function that copies specific files from the Tank to the local tool
+        :access: public.
+        :form_input: templates/upload_files.html
+        """
+    # Taking the host/file/user credentials input from the user input form
     username = request.form.get('username')
     password = request.form.get('password')
     ssh = SSHClient()
