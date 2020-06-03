@@ -1,3 +1,11 @@
+# Filename: lib/response.py
+"""
+Created on June 01, 2020
+
+@author: Krishnendu Banerjee
+@summary: This file holds the functions to serialise all the different successful responses to a JSON format
+"""
+
 from flask import Blueprint, render_template
 from os import path
 from json2html import *

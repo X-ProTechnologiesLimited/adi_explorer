@@ -29,7 +29,21 @@ if [[ "$1" == '--new-db' ]];then
     rm -rf $PROJECT_DIR/lib/db.sqlite
     python $PROJECT_DIR/initialise_db.py
     printf "Created new database for application...\n"
-    echo "Created new database for application..." >> $PROJECT_DIR/logs/$filename
+    echo "Created new database for application...\n" >> $PROJECT_DIR/logs/$filename
+    printf "Clearing Supporting Files..."
+    mv $PROJECT_DIR/supp_files/DPL_*  $PROJECT_DIR/temp_adi/
+    mv $PROJECT_DIR/supp_files/FinestHours_*  $PROJECT_DIR/temp_adi/
+    mv $PROJECT_DIR/supp_files/*_MOVIE.ts  $PROJECT_DIR/temp_adi/
+    mv $PROJECT_DIR/supp_files/SD_2_min.ts  $PROJECT_DIR/temp_adi/
+    mv $PROJECT_DIR/supp_files/sky_*.jpg  $PROJECT_DIR/temp_adi/
+    mv $PROJECT_DIR/supp_files/*.pdf  $PROJECT_DIR/temp_adi/
+    rm -rf $PROJECT_DIR/supp_files/*
+    printf "Loading Default Supporting Files...\n"
+    sleep 2
+    mv $PROJECT_DIR/temp_adi/* $PROJECT_DIR/supp_files/
+    printf "Deleting Saved VRP TAR Packages....\n"
+    sleep 2
+    rm -rf $PROJECT_DIR/created_package/*
     python -m flask run --host=0.0.0.0 >> $PROJECT_DIR/logs/$filename 2>&1 &
     printf "Loading Default Media Data...\n"
     sleep 5

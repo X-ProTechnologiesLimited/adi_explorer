@@ -31,13 +31,34 @@ The project is also enabled to run in Docker Container. It contains the Dockerfi
 5. Run the `./build.sh` script in the project root (adi_explorer)
 
 ## Configuring the Media Paths for Test Environments
-1. Edit the `<adi_explorer_project_root>/utils/config.properties` file to refer the correct files, checksum and location
-of the Media files (video files) based on Test Environment Tank file locations
-2. Edit the same file for default metadata
+1. Use the `Admin > View Default Media/Path` to view the default configuration
+2. Edit the default media config using `Admin > Update Default Media / Path`
 
 ## Sqlite database browsing
 Download the optional Sqlite DB Browser `https://sqlitebrowser.org/dl/` to browse the database file for the tool:
 `<adi_explorer_project_root>/lib/db.sqlite`
+
+## Database Sharing and Portability of Database File
+The database file is lightweight and can be shared across users. 
+1. Take a copy of your database file 
+`<adi_explorer_project_root>/lib/db.sqlite` and save it somewhere locally with a different name other than db.sqlite.
+2. Now when you receive a new compatible database file from another user from another system, 
+copy that file into the following tool directory of yours `<adi_explorer_project_root>/lib/` and name it `db.sqlite`
+3. Start the tool using the following command `start_app.sh --old-db`. This should start the tool and use the Database
+File shared by another user in a different machine.
+4. You can now update assets from that shared database.
+
+## Restoring Old Database if the Schema Changes
+If a new tool feature introduces schema change, then we have to perform the following steps:
+1. Shutdown the tool using the `<adi_explorer_project_root>/utils/shutdown.sh` script
+2. Run the shell script `<adi_explorer_project_root>/utils/db_backup.sh`. This will create a file named `data.sql` in 
+the same directory
+3. Start the tool from the utils directory using --new-db option 
+`<adi_explorer_project_root>/utils/start_app.sh --new-db`. This will create the new schema for the database
+as needed for the new features
+4. Once the application is up and running, Run the script `./load_backup.sh` from the utils directory. This will ensure 
+that the old data is restored on the new schema and database will be compatible with the new version of the tool
+
 
 ## Current Scope for the tool
 1. Create Single Title ADIs and VRP Packages
@@ -53,9 +74,9 @@ Download the optional Sqlite DB Browser `https://sqlitebrowser.org/dl/` to brows
 ## Enhancements Planned
 1. Update additional metadata
 2. Update Images
-3. Cloning Assets
 
 ## Tunnelling for the tool for Ingest Purpose
-Since the VAM is not reachable from Local WorkStations, we need to open a socks tunnel to VAM nodes
+Only needed if your local laptop IP is not able to telnet to VAM.
+This is not needed in VPN, as the VAM/CMSProxy endpoints are reachable directly
 1. Login to any unix jump boxes and `ssh -v -N -L <vam_port>:<vam_host>:<vam_port> username@jump_host`
 2. Open putty.exe and open session to same Jump box with a tunnel with source port 14231

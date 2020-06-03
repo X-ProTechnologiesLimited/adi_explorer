@@ -1,11 +1,18 @@
+# Filename: lib/get_asset_details.py
+"""
+Created on June 01, 2020
+
+@author: Krishnendu Banerjee
+@summary: This file holds the function to download asset ADIs of all types and retrieve all asset metadata
+
+"""
+
 import datetime, time, requests, os
 from flask import Blueprint, render_template, make_response, request
 from .models import ADI_main, ADI_media, ADI_metadata, ADI_offer, ADI_EST_Show, ADI_INGEST_HISTORY, MEDIA_DEFAULT, EST_PO
 from . import movie_config, response, errorchecker, db
-from .sitemap_create import sitemap_mapper
+from .params_default import sitemap_mapper, adi_package_logic, metadata_default_params
 from bson.json_util import dumps
-from .metadata_params import metadata_default_params
-from .load_adi_logic import adi_package_logic
 path_to_script = os.path.dirname(os.path.abspath(__file__))
 params = metadata_default_params()
 sitemap = sitemap_mapper()
@@ -15,6 +22,14 @@ UPLOAD_DIRECTORY = movie_config.premium_vrp_dir
 main = Blueprint('main', __name__, static_url_path='', static_folder='../premium_files/', template_folder='../templates')
 
 def download_title(assetId):
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function to Download the title ADI
+    :access: public.
+    :param assetId: AssetId for any Non-EST asset
+    :return: Response as XML
+    """
     try:
         package_main = ADI_main.query.filter_by(assetId=assetId).first()
         package_meta = ADI_metadata.query.filter_by(assetId=assetId).first()
@@ -152,6 +167,14 @@ def download_title(assetId):
 
 
 def download_est_episode(assetId):
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function to Download the EST Episode
+    :access: public.
+    :param assetId: AssetId for EST Episode
+    :return: Response as XML
+    """
     package_main = ADI_main.query.filter_by(assetId=assetId).first()
     package_meta = ADI_metadata.query.filter_by(assetId=assetId).first()
     package_offer = ADI_offer.query.filter_by(assetId=assetId).first()
@@ -210,6 +233,14 @@ def download_est_episode(assetId):
     return response
 
 def download_est_season(assetId):
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function to Download the EST Season
+    :access: public.
+    :param assetId: AssetId for EST Season
+    :return: Response as XML
+    """
     package_main = ADI_main.query.filter_by(assetId=assetId).first()
     package_meta = ADI_metadata.query.filter_by(assetId=assetId).first()
     package_offer = ADI_offer.query.filter_by(assetId=assetId).first()
@@ -254,6 +285,14 @@ def download_est_season(assetId):
     return response
 
 def download_est_show(assetId):
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function to Download the EST Show
+    :access: public.
+    :param assetId: AssetId of EST Show
+    :return: Response as XML
+    """
     package_main = ADI_main.query.filter_by(assetId=assetId).first()
     package_meta = ADI_metadata.query.filter_by(assetId=assetId).first()
     package_offer = ADI_offer.query.filter_by(assetId=assetId).first()
@@ -340,6 +379,14 @@ def download_est_show(assetId):
 
 
 def download_est_single_title(assetId):
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function to Download the EST Single Title
+    :access: public.
+    :param assetId: AssetId of EST Single Title
+    :return: Response as XML
+    """
     try:
         package_main = ADI_main.query.filter_by(assetId=assetId).first()
         package_meta = ADI_metadata.query.filter_by(assetId=assetId).first()
@@ -372,7 +419,6 @@ def download_est_single_title(assetId):
             'movie_path': adicreate.movie_path,
             'image_path': adicreate.image_path,
         })
-
 
         media_items = []
         media_items.append({
@@ -418,18 +464,53 @@ def download_est_single_title(assetId):
                 'order_type': offeritem.est_order_type,
             })
 
+        offer_count = ADI_offer.query.filter(ADI_offer.assetId == assetId).count()
+
+        if offer_count > 2:
+            videos = []
+            videos.append({
+                'movie_url': package_media.movie_url,
+                'movie_checksum': package_media.movie_checksum,
+                'movie_path': adicreate.movie_path,
+                'providerid': package_main.provider_id,
+                'assetid': package_main.original_timestamp,
+
+            })
+        elif offer_count == 1:
+            offer_item = ADI_offer.query.filter_by(assetId=assetId).first()
+            if offer_item.est_order_type == 'Regular':
+                videos = []
+                videos.append({
+                    'movie_url': package_media.movie_url,
+                    'movie_checksum': package_media.movie_checksum,
+                    'movie_path': adicreate.movie_path,
+                    'providerid': package_main.provider_id,
+                    'assetid': package_main.original_timestamp,
+                })
+            else:
+                videos = ""
+        else:
+            videos = ""
 
         template = render_template(sitemap.sitemap, values=values, media_items=media_items, est_offers=est_offers,
-                                   purchase_options=purchase_options)
+                                   purchase_options=purchase_options, videos=videos)
         response = make_response(template)
         response.headers['Content-Type'] = 'application/xml'
         return response
 
+
     except:
         return errorchecker.internal_server_error()
 
-
 def get_asset_data(assetId):
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function to Retrieve metadata associated wih asset
+    :access: public.
+    :param assetId: AssetId of any asset for which metadata needs to be retrieved
+    :return: Response as Json
+    """
     adi_metadata = {}
     adi_metadata['packages'] = {}
     package = ADI_metadata.query.filter_by(assetId=assetId).first()
@@ -451,6 +532,14 @@ def get_asset_data(assetId):
     return response.asset_retrieve(json_data)
 
 def get_est_offers(assetId):
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function to Retrieve offers and orders associated with EST Asset
+    :access: public.
+    :param assetId:
+    :return: Response as JSON
+    """
     adi_offers = {}
     adi_offers['offers'] = []
     package_check = ADI_main.query.filter_by(assetId=assetId).first()
@@ -482,6 +571,13 @@ def get_est_offers(assetId):
 
 
 def get_default_config():
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function to Retrieve default Config for the tool
+    :access: public.
+    :return: Response as JSON
+    """
     default_config = {}
     default_config['config'] = {}
     config_data = MEDIA_DEFAULT.query.first()
@@ -503,6 +599,13 @@ def get_default_config():
 
 
 def post_adi_endpoint():
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function to Post an ADI to a specific endpoint of our environment
+    :access: public.
+    :return: Success or Failure
+    """
     ts = time.time()
     conversationId = datetime.datetime.fromtimestamp(ts).strftime('%d%H%M%S')
     ingest_timestamp = datetime.datetime.fromtimestamp(ts).strftime('%H:%M:%S %d/%m/%Y')

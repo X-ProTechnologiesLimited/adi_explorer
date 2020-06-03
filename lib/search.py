@@ -1,16 +1,30 @@
+# Filename: lib/search.py
+"""
+Created on June 01, 2020
+
+@author: Krishnendu Banerjee
+@summary: This file holds the functions to perform different search assets in the local database
+"""
 import urllib.parse
 from flask import request
-from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, ADI_EST_Show, ADI_INGEST_HISTORY, MEDIA_LIBRARY
+from .models import ADI_main, ADI_metadata, ADI_offer, ADI_EST_Show, ADI_INGEST_HISTORY, MEDIA_LIBRARY
 from . import errorchecker, response
 from bson.json_util import dumps
 from sqlalchemy import or_, and_
 
 def search_by_title():
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function to Search Assets by Title (Non-Case Sensitive) from Database
+    :access: public.
+    :return: retrieve the search response in JSON format
+    """
     title = request.form.get('Title')
-    title_uncoded = urllib.parse.unquote_plus(title)
+    title_uncoded = urllib.parse.unquote_plus(title) # Space and special character handling
     adi_data = {}
     adi_data['packages'] = []
-    search = "%{}%".format(title_uncoded)
+    search = "%{}%".format(title_uncoded) # Pattern match with search criterion anywhere in title
     title_search = ADI_metadata.query.filter(or_(ADI_metadata.title.like(search)),
                                                   (ADI_metadata.title_filter == 'true')).count()
     id_search = ADI_main.query.filter(ADI_main.assetId == title).count()
@@ -47,6 +61,13 @@ def search_by_title():
 
 
 def search_all_packages():
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function to Return all Assets in Database in JSON Format
+    :access: public.
+    :return: Return all assets in Database in JSON format
+    """
     adi_data = {}
     adi_data['packages'] = []
     for package in ADI_main.query.filter(or_(ADI_main.adi_type != 'est_episode'), (ADI_main.adi_type != 'est_season')).\
@@ -74,6 +95,13 @@ def search_all_packages():
 
 
 def search_est_assets():
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function to Search EST Assets by Title (Non-Case Sensitive) from Database
+    :access: public.
+    :return: Only EST Single Title, Episodes, Seasons and Box-Sets based on matched title
+    """
     title = request.form.get('Title')
     title_uncoded = urllib.parse.unquote_plus(title)
     adi_data = {}
@@ -109,6 +137,14 @@ def search_est_assets():
 
 
 def search_ingest_history(assetId):
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function to Search Ingest History on Test Environments based on AssetID
+    :access: public.
+    :param assetId: Provide Asset ID to search Ingest History
+    :return: Ingest history based on the environment
+    """
     ingest_data = {}
     ingest_data['history'] = []
     for package in ADI_INGEST_HISTORY.query.filter_by(assetId=assetId).all():
@@ -131,6 +167,13 @@ def search_ingest_history(assetId):
 
 
 def search_all_files_checksum():
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function to return Checksum of all available files in the Supporting Files Directory
+    :access: public.
+    :return: Checksum of all available files in the Supporting Files Directory
+    """
     filedetails = {}
     filedetails['files'] = []
     for file in MEDIA_LIBRARY.query.order_by(MEDIA_LIBRARY.id.desc()).all():

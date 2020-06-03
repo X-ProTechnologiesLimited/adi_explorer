@@ -1,8 +1,24 @@
+# Filename: lib/update_package.py
+"""
+Created on June 01, 2020
+
+@author: Krishnendu Banerjee
+@summary: This file holds the functions to perform different metadata updates on assets in Database
+"""
 from flask import request
 from . import db, errorchecker, response
 from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media, MEDIA_DEFAULT, MEDIA_LIBRARY
 
 def update_single_title():
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function for updating metadata for Assets
+    :access: public
+    :form_input : assetId
+    :form_input : update_field (Parameter that will be updated)
+    :return: Success or Failure and commit DB with metadata updates for AssetId
+    """
     assetId = request.form.get('AssetId')
     update_field = request.form.get('asset_field')
     offerId = request.form.get('offerId')
@@ -62,6 +78,17 @@ def update_single_title():
 
 
 def update_asset_video(movie_type):
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function to update Movie or Trailer for an asset
+    :access: public
+    :form_input : assetId
+    :form_input : video_filename
+    :form_input : video_checksum
+    :param movie_type: movie/trailer
+    :return: Success or Failure for the Movie/Trailer update
+    """
     assetId = request.form.get('AssetId')
     filename = request.form.get('video_filename')
     checksum = request.form.get('video_checksum')
@@ -84,6 +111,16 @@ def update_asset_video(movie_type):
 
 
 def update_default_fields():
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function to update Default Media Parameters
+    :access: public
+    :form_input : config_name
+    :form_input : value
+    :form_input : checksum
+    :return: Success or Failure for the default_field_update
+    """
     update_field = request.form.get('config_name')
     field_value = request.form.get('value')
     video_checksum = request.form.get('checksum')

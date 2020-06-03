@@ -1,4 +1,9 @@
-# models.py
+# Filename: lib/models.py
+"""
+Created on June 01, 2020
+@author: Krishnendu Banerjee
+@summary: This file holds the model/schema for the Database
+"""
 from . import db
 
 class ADI_main(db.Model):

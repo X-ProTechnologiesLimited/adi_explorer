@@ -1,3 +1,10 @@
+# Filename: lib/nocache.py
+"""
+Created on June 01, 2020
+@author: Krishnendu Banerjee
+@summary: This function helps in clearing the flask response cache
+"""
+
 from flask import make_response
 from functools import wraps, update_wrapper
 from datetime import datetime

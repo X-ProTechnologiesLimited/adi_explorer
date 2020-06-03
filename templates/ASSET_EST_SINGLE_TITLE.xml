@@ -49,9 +49,11 @@
     <core:Ext>
       <ext:MovieExtensions analogueOff="true" mediaId="M1035909" waterMarkingRequired="false"/>
     </core:Ext>
-        <content:SourceUrl>{{val.movie_path}}{{val.movie_url}}</content:SourceUrl>
+        {% for video in videos -%}
+        <content:SourceUrl>{{video.movie_path}}{{video.movie_url}}</content:SourceUrl>
         <content:ContentFileSize>100</content:ContentFileSize>
-        <content:ContentCheckSum>{{val.movie_checksum}}</content:ContentCheckSum>
+        <content:ContentCheckSum>{{video.movie_checksum}}</content:ContentCheckSum>
+        {% endfor -%}
     <content:AudioType>{{val.audio_type}}</content:AudioType>
     <content:ScreenFormat>Widescreen</content:ScreenFormat>
     <content:Resolution>1080i</content:Resolution>
@@ -97,7 +99,9 @@
       <ext:PressPackImageRef uriId="{{val.providerid}}/PRSB{{val.assetid}}01"/>
     </core:Ext>
     <offer:TitleRef uriId="{{val.providerid}}/TITL{{val.assetid}}01"/>
-    <offer:MovieRef uriId="{{val.providerid}}/MAIN{{val.assetid}}01"/>
+    {% for video in videos -%}
+    <offer:MovieRef uriId="{{video.providerid}}/MAIN{{video.assetid}}01"/>
+    {% endfor -%}
     <offer:PreviewRef uriId="{{val.providerid}}/TRVT{{val.assetid}}01"/>
         <offer:ThumbnailRef uriId="{{val.providerid}}/THEP{{val.assetid}}01"/>
   </ContentGroup>

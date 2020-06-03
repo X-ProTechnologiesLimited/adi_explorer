@@ -1,7 +1,22 @@
+# Filename: lib/load_default_data.py
+"""
+Created on June 01, 2020
+
+@author: Krishnendu Banerjee
+@summary: This file holds the function to load default data into the library on Startup
+"""
+
 from . import db
 from .models import MEDIA_LIBRARY, MEDIA_DEFAULT
 
 def load_default_media():
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function to Load Default Media
+    :access: public.
+    :return: DB Commit
+    """
     dpl_image_1 = MEDIA_LIBRARY(filename='DPL_CATI.jpg', checksum='8f8c5d272ad69ae5a4664fcd28e8f7d8', image_group='DPL')
     dpl_image_2 = MEDIA_LIBRARY(filename='DPL_PRAW.jpg', checksum='1e81300aaa6bb7e1637119ba6f9cb336', image_group='DPL')
     dpl_image_3 = MEDIA_LIBRARY(filename='DPL_PRIW.jpg', checksum='083a1b2cb2ffeee83bc28f78c90c8d7a', image_group='DPL')

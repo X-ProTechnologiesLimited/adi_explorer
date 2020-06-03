@@ -10,7 +10,7 @@
    </ContentGroup>
    <Title uriId="{{val.providerid}}/TITL{{val.assetid}}01" providerVersionNum="{{val.provider_version}}" creationDateTime="2019-09-04T10:31:03Z" startDateTime="2019-09-04T10:31:03Z" endDateTime="{{val.licensetime}}">
       <title:LocalizableTitle>
-         <title:TitleBrief>Secondary Brief Title</title:TitleBrief>
+         <title:TitleBrief>Dummy</title:TitleBrief>
          <title:TitleMedium>{{val.title}}</title:TitleMedium>
          <title:TitleLong>Secondary Long Title</title:TitleLong>
          <title:SummaryShort>{{val.asset_syn}}</title:SummaryShort>

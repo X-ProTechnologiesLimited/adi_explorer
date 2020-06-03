@@ -1,26 +1,34 @@
-# Filename create_asset.py
+# Filename lib/create_asset.py
+"""
+Created on Nov 29, 2019
+
+@author: Krishnendu Banerjee
+@summary: This file holds the functions to transfer files from local to tank and vice versa:
+
+"""
 # This module creates the database entries for different type of assets
 from sqlalchemy.orm.session import make_transient
-from flask import request
-import datetime, time
-from .models import ADI_main, ADI_metadata, ADI_offer, ADI_media
-from . import db, errorchecker, response, movie_config, create_purchase_options, create_est_order_type
-from .sitemap_create import sitemap_mapper
-from .form_params import form_input_params
+from .models import ADI_main, ADI_metadata, ADI_offer
+from . import db, response, create_est_offer_order
+from .params_default import *
 from .db_create_asset import add_media, add_main, add_meta, add_offer, add_group
-from .est_show_params import est_show_default_params
-from .metadata_params import metadata_default_params
-from .image_params import image_default_params
 
 # Call Parameter Functions - These are functions to load default parameter values unless supplied in request
-est_params = est_show_default_params()
-form_input = form_input_params()
-params = metadata_default_params()  # Checking Default Param Value if Form entry is null
-image_set = image_default_params()  # Image classification function
-sitemap = sitemap_mapper()  # Jinja template picker
+est_params = est_show_default_params() # Function to Load Default EST Parameters
+form_input = form_input_params() # Function to Load Default HTML Form Parameters
+params = metadata_default_params()  # Function to load default Param Value if Form entry is null
+image_set = image_default_params()  # Function to Load Images
+sitemap = sitemap_mapper()  # Function to pick Jinja template based on Asset Types
 
-# This function creates database entries for all types of Single Titles
+
 def create_single_title():
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Creates the Database Entries for Any type of Single Title except EST.
+    :access: public.
+    :return: Success Response(response.py) OR Failure(errorchecker.py)
+    """
     asset_type = request.form.get('asset_type')
     if (asset_type not in movie_config.default_standard_package) and \
             (asset_type not in movie_config.default_vrp_package):
@@ -42,6 +50,7 @@ def create_single_title():
     if (form_input.asset_form_input['service_key'] == "") and ('CATCHUP' in asset_type):  # Catchup Missing Input Parameter Check
         return errorchecker.input_missing('service_key')
 
+    # Calling DB entry creation function
     try:
 
         add_main(params.asset_main['asset_timestamp'] + '01', params.asset_main['asset_timestamp'], asset_type,
@@ -73,8 +82,14 @@ def create_single_title():
 
 
 
-# This function creates database entries for EST Box Sets (Both TV and Movie)
-def create_est_show_adi():  # This function creates database entries for EST Shows (TV and Movie Box-Sets)
+def create_est_show_adi():
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Creates the Database Entries for EST Shows (TV and Movie Box-Sets)
+    :access: public.
+    :return: Success Response(response.py) OR Failure(errorchecker.py)
+    """
     params.set_asset_base()  # This assigns the asset an assetID and offer timestamps
     form_input.get_form_values()
     est_params.est_show_type_entry(form_input.asset_form_input['est_show_type'], form_input.asset_form_input['title'])
@@ -93,7 +108,7 @@ def create_est_show_adi():  # This function creates database entries for EST Sho
             est_params.est_show_type_entry(form_input.asset_form_input['est_show_type'], season_title)
             episode_title = est_params.est_episode_title + str(episode)
             episode_synopsis = episode_title + ' Synopsis'
-            # Database Entries
+            # Calling DB entry creation function
             try:
                 add_main(episode_asset_id + '22', episode_asset_id + '22', 'est_episode',
                          params.asset_main['provider_version'], est_params.est_episode_provider)
@@ -143,9 +158,12 @@ def create_est_show_adi():  # This function creates database entries for EST Sho
                   form_input.asset_form_input['est_show_type'], no_of_seasons= est_params.no_of_seasons,
                   no_of_episodes=est_params.no_of_episodes)
 
-        create_est_order_type.create_est_orders(params.asset_main['asset_timestamp'], params.asset_main['licenseEndTime'],
+        # Creating EST ORDER TYPE to specify if Offer is Regular / Coming Soon / PreOrder
+        create_est_offer_order.create_est_orders(params.asset_main['asset_timestamp'], params.asset_main['licenseEndTime'],
                                                 form_input.asset_form_input['order_type'], 'est_show')
-        create_purchase_options.create_po(form_input.asset_form_input['po_type'], params.asset_main['asset_timestamp'],
+
+        # Create the Purchase Options to specify the Purchase Option is (BluRay/Digital/DVD)
+        create_est_offer_order.create_po(form_input.asset_form_input['po_type'], params.asset_main['asset_timestamp'],
                                           'est_show')
     except:
         errorchecker.internal_server_error_show('EST_SHOW')
@@ -157,8 +175,15 @@ def create_est_show_adi():  # This function creates database entries for EST Sho
 
 
 
-# This function creates database entries for EST Single Titles
-def create_est_title_adi():  # This function creates database entries for EST Single Titles
+
+def create_est_title_adi():
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Creates the Database Entries for EST Single Titles
+    :access: public.
+    :return: Success Response(response.py) OR Failure(errorchecker.py)
+    """
     params.set_asset_base()  # This assigns the asset an assetID and offer timestamps
     form_input.get_form_values()
     params.param_logic_entry('EST SINGLE TITLE')
@@ -177,9 +202,12 @@ def create_est_title_adi():  # This function creates database entries for EST Si
 
     add_media(movie_config.est_title_provider, 'EST SINGLE TITLE', params.asset_main['asset_timestamp'] + '01')
 
-    create_est_order_type.create_est_orders(params.asset_main['asset_timestamp'], params.asset_main['licenseEndTime'],
+    # Creating EST ORDER TYPE to specify if Offer is Regular / Coming Soon / PreOrder
+    create_est_offer_order.create_est_orders(params.asset_main['asset_timestamp'], params.asset_main['licenseEndTime'],
                                             form_input.asset_form_input['order_type'], 'EST SINGLE TITLE')
-    create_purchase_options.create_po(form_input.asset_form_input['po_type'], params.asset_main['asset_timestamp'],
+
+    # Create the Purchase Options to specify the Purchase Option is (BluRay/Digital/DVD)
+    create_est_offer_order.create_po(form_input.asset_form_input['po_type'], params.asset_main['asset_timestamp'],
                                       'EST SINGLE TITLE')
 
     return response.asset_creation_success(params.asset_main['asset_timestamp'] + '01',
@@ -189,6 +217,14 @@ def create_est_title_adi():  # This function creates database entries for EST Si
 
 # This function Clones already Created Assets # Cloning Not Supported For EST Titles and Box-Sets
 def clone_asset():
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Clones already Created Assets
+    :access: public.
+    :return: Success Response(response.py) OR Failure(errorchecker.py)
+    :except: asset_types: EST Single Title and Box-Set
+    """
     assetId = request.form.get('AssetId')
     title = request.form.get('title')
     ts = time.time()

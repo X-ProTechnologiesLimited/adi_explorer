@@ -37,7 +37,25 @@ def create_app():
 
     db.init_app(app) # Initialise the application
 
-    from .main import main as main_blueprint  # Import the API module
-    app.register_blueprint(main_blueprint) # Register application
+    from .api_main import api_main as api_main_blueprint  # Import the API module
+    app.register_blueprint(api_main_blueprint) # Register application
+
+    from .api_create_package import api_create_package as api_create_package_blueprint  # Import the Create API Module
+    app.register_blueprint(api_create_package_blueprint)  # Register Module
+
+    from .api_view import api_view as api_view_blueprint  # Import the Search and Get Modules
+    app.register_blueprint(api_view_blueprint)  # Register Modules
+
+    from .api_update import api_update as api_update_blueprint  # Import the Asset Update Module
+    app.register_blueprint(api_update_blueprint)  # Register Modules
+
+    from .api_ingest import api_ingest as api_ingest_blueprint # Import the Asset Update Module
+    app.register_blueprint(api_ingest_blueprint) # Register Modules
+
+    from .api_media_library import api_media_library as api_media_library_blueprint  # Import the Media Library Module
+    app.register_blueprint(api_media_library_blueprint)  # Register Modules
+
+    from .api_util import api_util as api_util_blueprint  # Import the Admin, OMDB and HELP modules
+    app.register_blueprint(api_util_blueprint)  # Register Modules
 
     return app # Creates and returns the flask application

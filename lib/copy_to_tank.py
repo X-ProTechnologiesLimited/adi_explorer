@@ -10,8 +10,8 @@ Created on Nov 29, 2019
 import paramiko, os
 from paramiko import SSHClient
 from scp import SCPClient
-from . import movie_config, response, errorchecker, main
-from .metadata_params import metadata_default_params
+from . import movie_config, response, errorchecker, api_media_library
+from .params_default import metadata_default_params
 from flask import request
 
 # Setting up the file transfer directories
@@ -22,12 +22,14 @@ tank_hostname = movie_config.tank_host
 
 def scp_to_jump():
     """
-        :author: Krishnendu Banerjee.
-        :date: 06/03/2019.
-        :description: Function that copies the files from local tool to the Secured Jump Box
-        :access: public.
-        :form_input: templates/upload_to_jump.html
-        """
+    :author: Krishnendu Banerjee.
+    :date: 06/03/2020.
+    :description: Function that copies the files from local tool to the Secured Jump Box
+    :access: public
+    :form: templates/upload_to_jump.html
+    :form_input: filename, hostname, username, password
+    :return: Response Success or Failure
+    """
     # Taking the host/file/user credentials input from the user input form
     filename = request.form.get('filename')
     jump_host = request.form.get('hostname')
@@ -55,11 +57,13 @@ def scp_to_jump():
 
 def scp_to_tank():
     """
-        :author: Krishnendu Banerjee.
-        :date: 29/11/2019.
-        :description: Function that copies the files from local tool to the Tank
-        :access: public.
-        :form_input: templates/upload_to_tank.html
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function that copies the files from local tool to the Tank
+    :access: public
+    :form: templates/upload_to_tank.html
+    :form_input: filename, file_type, tank_env, username, password
+    :return: Response Success or Failure
     """
     # Taking the host/file/user credentials input from the user input form
     filename = request.form.get('filename')
@@ -110,12 +114,14 @@ def scp_to_tank():
 
 def scp_default_video_from_tank():
     """
-        :author: Krishnendu Banerjee.
-        :date: 29/11/2019.
-        :description: Function that copies the default video files from the Tank to the local tool
-        :access: public.
-        :form_input: templates/load_default_library.html
-        """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function that copies the default video files from the Tank to the local tool
+    :access: public.
+    :form: templates/load_default_library.html
+    :form_input: username, password
+    :return: List of Files on Success or Failure (errorchecker.py)
+    """
     # Taking the host/file/user credentials input from the user input form
     username = request.form.get('username')
     password = request.form.get('password')
@@ -141,16 +147,20 @@ def scp_default_video_from_tank():
         except:
             return errorchecker.upload_authentication_error()
 
-    return main.list_files()
+    return api_media_library.list_files_checksum()
 
 def scp_file_from_tank(tank_path, filename):
     """
-        :author: Krishnendu Banerjee.
-        :date: 29/11/2019.
-        :description: Function that copies specific files from the Tank to the local tool
-        :access: public.
-        :form_input: templates/upload_files.html
-        """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function that copies specific files from the Tank to the local tool
+    :access: public
+    :form: templates/upload_files.html
+    :form_input: username, password
+    :param tank_path: This input parameter sends the manual override input for the directory or location of Tank
+    :param filename: This input parameter sends filename to the function
+    :return: List of Files on Success or Failure (errorchecker.py)
+    """
     # Taking the host/file/user credentials input from the user input form
     username = request.form.get('username')
     password = request.form.get('password')
@@ -173,4 +183,4 @@ def scp_file_from_tank(tank_path, filename):
     except:
         return errorchecker.upload_authentication_error()
 
-    return main.list_files()
+    return api_media_library.list_files_checksum()
