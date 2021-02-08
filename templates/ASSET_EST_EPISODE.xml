@@ -32,8 +32,8 @@
       <title:Actor firstName="Dax" fullName="Dax Shepard" lastName="Shepard" sortableName="*"/>
       <title:Actor firstName="Justin" fullName="Justin Long" lastName="Long" sortableName="*"/>
       <title:Actor firstName="Terry" fullName="Terry Crews" lastName="Crews" sortableName="*"/>
-      <title:DirectorDisplay>Krishnendu Banerjee</title:DirectorDisplay>
-      <title:Director firstName="Krishnendu" fullName="Krishnendu Banerjee" lastName="Banerjee" sortableName="*"/>
+      <title:DirectorDisplay>Banerjee Banerjee</title:DirectorDisplay>
+      <title:Director firstName="Banerjee" fullName="Banerjee Banerjee" lastName="Banerjee" sortableName="*"/>
       <title:StudioDisplay>Sony Pictures</title:StudioDisplay>
     </title:LocalizableTitle>
     <title:Rating ratingSystem="BSkyBca">{{val.btc_rating}}</title:Rating>

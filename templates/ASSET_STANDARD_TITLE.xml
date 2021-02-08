@@ -32,14 +32,14 @@
       <title:TitleMedium>{{val.title}}</title:TitleMedium>
       <title:TitleLong>DUMMY</title:TitleLong>
       <title:SummaryShort>{{val.asset_syn}}</title:SummaryShort>
-      <title:ActorDisplay>Rob Hughes, Raj Puri, Kumaran Devaneson, Nelash Chauhan, Terry Crews</title:ActorDisplay>
-      <title:Actor firstName="Rob" fullName="Rob Hughes" lastName="Hughes" sortableName="*"/>
-      <title:Actor firstName="Raj" fullName="Raj Puri" lastName="Puri" sortableName="*"/>
-      <title:Actor firstName="Kumaran" fullName="Kumaran Devaneson" lastName="Devaneson" sortableName="*"/>
-      <title:Actor firstName="Nelash" fullName="Nelash Chauhan" lastName="Chauhan" sortableName="*"/>
-      <title:Actor firstName="Terry" fullName="Terry Crews" lastName="Crews" sortableName="*"/>
-      <title:DirectorDisplay>Krishnendu Banerjee</title:DirectorDisplay>
-      <title:Director firstName="Rob" fullName="Rob Hughes" lastName="Hughes" sortableName="*"/>
+      <title:ActorDisplay>Bradley Cooper, Tom Hanks, Tom Cruise,  Jennifer Aniston, Russell Crowe</title:ActorDisplay>
+      <title:Actor firstName="Bradley" fullName="Bradley Cooper" lastName="Cooper" sortableName="*"/>
+      <title:Actor firstName="Tom" fullName="Tom Hanks" lastName="Hanks" sortableName="*"/>
+      <title:Actor firstName="Tom" fullName="Tom Cruise" lastName="Cruise" sortableName="*"/>
+      <title:Actor firstName="Jennifer" fullName="Jennifer Aniston" lastName="Aniston" sortableName="*"/>
+      <title:Actor firstName="Russell" fullName="Russell Crowe" lastName="Crowe" sortableName="*"/>
+      <title:DirectorDisplay>Banerjee Banerjee</title:DirectorDisplay>
+      <title:Director firstName="Banerjee" fullName="Banerjee Banerjee" lastName="Banerjee" sortableName="*"/>
       <title:StudioDisplay>Walt Disney Pictures</title:StudioDisplay>
    </title:LocalizableTitle>
     <title:Rating ratingSystem="BSkyBca">{{val.btc_rating}}</title:Rating>
