@@ -31,6 +31,7 @@
                       <option value="duration">
                       <option value="genre">
                       <option value="provider_id">
+                      <option value="content_marker">
                       <option value="delete_verb">
                     </option>
                     </datalist>
@@ -49,6 +50,17 @@
                     {
                     format_guide.classList.remove("d-none");
                     }
+                    else if (value == 'content_marker')
+                    {
+                    cmmediaid.classList.remove("d-none");
+                    cm_media_id.classList.remove("d-none");
+                    cmmediatype.classList.remove("d-none");
+                    cm_media_type.classList.remove("d-none");
+                    cm_value_guide.classList.remove("d-none");
+                    cm_media_value.classList.remove("d-none");
+                    cmmediaval.classList.remove("d-none");
+                    alert("If content_marker is set to false, all other values will be ignored");
+                    }
                     }
                 </script>
                 <br>
@@ -58,11 +70,30 @@
                     <d id="offer_guide" class="d-none"> Please specify the OfferId for EST Assets Only. Use View > Get EST Offers for IDs. </d>
                 </div>
                 </div>
+                <div class="field">
+                <div class="control">
+                    <input class="input is-large d-none" id="cmmediaid" type="text" name="cm_media_id" placeholder="CM_MEDIA_ID" autofocus="">
+                    <d id="cm_media_id" class="d-none"> Please specify the Content Marker Media ID</d>
+                </div>
+                </div>
+                <div class="field">
+                <div class="control">
+                    <input class="input is-large d-none" id="cmmediatype" type="text" name="cm_media_type" placeholder="CM_MEDIA_TYPE" autofocus="">
+                    <d id="cm_media_type" class="d-none"> Please specify the Content Marker Type (ex: SOC)</d>
+                </div>
+                </div>
+                <div class="field">
+                <div class="control">
+                    <input class="input is-large d-none" id="cmmediaval" type="text" name="cm_media_value" placeholder="CM_MEDIA_VALUE" autofocus="">
+                    <d id="cm_media_value" class="d-none"> Content Marker Value in ms(Example: 15000)</d>
+                </div>
+                </div>
                 <br>
                 <div class="field">
                 <div class="control">
                     <input class="input is-large" type="text" name="value" placeholder="Field_Value" autofocus="" required>
                     <d id="format_guide" class="d-none"> Please use format: YYYY-MM-DDTHH:MM:SSZ</d>
+                    <d id="cm_value_guide" class="d-none"> Set Content Marker to true/false.</d>
                 </div>
             </div>
             </div>

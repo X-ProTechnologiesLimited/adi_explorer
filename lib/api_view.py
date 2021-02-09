@@ -54,6 +54,22 @@ def search_est_post():
     """
     return search.search_est_assets()
 
+@api_view.route('/expand_show/<title>')
+def expand_show(title):
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function that calls the API to download Asset
+    :access: public
+    :method: post
+    :param assetId: Asset ID of the show to expand
+    :return: post: module: expand show details; function: expand_show(title)
+    """
+    try:
+        return search.expand_est_show(title)
+    except:
+        return errorchecker.no_assets_in_db
+
 @api_view.route('/search_all')
 @nocache
 def search_adi_all():

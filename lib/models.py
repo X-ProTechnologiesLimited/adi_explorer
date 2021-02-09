@@ -15,6 +15,10 @@ class ADI_main(db.Model):
     provider_id = db.Column(db.String(100))
     multiformat_id = db.Column(db.String(100))
     is_deleted = db.Column(db.String(10))
+    content_marker = db.Column(db.String(10))
+    cm_media_id = db.Column(db.String(10))
+    cm_type = db.Column(db.String(10))
+    cm_value = db.Column(db.String(10))
 
 class ADI_metadata(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
@@ -123,5 +127,6 @@ class MEDIA_DEFAULT(db.Model):
     trailer_file = db.Column(db.String(500))
     standard_image_file_prefix = db.Column(db.String(100))
     dpl_image_file_prefix = db.Column(db.String(100))
+
 
 

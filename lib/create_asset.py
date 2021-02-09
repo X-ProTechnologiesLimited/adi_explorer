@@ -50,12 +50,20 @@ def create_single_title():
     if (form_input.asset_form_input['service_key'] == "") and ('CATCHUP' in asset_type):  # Catchup Missing Input Parameter Check
         return errorchecker.input_missing('service_key')
 
+    if params.asset_main['content_marker'] == 'true'\
+            and (form_input.asset_form_input['cm_media_id'] == ""
+                 or form_input.asset_form_input['cm_type'] == ""
+                 or form_input.asset_form_input['cm_value'] == ""):
+        return errorchecker.input_missing('Some Content Marker Parameter is missing!!')
+
     # Calling DB entry creation function
     try:
 
         add_main(params.asset_main['asset_timestamp'] + '01', params.asset_main['asset_timestamp'], asset_type,
                  params.asset_main['provider_version'], form_input.asset_form_input['provider_id'],
-                 params.asset_main['multiformat_id'])
+                 params.asset_main['content_marker'], params.asset_main['multiformat_id'],
+                 params.asset_main['cm_media_id'], params.asset_main['cm_type'],
+                 params.asset_main['cm_value'])
 
         add_meta(params.asset_main['asset_timestamp'] + '01', form_input.asset_form_input['title'],
                  params.asset_meta['synopsis'], params.asset_meta['par_rating'], 'true',
@@ -97,6 +105,13 @@ def create_est_show_adi():
     params.param_logic_entry('est_show')
     params.offer_type_entry('est_show')
     int_timestamp = int(params.asset_main['asset_timestamp'])
+
+    if params.asset_main['content_marker'] == 'true'\
+            and (form_input.asset_form_input['cm_media_id'] == ""
+                 or form_input.asset_form_input['cm_type'] == ""
+                 or form_input.asset_form_input['cm_value'] == ""):
+        return errorchecker.input_missing('Some Content Marker Parameter is missing!!')
+
     # Season Details
     for season in range(1, int(est_params.no_of_seasons) + 1):
         season_asset_id = str(int_timestamp + season)
@@ -111,7 +126,9 @@ def create_est_show_adi():
             # Calling DB entry creation function
             try:
                 add_main(episode_asset_id + '22', episode_asset_id + '22', 'est_episode',
-                         params.asset_main['provider_version'], est_params.est_episode_provider)
+                         params.asset_main['provider_version'], est_params.est_episode_provider,
+                         params.asset_main['content_marker'], "", params.asset_main['cm_media_id'],
+                         params.asset_main['cm_type'], params.asset_main['cm_value'])
 
                 add_meta(episode_asset_id + '22', episode_title, episode_synopsis, params.asset_meta['par_rating'],
                          'false', btc_rating=params.asset_meta['ca_btc'])
@@ -129,7 +146,8 @@ def create_est_show_adi():
 
         try:
             add_main(season_asset_id + '11', season_asset_id + '11', 'est_season',
-                     params.asset_main['provider_version'], 'est__season_hd')
+                     params.asset_main['provider_version'], 'est__season_hd',
+                     params.asset_main['content_marker'])
 
             add_meta(season_asset_id + '11', season_title, season_synopsis, params.asset_meta['par_rating'],
                      'false', btc_rating=params.asset_meta['ca_btc'])
@@ -146,7 +164,8 @@ def create_est_show_adi():
 
     try:
         add_main(params.asset_main['asset_timestamp'] + '00', params.asset_main['asset_timestamp'],
-                 'est_show', params.asset_main['provider_version'], est_params.est_show_provider)
+                 'est_show', params.asset_main['provider_version'], est_params.est_show_provider,
+                 params.asset_main['content_marker'], "")
 
         add_meta(params.asset_main['asset_timestamp'] + '00', form_input.asset_form_input['title'],
                  params.asset_meta['synopsis'], params.asset_meta['par_rating'], 'true',
@@ -190,8 +209,16 @@ def create_est_title_adi():
     params.video_type_entry(movie_config.est_title_provider)
     params.offer_type_entry('EST SINGLE TITLE')
 
+    if params.asset_main['content_marker'] == 'true'\
+            and (form_input.asset_form_input['cm_media_id'] == ""
+                 or form_input.asset_form_input['cm_type'] == ""
+                 or form_input.asset_form_input['cm_value'] == ""):
+        return errorchecker.input_missing('Some Content Marker Parameter is missing!!')
+
     add_main(params.asset_main['asset_timestamp'] + '01', params.asset_main['asset_timestamp'],
-             'EST SINGLE TITLE', params.asset_main['provider_version'], movie_config.est_title_provider)
+             'EST SINGLE TITLE', params.asset_main['provider_version'], movie_config.est_title_provider,
+             params.asset_main['content_marker'], "", params.asset_main['cm_media_id'],
+             params.asset_main['cm_type'], params.asset_main['cm_value'])
 
     add_meta(params.asset_main['asset_timestamp'] + '01', form_input.asset_form_input['title'],
              params.asset_meta['synopsis'], params.asset_meta['par_rating'], 'true',

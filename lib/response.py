@@ -9,6 +9,7 @@ Created on June 01, 2020
 from flask import Blueprint, render_template
 from os import path
 from json2html import *
+from w3lib.html import replace_entities
 
 response = Blueprint('response', __name__)
 basepath = path.dirname(__file__)
@@ -17,12 +18,14 @@ html_outfile = path.abspath(path.join(basepath, "..", "templates", "search_respo
 
 def response_creator(message):
     output = json2html.convert(json=message,
-                               table_attributes="id=\"Error\" class=\"table table-striped\"" "border=2")
+                               table_attributes="id=\"Error\" class=\"table table-striped\"" 
+                                                "border=2")
+    output_escaped = replace_entities(output)
     with open(html_outfile, 'w') as outf:
         outf.write('{% extends "base.html" %}')
         outf.write('{% block content %}')
         outf.write('<div class="container">')
-        outf.write(output)
+        outf.write(output_escaped)
         outf.write('</div>')
         outf.write('{% endblock %}')
 
@@ -30,12 +33,14 @@ def response_creator(message):
 
 def asset_retrieve(json_data):
     output = json2html.convert(json=json_data,
-                               table_attributes="id=\"Error\" class=\"table table-striped\"" "border=2")
+                               table_attributes="id=\"Error\" class=\"table table-striped\"" 
+                                                "border=2")
+    output_escaped = replace_entities(output)
     with open(html_outfile, 'w') as outf:
         outf.write('{% extends "base.html" %}')
         outf.write('{% block content %}')
         outf.write('<div class="container">')
-        outf.write(output)
+        outf.write(output_escaped)
         outf.write('</div>')
         outf.write('{% endblock %}')
 
@@ -43,9 +48,10 @@ def asset_retrieve(json_data):
 
 
 def asset_update_success(assetId, update_field):
+    asset_encoded = '<a href="/get_adi/' + assetId + '">' + assetId + '</a>'
     message = {
             'status': 200,
-            'message': update_field + ': updated successfully for asset with AssetId: ' + assetId
+            'message': update_field + ': updated successfully for asset with AssetId: ' + asset_encoded
         }
     return response_creator(message)
 
@@ -59,10 +65,11 @@ def asset_delete_success(assetId):
 
 
 def asset_creation_success(assetId, title):
+    asset_encoded = '<a href="/get_adi/' + assetId + '">' + assetId + '</a>'
     message = {
             'status': 200,
-            'message': 'Asset: ' + title + ' created successfully with AssetId: ' + assetId,
-            'download': 'To download the asset ADI, use the View > Download ADI Menu'
+            'message': 'Asset: ' + title + ' created successfully with AssetId: ' + asset_encoded,
+            'download': 'To download the asset ADI, use the View > Download ADI Menu OR click Above'
         }
     return response_creator(message)
 

@@ -47,7 +47,16 @@
   </Title>
   <Movie creationDateTime="2014-11-24T10:34:34Z" endDateTime="{{val.licensetime}}" internalVersionNum="0" providerVersionNum="{{val.provider_version}}" startDateTime="2014-11-24T00:00:00Z" uriId="{{val.providerid}}/MAIN{{val.assetid}}01">
     <core:Ext>
-      <ext:MovieExtensions analogueOff="true" mediaId="M1035909" waterMarkingRequired="false"/>
+      {% for def in content_marker_default -%}
+      <ext:MovieExtensions analogueOff="true" mediaId="{{def.cm_media_id}}" waterMarkingRequired="false"/>
+      {% endfor -%}
+      {% for marker in content_marker -%}
+      <ext:MovieExtensions analogueOff="true" mediaId="{{marker.cm_media_id}}" waterMarkingRequired="false">
+      <ext:contentMarker id="{{marker.cm_type}}">
+      <ext:value>{{marker.cm_value}}</ext:value>
+      </ext:contentMarker>
+      </ext:MovieExtensions>
+      {% endfor -%}
     </core:Ext>
         {% for video in videos -%}
         <content:SourceUrl>{{video.movie_path}}{{video.movie_url}}</content:SourceUrl>

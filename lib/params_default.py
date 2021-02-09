@@ -29,6 +29,9 @@ class form_input_params(object):
         self.asset_form_input['provider_id'] = request.form.get('provider_id')
         self.asset_form_input['title'] = request.form.get('title')
         self.asset_form_input['service_key'] = request.form.get('service_key')
+        self.asset_form_input['cm_media_id'] = request.form.get('cm_media_id')
+        self.asset_form_input['cm_type'] = request.form.get('cm_type')
+        self.asset_form_input['cm_value'] = request.form.get('cm_value')
         self.asset_form_input['multiformat_id'] = request.form.get('multiformat_id')
         self.asset_form_input['svod_season_number'] = request.form.get('svod_season_number')
         self.asset_form_input['svod_episode_number'] = request.form.get('svod_episode_number')
@@ -267,6 +270,17 @@ class metadata_default_params(object):
             self.asset_main['provider_version'] = request.form.get('provider_version')
         else:
             self.asset_main['provider_version'] = movie_config.default_provider_version
+
+        if request.form.get('content_marker') == "true":
+            self.asset_main['content_marker'] = request.form.get('content_marker')
+            self.asset_main['cm_media_id'] = request.form.get('cm_media_id')
+            self.asset_main['cm_type'] = request.form.get('cm_type')
+            self.asset_main['cm_value'] = request.form.get('cm_value')
+        else:
+            self.asset_main['content_marker'] = movie_config.default_content_marker
+            self.asset_main['cm_media_id'] = "M1035909"
+            self.asset_main['cm_type'] = ""
+            self.asset_main['cm_value'] = ""
 
         if request.form.get('production_year') != "":
             self.asset_meta['production_year'] = request.form.get('production_year')

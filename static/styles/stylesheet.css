@@ -280,6 +280,20 @@ a { text-decoration: none; }
   white-space: nowrap;
 }
 
+.button_tab {
+  background-color: lightblue;
+  border-color: #dbdbdb;
+  border-width: 0.5px;
+  color: #363636;
+  cursor: pointer;
+  justify-content: center;
+  padding-bottom: calc(0.5em - 1px);
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: calc(0.5em - 1px);
+  text-align: center;
+  white-space: nowrap;
+}
 .is-block {
   display: block !important;
 }
@@ -558,6 +572,14 @@ table th[class*=col-] {
 	.table-responsive>.table-bordered>tfoot>tr:last-child>td {
 		border-bottom: 0
 	}
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:active {
+  text-decoration: underline;
 }
 
 #Progress_Status {

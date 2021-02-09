@@ -23,6 +23,7 @@ def update_single_title():
     update_field = request.form.get('asset_field')
     offerId = request.form.get('offerId')
     field_value = request.form.get('value')
+
     try:
         package = ADI_main.query.filter_by(assetId=assetId).first()
         if update_field == 'title':
@@ -63,6 +64,11 @@ def update_single_title():
             package = ADI_main.query.filter_by(assetId=assetId).update(dict(provider_id=field_value))
         elif update_field == 'delete_verb':
             package = ADI_main.query.filter_by(assetId=assetId).update(dict(is_deleted=field_value))
+        elif update_field == 'content_marker':
+            package = ADI_main.query.filter_by(assetId=assetId).update(dict(content_marker=field_value,
+                                                                            cm_media_id=request.form.get('cm_media_id'),
+                                                                            cm_type=request.form.get('cm_media_type'),
+                                                                            cm_value=request.form.get('cm_media_value')))
         else:
             return errorchecker.undefined_update_field(update_field)
 
@@ -182,4 +188,5 @@ def update_default_fields():
         return response.default_config_load_success(update_field, field_value)
     except:
         return errorchecker.internal_server_error()
+
 

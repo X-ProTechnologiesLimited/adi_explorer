@@ -99,6 +99,21 @@ def download_title(assetId):
         else:
             subtitle = ""
 
+        if package_main.content_marker == 'true':
+            content_marker = []
+            content_marker.append({
+                'cm_media_id': package_main.cm_media_id,
+                'cm_type': package_main.cm_type,
+                'cm_value': package_main.cm_value,
+            })
+            content_marker_default = ""
+        else:
+            content_marker_default = []
+            content_marker_default.append({
+                'cm_media_id': package_main.cm_media_id,
+            })
+            content_marker = ""
+
         if 'CATCHUP' in package_main.adi_type:
             cutv = []
             cutv.append({
@@ -155,7 +170,8 @@ def download_title(assetId):
 
         template = render_template(sitemap.sitemap, values=values, media_items=media_items, terms=terms, cutv=cutv,
                                    dpl_items=dpl_items, dpl_base=dpl_base, episodes=episodes, subtitle=subtitle,
-                                   vodextensions=vodextensions, delete=delete)
+                                   vodextensions=vodextensions, delete=delete, content_marker=content_marker,
+                                   content_marker_default=content_marker_default)
         response = make_response(template)
         response.headers['Content-Type'] = 'application/xml'
         return response
@@ -226,7 +242,23 @@ def download_est_episode(assetId):
         'image4_checksum': package_media.image_checksum_4,
     })
 
-    template = render_template(sitemap.sitemap, values=values, media_items=media_items)
+    if package_main.content_marker == 'true':
+        content_marker = []
+        content_marker.append({
+            'cm_media_id': package_main.cm_media_id,
+            'cm_type': package_main.cm_type,
+            'cm_value': package_main.cm_value,
+        })
+        content_marker_default = ""
+    else:
+        content_marker_default = []
+        content_marker_default.append({
+            'cm_media_id': package_main.cm_media_id,
+        })
+        content_marker = ""
+
+    template = render_template(sitemap.sitemap, values=values, media_items=media_items,
+                               content_marker=content_marker, content_marker_default=content_marker_default)
     response = make_response(template)
     response.headers['Content-Type'] = 'application/xml'
 
@@ -492,8 +524,24 @@ def download_est_single_title(assetId):
         else:
             videos = ""
 
+        if package_main.content_marker == 'true':
+            content_marker = []
+            content_marker.append({
+                'cm_media_id': package_main.cm_media_id,
+                'cm_type': package_main.cm_type,
+                'cm_value': package_main.cm_value,
+            })
+            content_marker_default = ""
+        else:
+            content_marker_default = []
+            content_marker_default.append({
+                'cm_media_id': package_main.cm_media_id,
+            })
+            content_marker = ""
+
         template = render_template(sitemap.sitemap, values=values, media_items=media_items, est_offers=est_offers,
-                                   purchase_options=purchase_options, videos=videos)
+                                   purchase_options=purchase_options, videos=videos,
+                                   content_marker_default=content_marker_default, content_marker=content_marker)
         response = make_response(template)
         response.headers['Content-Type'] = 'application/xml'
         return response
@@ -543,31 +591,36 @@ def get_est_offers(assetId):
     adi_offers = {}
     adi_offers['offers'] = []
     package_check = ADI_main.query.filter_by(assetId=assetId).first()
-    if (package_check.adi_type == 'EST SINGLE TITLE') or (package_check.adi_type == 'est_show'):
-        for package in ADI_offer.query.filter(ADI_offer.assetId == assetId).all():
-            package_offer = ADI_offer.query.filter_by(est_offerId=package.est_offerId).first()
-            package_meta = ADI_metadata.query.filter_by(assetId=package.assetId).first()
-            adi_offers['offers'].append({
-                'title': package_meta.title,
-                'assetId': package.assetId,
-                'offer_type': package_offer.offer_type,
-                'est_offer_id': package_offer.est_offerId,
-                'est_order_type': package_offer.est_order_type,
-                'offerStartTime': package_offer.offerStartTime,
-                'offerEndTime': package_offer.offerEndTime,
-                })
+
+    if package_check is not None:
+        if (package_check.adi_type == 'EST SINGLE TITLE') or (package_check.adi_type == 'est_show'):
+            for package in ADI_offer.query.filter(ADI_offer.assetId == assetId).all():
+                package_offer = ADI_offer.query.filter_by(est_offerId=package.est_offerId).first()
+                package_meta = ADI_metadata.query.filter_by(assetId=package.assetId).first()
+                adi_offers['offers'].append({
+                    'title': package_meta.title,
+                    'assetId': package.assetId,
+                    'offer_type': package_offer.offer_type,
+                    'est_offer_id': package_offer.est_offerId,
+                    'est_order_type': package_offer.est_order_type,
+                    'offerStartTime': package_offer.offerStartTime,
+                    'offerEndTime': package_offer.offerEndTime,
+                    })
 
 
-        adi_offers['total'] = ADI_offer.query.filter(ADI_offer.assetId == assetId).count()
-        if adi_offers['total'] == 0:  # If no countries found in the continent
-            return errorchecker.no_assets_in_db()
+            adi_offers['total'] = ADI_offer.query.filter(ADI_offer.assetId == assetId).count()
+            if adi_offers['total'] == 0:  # If no countries found in the continent
+                return errorchecker.no_assets_in_db()
+            else:
+                json_data = dumps(adi_offers)
+
+            return response.asset_retrieve(json_data)
+
         else:
-            json_data = dumps(adi_offers)
-
-        return response.asset_retrieve(json_data)
+            return errorchecker.not_est_offer(assetId)
 
     else:
-        return errorchecker.not_est_offer(assetId)
+        return errorchecker.asset_not_found_id(assetId)
 
 
 def get_default_config():

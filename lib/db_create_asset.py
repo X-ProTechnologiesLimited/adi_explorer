@@ -53,7 +53,8 @@ def add_media(provider_id, asset_type, assetId):
     db.session.add(new_package_media)
     db.session.commit()
 
-def add_main(assetId, asset_timestamp, adi_type, provider_version, provider_id, multiformat_id=""):
+def add_main(assetId, asset_timestamp, adi_type, provider_version, provider_id, content_marker, multiformat_id="",
+             cm_media_id="", cm_type="", cm_value=""):
     """
     :author: Krishnendu Banerjee.
     :date: 29/11/2019.
@@ -69,7 +70,9 @@ def add_main(assetId, asset_timestamp, adi_type, provider_version, provider_id, 
     """
     new_asset_main = ADI_main(assetId=assetId, original_timestamp=asset_timestamp,
                               adi_type=adi_type, provider_version=provider_version,
-                              provider_id=provider_id, multiformat_id=multiformat_id)
+                              provider_id=provider_id, multiformat_id=multiformat_id,
+                              content_marker=content_marker, cm_media_id=cm_media_id,
+                              cm_type=cm_type, cm_value=cm_value)
 
     db.session.add(new_asset_main)
     db.session.commit()
