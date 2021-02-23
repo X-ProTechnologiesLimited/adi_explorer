@@ -667,9 +667,9 @@ def post_adi_endpoint():
     source = request.form.get('source')
     endpoint_url = params.environment_url + 'source=' + source + '&conversationId=1' + conversationId
     headers = {'Content-type': 'text/xml; charset=UTF-8'}
-    if 'file' not in request.files and request.form.get('assetId') == "":
+    if 'file' not in request.files and request.form.get('AssetId') == "":
         return errorchecker.input_missing('AssetId or ADI Filename')
-    elif request.form.get('assetId') == "":
+    elif request.form.get('AssetId') == "":
         file = request.files['file']
         if file.filename == '':
             return errorchecker.input_missing('AssetId or ADI Filename')
@@ -696,7 +696,7 @@ def post_adi_endpoint():
 
     else:
         my_filename = movie_config.premium_vrp_dir+'/ADI.xml'
-        assetId = request.form.get('assetId')
+        assetId = request.form.get('AssetId')
         try:
             package = ADI_main.query.filter_by(assetId=assetId).first()
             assetId_db = package.assetId

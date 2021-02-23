@@ -10,27 +10,14 @@ import os
 from flask import Blueprint, render_template, request, send_from_directory
 from .nocache import nocache
 from .models import ADI_main
-from . import errorchecker, search, get_asset_details, create_tar, movie_config, response
+from . import errorchecker, search, get_asset_details, create_tar, movie_config, response, api_ingest
 from bson.json_util import dumps
 VRP_PACKAGE_DIR = movie_config.premium_vrp_dir
 
 api_view = Blueprint('api_view', __name__)
 
-@api_view.route('/search')
+@api_view.route('/search', methods=['GET', 'POST'])
 def search_adi():
-    """
-    :author: Krishnendu Banerjee.
-    :date: 29/11/2019.
-    :description: Function that calls the Search API for assets
-    :access: public
-    :method: get
-    :return: get: return Jinja template for search.html
-    """
-    return render_template('search.html')
-
-@api_view.route('/search', methods=['POST'])
-@nocache
-def search_adi_post():
     """
     :author: Krishnendu Banerjee.
     :date: 29/11/2019.
@@ -39,20 +26,10 @@ def search_adi_post():
     :method: post
     :return: post: module: search; function: search_by_title
     """
-    return search.search_by_title()
+    if request.method == 'POST':
+        return search.search_by_title()
+    return render_template('search.html')
 
-@api_view.route('/search_est', methods=['POST'])
-@nocache
-def search_est_post():
-    """
-    :author: Krishnendu Banerjee.
-    :date: 29/11/2019.
-    :description: Function that calls to API to search EST assets on the database
-    :access: public
-    :method: post
-    :return: post: module: search; function: search_est_assets()
-    """
-    return search.search_est_assets()
 
 @api_view.route('/expand_show/<title>')
 def expand_show(title):
@@ -82,6 +59,38 @@ def search_adi_all():
     :return: post: module: search; function: search_all_packages
     """
     return search.search_all_packages()
+
+@api_view.route('/adi', methods=['POST'])
+def get_form_adi():
+    if request.form.get('AssetId') == None:
+        return errorchecker.input_missing('AssetId_Radio')
+    else:
+        if 'form_view' in request.form:
+            return get_adi()
+        elif 'form_download' in request.form:
+            return download_adi()
+        elif 'form_est_offers' in request.form:
+            return get_est_offers()
+        elif 'form_metadata' in request.form:
+            return get_asset_metadata()
+        elif 'form_download_bs' in request.form:
+            return download_box_set()
+        elif 'form_ingest' in request.form:
+            return render_template('post_adi.html', asset_id=request.form.get('AssetId'))
+        elif 'form_clone' in request.form:
+            return render_template('clone_adi.html', asset_id=request.form.get('AssetId'))
+        elif 'form_ingest_history' in request.form:
+            return api_ingest.get_ingest_history()
+        elif 'form_update_meta' in request.form:
+            return render_template('update_single_title.html', asset_id=request.form.get('AssetId'))
+        elif 'form_update_mov' in request.form:
+            return render_template('update_video.html', asset_id=request.form.get('AssetId'),
+                                   movie_type='movie')
+        elif 'form_update_prev' in request.form:
+            return render_template('update_video.html', asset_id=request.form.get('AssetId'),
+                                   movie_type='trailer')
+        else:
+            return 'Not Valid'
 
 
 @api_view.route('/get_adi/<assetId>')
@@ -222,3 +231,23 @@ def get_tar_file():
             return errorchecker.no_supporting_file(filename)
 
     return render_template('get_tar.html')
+
+
+@api_view.route("/download_adi")
+def download_adi():
+    """
+    :author: Krishnendu Banerjee.
+    :date: 29/11/2019.
+    :description: Function that calls the API to Download Specific Tar Files from the Server
+    :access: public
+    :form_input: filename: The filename of the VRP TAR file to be downloaded
+    :method: get, post
+    :return: get: Return Jinja template for templates/get_tar.html
+    :return: post: download from local VRP directory (VRP_PACKAGE_DIR = movie_config.premium_vrp_dir)
+    """
+    assetId = request.form.get('AssetId')
+    try:
+        create_tar.get_adi_xml(assetId, 'adi.xml')
+        return send_from_directory(movie_config.adi_xml_dir, 'adi.xml', as_attachment=True)
+    except:
+        return errorchecker.asset_not_found_id(assetId)

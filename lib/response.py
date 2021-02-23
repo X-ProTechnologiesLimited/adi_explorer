@@ -47,6 +47,48 @@ def asset_retrieve(json_data):
     return render_template('search_response.html')
 
 
+def asset_retrieve_form(json_data):
+    output = json2html.convert(json=json_data,
+                               table_attributes="id=\"Error\" class=\"table table-striped\"" 
+                                                "border=2")
+    output_escaped = replace_entities(output)
+    with open(html_outfile, 'w') as outf:
+        outf.write('{% extends "base.html" %}')
+        outf.write('{% block content %}')
+        outf.write('<div class="container">')
+        outf.write('<div class="sticky_2">')
+        outf.write('<form method="POST" id="view" action="/adi">')
+        outf.write('<input type="submit" name="form_view" class="button_view" value="View ADI"><br>')
+        outf.write('<p>')
+        outf.write(' <input type="submit" name="form_download" class="button_view" value="Download ADI"><br>')
+        outf.write('<p>')
+        outf.write(' <input type="submit" name="form_ingest" class="button_ingest" value="Ingest"><br>')
+        outf.write('<p>')
+        outf.write(' <input type="submit" name="form_ingest_history" class="button_ingest" value="Conversation"><br>')
+        outf.write('<p>')
+        outf.write(' <input type="submit" name="form_est_offers" class="button_meta" value="EST Offers"><br>')
+        outf.write('<p>')
+        outf.write(' <input type="submit" name="form_metadata" class="button_meta" value="Metadata"><br>')
+        outf.write('<p>')
+        outf.write(' <input type="submit" name="form_clone" class="button_assist" value="Clone"><br>')
+        outf.write('<p>')
+        outf.write(' <input type="submit" name="form_download_bs" class="button_assist" value="Download Show"><br>')
+        outf.write('<p>')
+        outf.write(' <input type="submit" name="form_update_meta" class="button_update" value="Update Meta"><br>')
+        outf.write('<p>')
+        outf.write(' <input type="submit" name="form_update_mov" class="button_update" value="Update Mov"><br>')
+        outf.write('<p>')
+        outf.write(' <input type="submit" name="form_update_prev" class="button_update" value="Update Prev"><br>')
+        outf.write('<p>')
+        outf.write('</div>')
+        outf.write(output_escaped)
+        outf.write('</form>')
+        outf.write('</div>')
+        outf.write('{% endblock %}')
+
+    return render_template('search_response.html')
+
+
 def asset_update_success(assetId, update_field):
     asset_encoded = '<a href="/get_adi/' + assetId + '">' + assetId + '</a>'
     message = {

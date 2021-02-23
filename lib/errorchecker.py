@@ -161,9 +161,13 @@ def undefined_update_field(update_field):
 
 @errorchecker.errorhandler(502)
 def input_missing(input_field):
+    if input_field == 'AssetId_Radio':
+        message_field = 'Please select an Asset radio button from the list.'
+    else:
+        message_field = 'input field: ' + input_field + ' missing for this request'
     message = {
             'status': 502,
-            'message': 'input field: ' + input_field + ' missing for this request'
+            'message': message_field
         }
     return error_response_creator(message)
 
@@ -190,7 +194,7 @@ def missing_file_libary(filename):
 def no_ingest_history(assetId):
     message = {
             'status': 404,
-            'message': 'No Ingest History Found for this asset' + assetId
+            'message': 'No Ingest History Found for this asset: ' + assetId
         }
     return error_response_creator(message)
 

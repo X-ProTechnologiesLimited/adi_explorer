@@ -22,8 +22,7 @@ def search_by_title():
     """
     title = request.form.get('Title')
     title_uncoded = urllib.parse.unquote_plus(title) # Space and special character handling
-    adi_data = {}
-    adi_data['packages'] = []
+    adi_data = []
     search = "%{}%".format(title_uncoded) # Pattern match with search criterion anywhere in title
     title_search = ADI_metadata.query.filter(or_(ADI_metadata.title.like(search)),
                                                   (ADI_metadata.title_filter == 'true')).count()
@@ -33,31 +32,33 @@ def search_by_title():
         return errorchecker.not_matched_criteria()
     elif title_search == 0:
         matched_items = ADI_main.query.filter(ADI_main.assetId == title).all()
-        adi_data['total'] = ADI_main.query.filter(ADI_main.assetId == title).count()
+
     elif id_search == 0:
         matched_items = ADI_metadata.query.filter(or_(ADI_metadata.title.like(search)),
                                                   (ADI_metadata.title_filter == 'true')).all()
-        adi_data['total'] = ADI_metadata.query.filter(or_(ADI_metadata.title.like(search)),
-                                                       (ADI_metadata.title_filter == 'true')).count()
 
 
     for package in matched_items:
         package_main = ADI_main.query.filter_by(assetId=package.assetId).first()
         package_offer = ADI_offer.query.filter_by(assetId=package.assetId).first()
         package_meta = ADI_metadata.query.filter_by(assetId=package.assetId).first()
-        adi_data['packages'].append({
-            'title': package_meta.title,
-            'assetId': package.assetId,
-            'package type': package_main.adi_type,
-            'provider Version': package_main.provider_version,
-            'providerId': package_main.provider_id,
-            'offer EndDateTime': package_offer.offerEndTime,
-            'multiformat id': package_main.multiformat_id,
-            'ADI': '<a href="/get_adi/' + package.assetId + '" class="button_tab">View ADI</a>',
+        if 'est_show' in package_main.adi_type:
+            title_link = f'<a style="font-weight:bold" href="/expand_show/{package_meta.title}"</a>{package_meta.title}'
+        else:
+            title_link = package_meta.title
+        adi_data.append({
+            'Select': f'<input type="radio" name="AssetId" value="{package.assetId}">',
+            'Title': title_link,
+            'AssetId': package.assetId,
+            'Package type': package_main.adi_type,
+            'Provider Version': package_main.provider_version,
+            'ProviderId': package_main.provider_id,
+            'Offer EndDateTime': package_offer.offerEndTime,
+            'Multiformat id': package_main.multiformat_id,
         })
     json_data = dumps(adi_data, ensure_ascii=False)
 
-    return response.asset_retrieve(json_data)
+    return response.asset_retrieve_form(json_data)
 
 
 
@@ -69,36 +70,35 @@ def search_all_packages():
     :access: public.
     :return: Return all assets in Database in JSON format
     """
-    adi_data = {}
-    adi_data['packages'] = []
+    adi_data = []
     for package in ADI_main.query.filter(or_(ADI_main.adi_type != 'est_episode'), (ADI_main.adi_type != 'est_season')).\
             order_by(ADI_main.id.desc()).all():
         package_offer = ADI_offer.query.filter_by(assetId=package.assetId).first()
         package_meta = ADI_metadata.query.filter_by(assetId=package.assetId).first()
         if 'est_show' in package.adi_type:
-            title_link = '<a href="/expand_show/' + package_meta.title + '" class="button_tab">' + package_meta.title + '</a>'
+            title_link = f'<a style="font-weight:bold" href="/expand_show/{package_meta.title}"</a>{package_meta.title}'
         else:
             title_link = package_meta.title
-        adi_data['packages'].append({
-            'title': title_link,
-            'assetId': package.assetId,
-            'package type': package.adi_type,
-            'provider Version': package.provider_version,
-            'providerId': package.provider_id,
-            'offer EndDateTime': package_offer.offerEndTime,
-            'multiformat id': package.multiformat_id,
-            'content marked': package.content_marker,
-            'ADI': '<a href="/get_adi/' + package.assetId + '" class="button_tab">View ADI</a>',
+        adi_data.append({
+            'Select': f'<input type="radio" name="AssetId" value="{package.assetId}">',
+            'Title': title_link,
+            'AssetId': package.assetId,
+            'Package type': package.adi_type,
+            'Provider Version': package.provider_version,
+            'ProviderId': package.provider_id,
+            'Offer EndDateTime': package_offer.offerEndTime,
+            'Multiformat id': package.multiformat_id,
+            'Content Marked': package.content_marker,
         })
 
-    adi_data['total'] = ADI_main.query.filter(or_(ADI_main.adi_type != 'est_episode'), (ADI_main.adi_type != 'est_season')).count()
+    total = ADI_main.query.filter(or_(ADI_main.adi_type != 'est_episode'), (ADI_main.adi_type != 'est_season')).count()
 
-    if adi_data['total'] == 0:  # If no countries found in the continent
+    if total == 0:  # If no assets found in the database
         return errorchecker.no_assets_in_db()
     else:
         json_data = dumps(adi_data, ensure_ascii=False)
 
-    return response.asset_retrieve(json_data)
+    return response.asset_retrieve_form(json_data)
 
 
 def expand_est_show(title):
@@ -110,35 +110,34 @@ def expand_est_show(title):
     :return: Only EST Single Title, Episodes, Seasons and Box-Sets based on matched title
     """
     title_uncoded = urllib.parse.unquote_plus(title)
-    adi_data = {}
-    adi_data['packages'] = []
+    adi_data = []
     search = "%{}%".format(title_uncoded)
     for package in ADI_EST_Show.query.filter(ADI_EST_Show.title.like(search)).\
             order_by(ADI_EST_Show.no_of_seasons.desc()).order_by(ADI_EST_Show.no_of_episodes.desc()).all():
         package_offer = ADI_offer.query.filter_by(assetId=package.assetId).first()
         package_main = ADI_main.query.filter_by(assetId=package.assetId).first()
         package_group = ADI_EST_Show.query.filter_by(assetId=package.assetId).first()
-        adi_data['packages'].append({
-            'title': package.title,
-            'assetId': package.assetId,
-            'package type': package_main.adi_type,
-            'provider Version': package_main.provider_version,
-            'providerId': package_main.provider_id,
-            'offer EndDateTime': package_offer.offerEndTime,
-            'parent group id': package_group.parent_group_id,
-            'season number': package_group.season_number,
-            'episode number': package_group.episode_number,
-            'ADI': '<a href="/get_adi/' + package.assetId + '" class="button_tab">View ADI</a>',
+        adi_data.append({
+            'Select': f'<input type="radio" name="AssetId" value="{package.assetId}">',
+            'Title': package.title,
+            'AssetId': package.assetId,
+            'Package type': package_main.adi_type,
+            'Provider Version': package_main.provider_version,
+            'ProviderId': package_main.provider_id,
+            'Offer EndDateTime': package_offer.offerEndTime,
+            'Parent group id': package_group.parent_group_id,
+            'Season number': package_group.season_number,
+            'Episode number': package_group.episode_number,
         })
 
-    adi_data['total'] = ADI_EST_Show.query.filter(ADI_EST_Show.title.like(search)).count()
+    total = ADI_EST_Show.query.filter(ADI_EST_Show.title.like(search)).count()
 
-    if adi_data['total'] == 0:  # If no countries found in the continent
+    if total == 0:  # If no countries found in the continent
         return errorchecker.no_assets_in_db()
     else:
         json_data = dumps(adi_data, ensure_ascii=False)
 
-    return response.asset_retrieve(json_data)
+    return response.asset_retrieve_form(json_data)
 
 
 def search_est_assets():
@@ -169,7 +168,8 @@ def search_est_assets():
             'parent group id': package_group.parent_group_id,
             'season number': package_group.season_number,
             'episode number': package_group.episode_number,
-            'ADI': '<a href="/get_adi/' + package.assetId + '" class="button_tab">View ADI</a>',
+            'ADI': f'<a href="/get_adi/{package.assetId}" class="button_tab">View</a>  '
+                   f'<p><a href="/download_adi/{package.assetId}" class="button_tab">Download</a>',
         })
 
     adi_data['total'] = ADI_EST_Show.query.filter(ADI_EST_Show.title.like(search)).count()

@@ -18,9 +18,18 @@ body {
 }
 a { text-decoration: none; }
 
+div.sticky_2 {
+  position: -webkit-sticky;
+  position: fixed;
+  right: 0.1rem;
+  top: 10rem;
+  padding: 10px;
+  background-color: lightgreen;
+}
+
 
 .container {
-  max-width: 1200px;
+  max-width: 1800px;
   margin: 0 auto;
   width: 80%;
 }
@@ -280,20 +289,52 @@ a { text-decoration: none; }
   white-space: nowrap;
 }
 
-.button_tab {
-  background-color: lightblue;
+.button_view {
+  background-color: #03b1fc;
   border-color: #dbdbdb;
-  border-width: 0.5px;
-  color: #363636;
   cursor: pointer;
-  justify-content: center;
-  padding-bottom: calc(0.5em - 1px);
-  padding-left: 1em;
-  padding-right: 1em;
-  padding-top: calc(0.5em - 1px);
-  text-align: center;
-  white-space: nowrap;
+  font-size : 15px;
+  border-radius: 13px;
+  box-shadow: 0 10px 12px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
 }
+
+.button_ingest {
+  background-color: green;
+  border-color: #dbdbdb;
+  cursor: pointer;
+  font-size : 15px;
+  color : white;
+  border-radius: 13px;
+  box-shadow: 0 10px 12px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.button_meta {
+  background-color: cyan;
+  border-color: #dbdbdb;
+  cursor: pointer;
+  font-size : 15px;
+  border-radius: 13px;
+  box-shadow: 0 10px 12px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.button_assist {
+  background-color: orange;
+  border-color: #dbdbdb;
+  cursor: pointer;
+  font-size : 15px;
+  border-radius: 13px;
+  box-shadow: 0 10px 12px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.button_update {
+  background-color: yellow;
+  border-color: #dbdbdb;
+  cursor: pointer;
+  font-size : 15px;
+  border-radius: 13px;
+  box-shadow: 0 10px 12px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
 .is-block {
   display: block !important;
 }
@@ -318,7 +359,8 @@ table {
 }
 
 th {
-	text-align: left
+	text-align: left;
+    background: lightblue;
 }
 
 .table {

@@ -34,25 +34,8 @@
             <ul class="dropdown">
               <li><a href="{{ url_for('api_view.search_adi_all') }}">View All Titles</a></li>
               <li><a href="{{ url_for('api_view.search_adi') }}">Search Assets</a></li>
-              <li><a href="{{ url_for('api_view.get_est_offers') }}">Get EST Offers</a></li>
-              <li><a href="{{ url_for('api_view.get_asset_metadata') }}">View Asset Metadata</a></li>
-              <li><a href="{{ url_for('api_view.get_adi') }}">View and Download ADI</a></li>
               <li><a href="{{ url_for('api_view.list_tar_files') }}">Show Created VRP Packages</a></li>
               <li><a href="{{ url_for('api_view.get_tar_file') }}">Download VRP Packages</a></li>
-              <li><a href="{{ url_for('api_view.download_box_set') }}">Download EST Box-Set</a></li>
-            </ul>
-          </li>
-          <li><a>Update Package<span class="arrow-down"></span></a>
-            <ul class="dropdown">
-              <li><a href="{{ url_for('api_update.update_single_title') }}">Update Metadata</a></li>
-              <li><a href="{{ url_for('api_update.update_video', movie_type='movie') }}">Update Movie File</a></li>
-              <li><a href="{{ url_for('api_update.update_video', movie_type='trailer') }}">Update Trailer File</a></li>
-            </ul>
-          </li>
-          <li><a>Ingest<span class="arrow-down"></span></a>
-            <ul class="dropdown">
-              <li><a href="{{ url_for('api_ingest.post_adi') }}">Post ADI</a></li>
-              <li><a href="{{ url_for('api_ingest.get_ingest_history') }}">View Ingest History</a></li>
             </ul>
           </li>
           <li><a>Media Library<span class="arrow-down"></span></a>

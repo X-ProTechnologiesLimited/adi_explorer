@@ -9,3 +9,4 @@ scp==0.13.2
 paramiko==2.7.1
 Pillow==8.0.1
 python-resize-image==1.1.19
+w3lib==1.22.0
